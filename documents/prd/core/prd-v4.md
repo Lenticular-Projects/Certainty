@@ -13,6 +13,8 @@ This PRD is a complete product specification. It describes **what the product do
 **Do not invent features not listed here. Do not simplify features that are specified. Build exactly what is described.**
 
 **Companion files required alongside this PRD:**
+
+*Foundational Certainty System documents — `/documents/the-certainty-system-foundational-documents/the-certainty-system-documents/`*
 1. `certainty_system_qa_prompt_v4.md` — The full LLM system prompt for call analysis. Drop into the system field of every analysis API call.
 2. `the_certainty_system_UPDATED.md` — The full agent framework (Three Signals, Four Pillars, Root Causes, Nine Patterns). Source of truth.
 3. `certainty_system_9_call_type_playbook_UPDATED.md` — All 9 call type playbooks. Seed the knowledge base from this.
@@ -20,6 +22,22 @@ This PRD is a complete product specification. It describes **what the product do
 5. `certainty_system_close_confirmation_protocol.md` — The Close Confirmation Protocol. Seed as a knowledge item.
 6. `certainty_system_agent_framework_UPDATED.md` — Three Signals, Four Pillars, Math Breakdown detail, Story Templates. Seed from this.
 7. `certainty_system_story_bank.md` — Story templates. Seed as knowledge items.
+
+*Core documents — `/documents/prd/core/`*
+8. `certainty_system_screen_map.md` — Every screen, every element, every interaction. The master navigation blueprint for the entire product.
+9. `cs_visual_design_brief.md` — Visual design brief for the entire product.
+
+*Build reference documents — `/documents/prd/build-reference/`*
+9. `cs_component_library_spec.md` — Every reusable component: props, states, variants, composition rules, build order. Read before building any UI.
+10. `cs_data_flow.md` — Screen-by-screen data requirements: what fetches, when, in what order, what triggers re-fetch. Read before building any page.
+11. `cs_copy_tone_guide.md` — Every string in the app. Three voices. Wrong/right rewrites. Banned words. Capitalization rules. Read before writing a single label.
+12. `cs_error_edge_case_spec.md` — Every failure scenario: exact user-facing message, system behavior, recovery path. Read before shipping any feature.
+13. `cs_api_contract.md` — Request/response shapes for all endpoints. LLM analysis response schema. The report renderer is built against this. Read before writing any API route or fetch call.
+14. `cs_user_stories.md` — One story per user goal with binary acceptance criteria. A feature is done when every criterion passes.
+
+*Screen specs — `/documents/prd/screens/`*
+15. `certainty_system_agent_dashboard.md` — Agent dashboard deep-dive: every section, animation sequence, data requirements, empty states.
+16. `cs_manager_dashboard.md` — Manager dashboard deep-dive: three core questions the screen answers, every section, upload flow, interaction map.
 
 **Build order:**
 1. Auth (login, roles, invite flow)
