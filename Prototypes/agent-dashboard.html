@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Certainty — Agent Dashboard</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-sans/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-mono/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400;1,700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sage:        #8FAF94;
+      --sage-dark:   #6A8B6E;
+      --ink:         #131110;
+      --terracotta:  #E05C34;
+      --mustard:     #E9B840;
+      --cream:       #FBF8F3;
+      --cream-2:     #F0EBE1;
+      --dark-text:   #FAF5EC;
+      --tc-text:     #1A0D08;
+      --rule:        1.5px solid #131110;
+      --rule-lt:     1px solid rgba(19,17,16,0.12);
+    }
+
+    html, body {
+      height: 100%;
+      background: #1A1614;
+      font-family: 'Geist', system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ═══════════════════════════════════════════
+       SHELL
+    ═══════════════════════════════════════════ */
+    .shell {
+      display: grid;
+      grid-template-columns: 72px 210px 1fr;
+      grid-template-rows: 1fr auto auto auto;
+      min-height: 100vh;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    /* ═══════════════════════════════════════════
+       COL 1 — SAGE ICON NAV
+    ═══════════════════════════════════════════ */
+    .col-nav {
+      grid-column: 1;
+      grid-row: 1 / -1;
+      background: var(--sage);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .nav-logo {
+      width: 38px; height: 38px;
+      background: var(--ink);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 800;
+      letter-spacing: 0.02em;
+      color: var(--dark-text);
+      margin-bottom: 32px;
+      flex-shrink: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      width: 100%;
+      flex: 1;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 10px 8px;
+      width: 100%;
+      cursor: pointer;
+      text-decoration: none;
+      color: rgba(19,17,16,0.5);
+      transition: color 0.15s, background 0.15s;
+      border-left: 2.5px solid transparent;
+    }
+
+    .nav-item:hover { color: var(--ink); background: rgba(19,17,16,0.08); }
+    .nav-item.active { color: var(--ink); border-left-color: var(--ink); background: rgba(19,17,16,0.10); }
+    .nav-item svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+    .nav-label {
+      font-size: 8px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      line-height: 1;
+    }
+
+    .nav-foot { margin-top: auto; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+
+    .nav-avatar {
+      width: 34px; height: 34px;
+      background: var(--ink);
+      color: var(--dark-text);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 800;
+      letter-spacing: 0.04em;
+    }
+
+    /* ═══════════════════════════════════════════
+       COL 2 — INK PANEL "YOUR FOCUS"
+    ═══════════════════════════════════════════ */
+    .col-panel {
+      grid-column: 2;
+      grid-row: 1;
+      background: var(--ink);
+      display: flex;
+      flex-direction: column;
+      padding: 28px 0 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .panel-eyebrow {
+      font-family: 'Geist Mono', monospace;
+      font-size: 8.5px; font-weight: 600;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(250,245,236,0.30);
+      padding: 0 20px 14px;
+      border-bottom: 1px solid rgba(250,245,236,0.07);
+      margin-bottom: 8px;
+    }
+
+    .cat-list { display: flex; flex-direction: column; padding: 4px 0; }
+
+    .cat-item {
+      display: flex;
+      align-items: center;
+      padding: 9px 20px;
+      gap: 12px;
+      cursor: pointer;
+      transition: background 0.12s, opacity 0.2s;
+      border-left: 2.5px solid transparent;
+      opacity: 0.4;
+    }
+
+    .cat-item:hover { background: rgba(250,245,236,0.04); }
+
+    .cat-item.focused {
+      background: rgba(250,245,236,0.06);
+      border-left-color: var(--mustard);
+      opacity: 1;
+    }
+
+    .cat-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .cat-dot.sharp      { background: var(--sage); box-shadow: 0 0 6px rgba(143,175,148,0.5); }
+    .cat-dot.proficient { background: var(--mustard); box-shadow: 0 0 6px rgba(233,184,64,0.4); }
+    .cat-dot.developing { background: var(--terracotta); box-shadow: 0 0 6px rgba(224,92,52,0.4); }
+
+    .cat-body { flex: 1; min-width: 0; }
+
+    .cat-name {
+      font-size: 11.5px; font-weight: 600;
+      color: rgba(250,245,236,0.75);
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+
+    .cat-item.focused .cat-name { color: var(--dark-text); }
+
+    .cat-score {
+      font-family: 'Geist Mono', monospace;
+      font-size: 14px; font-weight: 700;
+      color: rgba(250,245,236,0.35);
+      flex-shrink: 0;
+      letter-spacing: -0.02em;
+    }
+
+    .cat-item.focused .cat-score { color: rgba(250,245,236,0.90); }
+
+    /* Panel separator */
+    .panel-sep {
+      height: 1px;
+      background: rgba(250,245,236,0.07);
+      margin: 10px 0;
+    }
+
+    /* Pattern Alert */
+    .pattern-alert {
+      padding: 10px 20px;
+    }
+
+    .pa-eyebrow {
+      font-family: 'Geist Mono', monospace;
+      font-size: 8px; font-weight: 600;
+      letter-spacing: 0.13em; text-transform: uppercase;
+      color: rgba(250,245,236,0.28);
+      margin-bottom: 8px;
+    }
+
+    .pa-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--terracotta);
+      color: #fff;
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 4px 9px;
+      margin-bottom: 10px;
+    }
+
+    .pa-pill-dot {
+      width: 5px; height: 5px;
+      background: rgba(255,255,255,0.6);
+      border-radius: 50%;
+    }
+
+    .pa-links {
+      display: flex;
+      gap: 14px;
+    }
+
+    .pa-link {
+      font-size: 10px; font-weight: 600;
+      color: rgba(250,245,236,0.45);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      transition: color 0.12s;
+    }
+
+    .pa-link:hover { color: var(--mustard); }
+
+    /* Level + XP */
+    .panel-level {
+      padding: 14px 20px;
+      border-top: 1px solid rgba(250,245,236,0.07);
+      margin-top: auto;
+    }
+
+    .pl-eyebrow {
+      font-family: 'Geist Mono', monospace;
+      font-size: 8px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(250,245,236,0.28);
+      margin-bottom: 5px;
+    }
+
+    .pl-name {
+      font-size: 12px; font-weight: 700;
+      color: var(--dark-text);
+      letter-spacing: -0.01em;
+      margin-bottom: 10px;
+    }
+
+    .xp-track {
+      width: 100%;
+      height: 3px;
+      background: rgba(250,245,236,0.10);
+      overflow: hidden;
+    }
+
+    .xp-bar {
+      height: 100%;
+      background: var(--mustard);
+      width: 0%;
+      transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .xp-label {
+      font-family: 'Geist Mono', monospace;
+      font-size: 8px;
+      color: rgba(250,245,236,0.28);
+      letter-spacing: 0.06em;
+      margin-top: 5px;
+    }
+
+    /* Coach link at panel bottom */
+    .panel-coach-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      border-top: 1px solid rgba(250,245,236,0.07);
+      text-decoration: none;
+      transition: background 0.12s;
+    }
+
+    .panel-coach-link:hover { background: rgba(250,245,236,0.04); }
+
+    .pcl-text {
+      font-size: 10px; font-weight: 600;
+      color: rgba(250,245,236,0.40);
+      letter-spacing: -0.01em;
+    }
+
+    .pcl-arrow { color: rgba(250,245,236,0.30); font-size: 12px; }
+
+    /* ═══════════════════════════════════════════
+       COL 3 — TERRACOTTA HERO
+    ═══════════════════════════════════════════ */
+    .col-main {
+      grid-column: 3;
+      grid-row: 1;
+      background: var(--terracotta);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto 1fr;
+      position: relative;
+      overflow: hidden;
+      min-height: 480px;
+    }
+
+    .main-header {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 32px 14px;
+      border-bottom: 1.5px solid rgba(26,13,8,0.18);
+    }
+
+    .mh-title {
+      font-size: 13px; font-weight: 700;
+      color: var(--tc-text);
+      letter-spacing: -0.01em;
+    }
+
+    .mh-date {
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(26,13,8,0.45);
+    }
+
+    /* Left half: Closer's Edge coaching card */
+    .main-left {
+      grid-column: 1;
+      grid-row: 2;
+      padding: 32px 24px 32px 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .coach-card {
+      background: var(--ink);
+      padding: 24px 24px 0;
+      box-shadow: 6px 6px 0px rgba(26,13,8,0.28);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .coach-card.visible { opacity: 1; transform: translateY(0); }
+
+    .cc-label { display: flex; align-items: center; gap: 7px; margin-bottom: 14px; }
+
+    .cc-dot {
+      width: 7px; height: 7px;
+      background: var(--mustard);
+      border-radius: 50%;
+      box-shadow: 0 0 5px rgba(233,184,64,0.6);
+    }
+
+    .cc-eyebrow {
+      font-family: 'Geist Mono', monospace;
+      font-size: 8.5px; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--mustard);
+    }
+
+    .cc-quote {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 17px;
+      line-height: 1.5;
+      color: var(--dark-text);
+      margin-bottom: 12px;
+    }
+
+    .cc-quote mark {
+      background: var(--mustard);
+      color: var(--tc-text);
+      font-style: normal;
+      padding: 0 3px;
+    }
+
+    .cc-body {
+      font-size: 11.5px;
+      line-height: 1.65;
+      color: rgba(250,245,236,0.55);
+      margin-bottom: 16px;
+    }
+
+    .cc-link {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: rgba(250,245,236,0.55);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(250,245,236,0.22);
+      padding-bottom: 2px;
+      transition: color 0.12s, border-color 0.12s;
+    }
+
+    .cc-link:hover { color: var(--mustard); border-bottom-color: var(--mustard); }
+
+    .cc-alert {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      background: rgba(250,245,236,0.05);
+      border-top: 1px solid rgba(250,245,236,0.08);
+      margin: 16px -24px 0;
+    }
+
+    .cc-alert-text {
+      font-family: 'Geist Mono', monospace;
+      font-size: 8.5px; font-weight: 700;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      color: rgba(250,245,236,0.40);
+    }
+
+    .cc-alert-badge {
+      font-family: 'Geist Mono', monospace;
+      font-size: 8px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      background: var(--terracotta);
+      color: var(--dark-text);
+      padding: 2px 7px;
+    }
+
+    /* Right half: score + ring */
+    .main-right {
+      grid-column: 2;
+      grid-row: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 32px 32px 32px 16px;
+      position: relative;
+    }
+
+    .score-watermark {
+      position: absolute;
+      bottom: -40px; right: -20px;
+      font-size: clamp(180px, 26vw, 300px);
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      line-height: 1;
+      color: rgba(26,13,8,0.06);
+      user-select: none;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .score-display {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .score-giant {
+      display: block;
+      font-size: clamp(90px, 13vw, 160px);
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      line-height: 0.88;
+      color: var(--tc-text);
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .score-giant.visible { opacity: 1; transform: translateY(0); }
+
+    .score-ring-wrap {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .score-ring-svg circle { transition: none; }
+
+    .score-denom {
+      font-family: 'Geist Mono', monospace;
+      font-size: 12px; font-weight: 400;
+      color: rgba(26,13,8,0.40);
+      letter-spacing: 0.02em;
+    }
+
+    .score-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 8px;
+      border: 1.5px solid rgba(26,13,8,0.40);
+      padding: 5px 12px;
+      font-size: 10px; font-weight: 800;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--tc-text);
+    }
+
+    /* ═══════════════════════════════════════════
+       ROW 2 — CREAM CATEGORY BADGES
+    ═══════════════════════════════════════════ */
+    .col-badges {
+      grid-column: 2 / -1;
+      grid-row: 2;
+      background: var(--cream);
+      border-top: var(--rule);
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+    }
+
+    .badge-cell {
+      padding: 14px 16px;
+      border-right: 1px solid rgba(19,17,16,0.08);
+      position: relative;
+      cursor: default;
+    }
+
+    .badge-cell:last-child { border-right: none; }
+
+    /* Focus connector dot */
+    .badge-cell.is-focused::after {
+      content: '';
+      position: absolute;
+      top: 8px; right: 8px;
+      width: 6px; height: 6px;
+      background: var(--mustard);
+      border-radius: 50%;
+    }
+
+    .badge-name {
+      font-family: 'Geist Mono', monospace;
+      font-size: 8px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: rgba(19,17,16,0.50);
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+
+    .badge-tier {
+      font-size: 11px; font-weight: 700;
+      color: rgba(19,17,16,0.38);
+      letter-spacing: -0.01em;
+    }
+
+    /* Developing: plain */
+    .badge-cell.developing .badge-tier { color: rgba(19,17,16,0.35); }
+
+    /* Proficient: mustard left border */
+    .badge-cell.proficient {
+      border-left: 3px solid var(--mustard);
+    }
+
+    .badge-cell.proficient .badge-tier { color: rgba(19,17,16,0.65); }
+
+    /* Sharp: ink background */
+    .badge-cell.sharp {
+      background: var(--ink);
+    }
+
+    .badge-cell.sharp .badge-name { color: rgba(250,245,236,0.45); }
+    .badge-cell.sharp .badge-tier { color: var(--dark-text); font-weight: 800; }
+
+    /* ═══════════════════════════════════════════
+       ROW 3 — CREAM RECENT CALLS
+    ═══════════════════════════════════════════ */
+    .col-data {
+      grid-column: 2 / -1;
+      grid-row: 3;
+      background: var(--cream);
+      border-top: 1px solid rgba(19,17,16,0.10);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .call-card {
+      padding: 20px 24px;
+      border-right: 1px solid rgba(19,17,16,0.08);
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1), background 0.14s;
+    }
+
+    .call-card:last-child { border-right: none; }
+    .call-card:hover { background: var(--cream-2); }
+    .call-card.visible { opacity: 1; transform: translateY(0); }
+
+    .cc-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .cc-date {
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(19,17,16,0.38);
+    }
+
+    .cc-outcome {
+      font-size: 9px; font-weight: 800;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 2px 7px;
+    }
+
+    .cc-outcome.enrolled { background: var(--sage); color: var(--ink); }
+    .cc-outcome.missed   { background: var(--terracotta); color: #fff; }
+
+    .cc-type {
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px; font-weight: 600;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      color: rgba(19,17,16,0.40);
+      margin-bottom: 4px;
+    }
+
+    .cc-num {
+      font-size: 46px; font-weight: 900;
+      letter-spacing: -0.05em; line-height: 1;
+      color: var(--ink);
+    }
+
+    .cc-num-denom {
+      font-family: 'Geist Mono', monospace;
+      font-size: 11px; font-weight: 400;
+      color: rgba(19,17,16,0.28);
+    }
+
+    /* ═══════════════════════════════════════════
+       ROW 4 — MUSTARD MARQUEE
+    ═══════════════════════════════════════════ */
+    .col-marquee {
+      grid-column: 1 / -1;
+      grid-row: 4;
+      background: var(--mustard);
+      border-top: var(--rule);
+      height: 38px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .marquee-track {
+      display: flex;
+      gap: 0;
+      white-space: nowrap;
+      animation: marquee 24s linear infinite;
+      will-change: transform;
+    }
+
+    .marquee-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 32px;
+      font-family: 'Geist Mono', monospace;
+      font-size: 9.5px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--tc-text);
+    }
+
+    .marquee-dot { width: 5px; height: 5px; background: var(--ink); border-radius: 50%; opacity: 0.35; flex-shrink: 0; }
+    .marquee-dot.alert { background: var(--terracotta); opacity: 1; }
+
+    @keyframes marquee {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ═══════════════════════════════════════════
+       ENTRANCE ANIMATIONS
+    ═══════════════════════════════════════════ */
+    .slide-in-left {
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .slide-in-left.visible { opacity: 1; transform: translateX(0); }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════ */
+    @media (max-width: 1100px) {
+      .shell { grid-template-columns: 72px 0 1fr; }
+      .col-panel { display: none; }
+      .col-badges, .col-data { grid-column: 2 / -1; }
+    }
+
+    @media (max-width: 768px) {
+      .shell { grid-template-columns: 48px 0 1fr; }
+      .nav-label { display: none; }
+      .col-badges { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="shell">
+
+    <!-- ──────────────────────────────────────
+         COL 1: SAGE ICON NAV
+    ────────────────────────────────────────── -->
+    <aside class="col-nav">
+      <div class="nav-logo">CS</div>
+
+      <nav class="nav-links">
+        <!-- Dashboard — active -->
+        <a class="nav-item active" href="#">
+          <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+          <span class="nav-label">Dash</span>
+        </a>
+        <!-- Knowledge Hub -->
+        <a class="nav-item" href="knowledge-hub.html">
+          <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+          </svg>
+          <span class="nav-label">Hub</span>
+        </a>
+        <!-- My Calls -->
+        <a class="nav-item" href="call-report.html">
+          <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.39 19a19.45 19.45 0 0 1-6-6A19.79 19.79 0 0 1 3.1 4.18 2 2 0 0 1 5.07 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L9.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+          <span class="nav-label">Calls</span>
+        </a>
+        <!-- AI Coach -->
+        <a class="nav-item" href="#">
+          <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          <span class="nav-label">Coach</span>
+        </a>
+      </nav>
+
+      <div class="nav-foot">
+        <div class="nav-avatar">AJ</div>
+      </div>
+    </aside>
+
+    <!-- ──────────────────────────────────────
+         COL 2: INK PANEL — YOUR FOCUS
+    ────────────────────────────────────────── -->
+    <div class="col-panel">
+      <p class="panel-eyebrow">Your Focus</p>
+
+      <div class="cat-list" id="catList">
+        <!-- Signal Reading — FOCUSED -->
+        <div class="cat-item focused slide-in-left" data-cat="signal" style="transition-delay: 0.05s">
+          <div class="cat-dot proficient"></div>
+          <div class="cat-body"><div class="cat-name">Signal Reading</div></div>
+          <div class="cat-score">91</div>
+        </div>
+        <!-- Math Breakdown — FOCUSED -->
+        <div class="cat-item focused slide-in-left" data-cat="math" style="transition-delay: 0.10s">
+          <div class="cat-dot developing"></div>
+          <div class="cat-body"><div class="cat-name">Math Breakdown</div></div>
+          <div class="cat-score">77</div>
+        </div>
+        <!-- Objections — unfocused -->
+        <div class="cat-item slide-in-left" data-cat="objection" style="transition-delay: 0.15s">
+          <div class="cat-dot proficient"></div>
+          <div class="cat-body"><div class="cat-name">Objections</div></div>
+          <div class="cat-score">82</div>
+        </div>
+        <!-- Lead Quality — unfocused -->
+        <div class="cat-item slide-in-left" data-cat="lead" style="transition-delay: 0.20s">
+          <div class="cat-dot sharp"></div>
+          <div class="cat-body"><div class="cat-name">Lead Quality</div></div>
+          <div class="cat-score">88</div>
+        </div>
+        <!-- Compliance — unfocused -->
+        <div class="cat-item slide-in-left" data-cat="comply" style="transition-delay: 0.25s">
+          <div class="cat-dot sharp"></div>
+          <div class="cat-body"><div class="cat-name">Compliance</div></div>
+          <div class="cat-score">95</div>
+        </div>
+        <!-- Call Outcome — unfocused -->
+        <div class="cat-item slide-in-left" data-cat="outcome" style="transition-delay: 0.30s">
+          <div class="cat-dot proficient"></div>
+          <div class="cat-body"><div class="cat-name">Call Outcome</div></div>
+          <div class="cat-score">84</div>
+        </div>
+      </div>
+
+      <div class="panel-sep"></div>
+
+      <!-- Pattern Alert -->
+      <div class="pattern-alert">
+        <div class="pa-eyebrow">Pattern Alert</div>
+        <div class="pa-pill">
+          <span class="pa-pill-dot"></span>
+          Value Drop · 3 of 5 calls
+        </div>
+        <div class="pa-links">
+          <a href="knowledge-hub.html" class="pa-link">Study pattern</a>
+          <span style="color: rgba(250,245,236,0.15); font-size:10px">|</span>
+          <a href="call-report.html" class="pa-link">See calls</a>
+        </div>
+      </div>
+
+      <div class="panel-sep"></div>
+
+      <!-- Level + XP -->
+      <div class="panel-level">
+        <div class="pl-eyebrow">Level Progress</div>
+        <div class="pl-name">Lvl 4 — The Reframer</div>
+        <div class="xp-track">
+          <div class="xp-bar" id="xpBar"></div>
+        </div>
+        <div class="xp-label">2,840 / 4,000 XP — 210 to next</div>
+      </div>
+
+      <!-- Ask your coach link -->
+      <a href="#" class="panel-coach-link">
+        <span class="pcl-text">Ask your coach</span>
+        <span class="pcl-arrow">›</span>
+      </a>
+    </div>
+
+    <!-- ──────────────────────────────────────
+         COL 3: TERRACOTTA HERO
+    ────────────────────────────────────────── -->
+    <main class="col-main">
+
+      <header class="main-header">
+        <span class="mh-title">Performance Dashboard</span>
+        <span class="mh-date">Oct 24</span>
+      </header>
+
+      <!-- Left: Closer's Edge coaching card -->
+      <div class="main-left">
+        <div class="coach-card" id="coachCard">
+          <div class="cc-label">
+            <div class="cc-dot"></div>
+            <span class="cc-eyebrow">The Closer's Edge</span>
+          </div>
+          <p class="cc-quote">
+            "You consistently close high-margin deals. But you missed a <mark>buying signal</mark> at 14:02 today."
+          </p>
+          <p class="cc-body">
+            The prospect used the Scared Switcher pattern. You responded with logic instead of empathy, triggering a defense mechanism. Acknowledge risk before introducing The Math Breakdown.
+          </p>
+          <a href="call-report.html" class="cc-link">Review annotated call →</a>
+
+          <div class="cc-alert">
+            <span class="cc-alert-text">⚑ Pattern Alert: Value Drop</span>
+            <span class="cc-alert-badge">Flagged 3×</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: score number + ring -->
+      <div class="main-right">
+        <div class="score-watermark" aria-hidden="true">88</div>
+        <div class="score-display">
+          <span class="score-giant" id="scoreGiant">0</span>
+
+          <div class="score-ring-wrap">
+            <svg class="score-ring-svg" width="90" height="90" viewBox="0 0 90 90" aria-hidden="true">
+              <!-- track -->
+              <circle cx="45" cy="45" r="36" fill="none"
+                stroke="rgba(26,13,8,0.15)" stroke-width="5"/>
+              <!-- animated fill -->
+              <circle cx="45" cy="45" r="36" fill="none"
+                stroke="rgba(26,13,8,0.55)" stroke-width="5"
+                stroke-linecap="round"
+                transform="rotate(-90 45 45)"
+                id="scoreRing"/>
+            </svg>
+            <span class="score-denom">/ 100 · Last 5 Calls</span>
+          </div>
+
+          <div class="score-badge">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+            Top 10% of Team
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ──────────────────────────────────────
+         ROW 2: CREAM CATEGORY BADGES
+    ────────────────────────────────────────── -->
+    <section class="col-badges">
+      <!-- Signal Reading: Proficient, focused -->
+      <div class="badge-cell proficient is-focused">
+        <div class="badge-name">Signal Reading</div>
+        <div class="badge-tier">Proficient</div>
+      </div>
+      <!-- Math Breakdown: Developing, focused -->
+      <div class="badge-cell developing is-focused">
+        <div class="badge-name">Math Breakdown</div>
+        <div class="badge-tier">Developing</div>
+      </div>
+      <!-- Objections: Proficient -->
+      <div class="badge-cell proficient">
+        <div class="badge-name">Objections</div>
+        <div class="badge-tier">Proficient</div>
+      </div>
+      <!-- Lead Quality: Sharp -->
+      <div class="badge-cell sharp">
+        <div class="badge-name">Lead Quality</div>
+        <div class="badge-tier">Sharp</div>
+      </div>
+      <!-- Compliance: Sharp -->
+      <div class="badge-cell sharp">
+        <div class="badge-name">Compliance</div>
+        <div class="badge-tier">Sharp</div>
+      </div>
+      <!-- Call Outcome: Proficient -->
+      <div class="badge-cell proficient">
+        <div class="badge-name">Call Outcome</div>
+        <div class="badge-tier">Proficient</div>
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────────────
+         ROW 3: CREAM RECENT CALLS
+    ────────────────────────────────────────── -->
+    <section class="col-data">
+      <div class="call-card" id="call1">
+        <div class="cc-top">
+          <span class="cc-date">Oct 24</span>
+          <span class="cc-outcome enrolled">Enrolled</span>
+        </div>
+        <div class="cc-type">Money Caller</div>
+        <div>
+          <span class="cc-num">92</span>
+          <span class="cc-num-denom"> /100</span>
+        </div>
+      </div>
+
+      <div class="call-card" id="call2">
+        <div class="cc-top">
+          <span class="cc-date">Oct 23</span>
+          <span class="cc-outcome missed">Missed</span>
+        </div>
+        <div class="cc-type">Scared Switcher</div>
+        <div>
+          <span class="cc-num">74</span>
+          <span class="cc-num-denom"> /100</span>
+        </div>
+      </div>
+
+      <div class="call-card" id="call3">
+        <div class="cc-top">
+          <span class="cc-date">Oct 22</span>
+          <span class="cc-outcome enrolled">Enrolled</span>
+        </div>
+        <div class="cc-type">Detail Staller</div>
+        <div>
+          <span class="cc-num">88</span>
+          <span class="cc-num-denom"> /100</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────────────
+         ROW 4: MUSTARD MARQUEE
+    ────────────────────────────────────────── -->
+    <div class="col-marquee">
+      <div class="marquee-track">
+        <span class="marquee-item"><span class="marquee-dot alert"></span>PATTERN ALERT: VALUE DROP FLAGGED 3× THIS WEEK</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>LEVEL UP IMMINENT — 210 XP TO GO</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>NEW COURSE: NAVIGATING THE SCARED SWITCHER</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>TEAM BENCHMARK: 78 AVG — YOU'RE AT 88</span>
+        <span class="marquee-item"><span class="marquee-dot alert"></span>PATTERN ALERT: VALUE DROP FLAGGED 3× THIS WEEK</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>LEVEL UP IMMINENT — 210 XP TO GO</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>NEW COURSE: NAVIGATING THE SCARED SWITCHER</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>TEAM BENCHMARK: 78 AVG — YOU'RE AT 88</span>
+      </div>
+    </div>
+
+  </div><!-- /shell -->
+
+  <script>
+    // ─── Constants ──────────────────────────────────────────────────────
+    const SCORE = 88;
+    const SCORE_DURATION = 1100;
+    const RING_CIRCUMFERENCE = 2 * Math.PI * 36; // ≈226.19
+
+    // ─── Easing ─────────────────────────────────────────────────────────
+    function easeOutCubic(x) { return 1 - Math.pow(1 - x, 3); }
+
+    function easeOutBack(x) {
+      const c1 = 1.70158;
+      const c3 = c1 + 1;
+      return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
+    }
+
+    // ─── Score counter ──────────────────────────────────────────────────
+    const scoreEl = document.getElementById('scoreGiant');
+
+    function animateScore() {
+      let t0 = null;
+      function step(ts) {
+        if (!t0) t0 = ts;
+        const p = Math.min((ts - t0) / SCORE_DURATION, 1);
+        scoreEl.textContent = Math.round(SCORE * easeOutCubic(p));
+        if (p < 1) requestAnimationFrame(step);
+        else scoreEl.textContent = SCORE;
+      }
+      requestAnimationFrame(step);
+    }
+
+    // ─── Score ring ──────────────────────────────────────────────────────
+    const ringEl = document.getElementById('scoreRing');
+    ringEl.setAttribute('stroke-dasharray', RING_CIRCUMFERENCE);
+    ringEl.setAttribute('stroke-dashoffset', RING_CIRCUMFERENCE);
+
+    function animateRing(score) {
+      const targetOffset = RING_CIRCUMFERENCE * (1 - score / 100);
+      const DURATION = 900;
+      let t0 = null;
+
+      function step(ts) {
+        if (!t0) t0 = ts;
+        const p = Math.min((ts - t0) / DURATION, 1);
+        const e = easeOutBack(p);
+        const offset = RING_CIRCUMFERENCE + e * (targetOffset - RING_CIRCUMFERENCE);
+        ringEl.setAttribute('stroke-dashoffset', offset);
+        if (p < 1) requestAnimationFrame(step);
+        else ringEl.setAttribute('stroke-dashoffset', targetOffset);
+      }
+      requestAnimationFrame(step);
+    }
+
+    // ─── Focus selection (max 2, FIFO dequeue) ──────────────────────────
+    let focusQueue = ['signal', 'math'];
+
+    function updateFocusStyles() {
+      document.querySelectorAll('.cat-item').forEach(item => {
+        const cat = item.dataset.cat;
+        const isFocused = focusQueue.includes(cat);
+        item.classList.toggle('focused', isFocused);
+        item.style.opacity = (isFocused || focusQueue.length === 0) ? '1' : '0.4';
+      });
+    }
+
+    document.querySelectorAll('.cat-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const cat = item.dataset.cat;
+        const idx = focusQueue.indexOf(cat);
+        if (idx !== -1) {
+          focusQueue.splice(idx, 1);
+        } else {
+          if (focusQueue.length >= 2) focusQueue.shift();
+          focusQueue.push(cat);
+        }
+        updateFocusStyles();
+      });
+    });
+
+    // ─── Entrance sequence ───────────────────────────────────────────────
+    function reveal() {
+      document.querySelectorAll('.slide-in-left').forEach(el => el.classList.add('visible'));
+
+      setTimeout(() => {
+        document.getElementById('coachCard').classList.add('visible');
+      }, 180);
+
+      setTimeout(() => {
+        scoreEl.classList.add('visible');
+        animateScore();
+        animateRing(SCORE);
+      }, 280);
+
+      setTimeout(() => {
+        document.getElementById('xpBar').style.width = '71%';
+      }, 400);
+
+      ['call1', 'call2', 'call3'].forEach((id, i) => {
+        setTimeout(() => {
+          document.getElementById(id).classList.add('visible');
+        }, 480 + i * 80);
+      });
+    }
+
+    window.addEventListener('load', () => setTimeout(reveal, 100));
+  </script>
+</body>
+</html>

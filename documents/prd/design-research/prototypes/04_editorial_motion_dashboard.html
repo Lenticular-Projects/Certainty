@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Certainty System | Prototype 04 - Pure Editorial</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-sans/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-mono/style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Geist', 'sans-serif'],
+                        mono: ['Geist Mono', 'monospace'],
+                        editorial: ['"Playfair Display"', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            cream: '#FAFAF7', /* very stark calm cream */
+                            ink: '#1A1A1A', /* soft black */
+                            highlight: '#FDE047', /* The high-vis yellow from the reference */
+                            accent: '#E63946'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Geist', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            background-color: #FAFAF7;
+            color: #1A1A1A;
+        }
+
+        /* Beautiful highlight effect from the Closer's Edge reference */
+        .highlight-marker {
+            background-color: #FDE047;
+            padding: 0.1em 0.3em;
+            font-weight: 700;
+            color: #1A1A1A;
+            box-decoration-break: clone;
+            -webkit-box-decoration-break: clone;
+        }
+
+        /* Staggered text reveal animation */
+        .stagger-text>* {
+            opacity: 0;
+            animation: textReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .stagger-text>*:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .stagger-text>*:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .stagger-text>*:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .stagger-text>*:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes textReveal {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Minimalist structural lines */
+        .hairline-b {
+            border-bottom: 1px solid rgba(26, 26, 26, 0.1);
+        }
+
+        .hairline-r {
+            border-right: 1px solid rgba(26, 26, 26, 0.1);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col items-center p-6 md:p-12 lg:p-24 line-height-relaxed">
+
+    <div class="w-full max-w-5xl flex flex-col gap-16 md:gap-32 relative">
+
+        <!-- Top Navigation Strip -->
+        <header class="flex justify-between items-center hairline-b pb-8">
+            <div class="flex items-center gap-8">
+                <h1 class="font-black uppercase tracking-tighter text-xl leading-none">C.S.</h1>
+                <nav class="hidden md:flex gap-6 font-mono text-xs uppercase tracking-widest font-bold opacity-50">
+                    <a href="#" class="hover:opacity-100 text-brand-ink">Dashboard</a>
+                    <a href="#" class="hover:opacity-100">Knowledge Hub</a>
+                    <a href="#" class="hover:opacity-100">AI Coach</a>
+                </nav>
+            </div>
+            <div class="text-right">
+                <p class="font-mono text-[10px] uppercase tracking-widest opacity-50 mb-1">Agent Status</p>
+                <p class="font-bold text-sm uppercase">Alex J. &mdash; Lvl 4</p>
+            </div>
+        </header>
+
+        <!-- Main Content Area: Pure Editorial Focus -->
+        <main class="grid grid-cols-1 lg:grid-cols-12 gap-16 md:gap-24">
+
+            <!-- Left Column: The Big Insight -->
+            <article class="lg:col-span-8 flex flex-col justify-center stagger-text">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-2.5 h-2.5 rounded-full bg-brand-accent"></div>
+                    <span class="font-bold uppercase tracking-widest text-xs text-brand-accent font-mono">The Closer's
+                        Edge</span>
+                </div>
+
+                <h2 class="font-editorial italic text-4xl md:text-5xl lg:text-6xl leading-[1.15] mb-8 text-brand-ink">
+                    "You consistently close high-margin deals. But you missed a <span
+                        class="highlight-marker not-italic font-sans">buying signal</span> at 14:02 today."
+                </h2>
+
+                <p class="text-lg md:text-xl opacity-80 max-w-2xl font-sans leading-relaxed mb-12">
+                    The prospect used the <strong class="font-bold text-brand-ink">Scared Switcher</strong> pattern. You
+                    responded with logic instead of empathy, triggering a defense mechanism. By acknowledging their fear
+                    of change first, you earn the right to introduce The Math Breakdown.
+                </p>
+
+                <div>
+                    <a href="#"
+                        class="font-mono text-xs font-bold uppercase tracking-widest border border-brand-ink px-6 py-4 hover:bg-brand-ink hover:text-brand-cream transition-colors duration-300">
+                        Review Call Transcript &rarr;
+                    </a>
+                </div>
+            </article>
+
+            <!-- Right Column: The Score & Stats -->
+            <aside class="lg:col-span-4 flex flex-col gap-12 pt-4">
+
+                <!-- Score -->
+                <div class="hairline-b pb-12 stagger-text">
+                    <p class="font-mono text-[10px] uppercase tracking-widest opacity-50 mb-4">Overall Score</p>
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-8xl font-black tracking-tighter">88</span>
+                    </div>
+                    <p class="font-bold text-sm uppercase mt-4 text-green-700">&uarr; +4 from last week</p>
+                </div>
+
+                <!-- Pattern Alerts -->
+                <div class="stagger-text">
+                    <p class="font-mono text-[10px] uppercase tracking-widest opacity-50 mb-6">Flagged Patterns</p>
+                    <ul class="flex flex-col gap-6">
+                        <li class="flex items-start justify-between group cursor-pointer">
+                            <div>
+                                <span
+                                    class="block font-bold uppercase text-sm mb-1 group-hover:text-brand-accent transition-colors">Value
+                                    Drop</span>
+                                <span class="text-xs opacity-60">Flagged 3x this week</span>
+                            </div>
+                            <span class="bg-brand-ink text-brand-cream font-mono text-[10px] px-2 py-1">Review</span>
+                        </li>
+                        <li class="flex items-start justify-between group cursor-pointer">
+                            <div>
+                                <span
+                                    class="block font-bold uppercase text-sm mb-1 group-hover:text-brand-accent transition-colors">Rushed
+                                    Close</span>
+                                <span class="text-xs opacity-60">Flagged 1x this week</span>
+                            </div>
+                            <span class="border border-brand-ink/20 font-mono text-[10px] px-2 py-1">Review</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </aside>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

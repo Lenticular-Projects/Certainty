@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Certainty System | Prototype 02 - Color Blocks</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-sans/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-mono/style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Geist', 'sans-serif'],
+                        mono: ['Geist Mono', 'monospace'],
+                        editorial: ['"Playfair Display"', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            cream: '#FDFBF7',
+                            ink: '#0F0F0F',
+                            sage: '#A5BCA7', /* From the museum ref nav */
+                            terracotta: '#F07D5A', /* From the museum ref main */
+                            mustard: '#EAB308'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Geist', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            background-color: #0F0F0F;
+        }
+
+        /* Animation classes */
+        .fade-in-up {
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .delay-1 {
+            animation-delay: 0.1s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.3s;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex text-brand-ink">
+
+    <!-- Left Nav - Sage Green Color Block -->
+    <aside class="w-24 md:w-32 bg-brand-sage flex flex-col items-center py-8 z-10 shrink-0">
+        <div
+            class="h-12 w-12 rounded-full bg-brand-ink text-brand-cream flex items-center justify-center font-black mb-12 shadow-lg">
+            CS</div>
+
+        <nav class="flex flex-col gap-8 w-full">
+            <a href="#" class="flex flex-col items-center gap-1 group">
+                <svg class="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z">
+                    </path>
+                </svg>
+                <span class="text-[10px] font-bold uppercase tracking-widest border-b border-brand-ink">Dash</span>
+            </a>
+            <a href="#" class="flex flex-col items-center gap-1 opacity-60 hover:opacity-100 transition-opacity">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                    </path>
+                </svg>
+                <span class="text-[10px] font-bold uppercase tracking-widest">Hub</span>
+            </a>
+        </nav>
+
+        <div class="mt-auto">
+            <div
+                class="h-10 w-10 bg-brand-cream border-2 border-brand-ink flex items-center justify-center font-bold text-xs uppercase">
+                AJ</div>
+        </div>
+    </aside>
+
+    <!-- Middle Nav (Filters/Focus) - Ink Color Block -->
+    <div class="hidden lg:flex w-48 bg-brand-ink text-brand-cream flex-col pt-32 pb-8 px-6 z-0 shadow-2xl">
+        <h3 class="font-mono text-[10px] uppercase tracking-widest opacity-50 mb-6">Current Focus</h3>
+        <ul class="space-y-4 font-medium text-sm">
+            <li class="flex items-center gap-3">
+                <div class="w-3 h-3 rounded-full bg-brand-terracotta"></div>
+                <span>Signal Reading</span>
+            </li>
+            <li class="flex items-center gap-3 opacity-40 hover:opacity-100 cursor-pointer transition-opacity">
+                <div class="w-3 h-3 rounded-full border border-brand-cream"></div>
+                <span>Math Breakdown</span>
+            </li>
+            <li class="flex items-center gap-3 opacity-40 hover:opacity-100 cursor-pointer transition-opacity">
+                <div class="w-3 h-3 rounded-full border border-brand-cream"></div>
+                <span>Clear Next Steps</span>
+            </li>
+        </ul>
+
+        <div class="mt-auto">
+            <p class="font-mono text-[10px] uppercase tracking-widest opacity-50 mb-2">Level Progress</p>
+            <p class="text-xs uppercase font-bold mb-2">Lvl 4: Reframer</p>
+            <div class="w-full h-1 bg-white/20">
+                <div class="w-2/3 h-full bg-brand-cream"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content - Terracotta Color Block -->
+    <main class="flex-1 bg-brand-terracotta flex flex-col relative overflow-hidden">
+
+        <!-- Top Nav Strip -->
+        <header class="h-24 px-8 md:px-16 flex items-center justify-between">
+            <h2 class="font-mono text-xs uppercase tracking-widest font-bold">Performance Engine</h2>
+            <button
+                class="font-bold uppercase tracking-tight text-sm border-2 border-brand-ink px-4 py-2 hover:bg-brand-ink hover:text-brand-terracotta transition-colors">Upload
+                Call</button>
+        </header>
+
+        <div class="flex-1 flex flex-col md:flex-row px-8 md:px-16 pb-16 pt-8 gap-y-12">
+
+            <!-- Score & Closer's Edge -->
+            <div class="flex-1 pr-0 md:pr-12 flex flex-col justify-center">
+                <div class="fade-in-up">
+                    <p
+                        class="font-mono text-xs uppercase tracking-widest mb-4 opacity-80 decoration-brand-ink underline underline-offset-4">
+                        Your Edge</p>
+                    <h1 class="text-[5rem] md:text-[7rem] font-black uppercase tracking-tighter leading-[0.85] mb-8">
+                        Certainty<br>Score
+                    </h1>
+                </div>
+
+                <div
+                    class="fade-in-up delay-1 bg-brand-ink text-brand-cream p-8 md:p-10 shadow-xl relative -ml-4 md:-ml-8 mr-4 md:mr-0 z-10">
+                    <div class="absolute -top-3 -left-3 w-6 h-6 bg-brand-mustard rounded-full"></div>
+                    <p class="font-mono text-[10px] uppercase tracking-widest text-brand-mustard font-bold mb-4">The
+                        Closer's Edge</p>
+                    <h3 class="font-editorial italic text-2xl md:text-3xl leading-snug mb-4">
+                        "You consistently close high-margin deals. But you missed a <span
+                            class="bg-brand-mustard text-brand-ink px-1 font-sans font-bold not-italic">buying
+                            signal</span> at 14:02 today."
+                    </h3>
+                    <p class="text-sm opacity-80 max-w-md font-sans leading-relaxed">The prospect used the 'Scared
+                        Switcher' pattern. Acknowledge risk before introducing The Math Breakdown.</p>
+                </div>
+            </div>
+
+            <!-- The Massive Score Graphic -->
+            <div class="flex-1 flex flex-col justify-center relative">
+                <div class="fade-in-up delay-2 relative z-10">
+                    <div class="flex items-baseline justify-start md:justify-end">
+                        <span
+                            class="text-[12rem] xl:text-[20rem] font-black tracking-tighter leading-none select-none">88</span>
+                        <span class="text-2xl font-mono opacity-60 ml-2">/100</span>
+                    </div>
+                    <div class="flex justify-start md:justify-end mt-4">
+                        <div
+                            class="inline-flex items-center gap-2 border-2 border-brand-ink px-4 py-2 font-bold uppercase text-xs tracking-tight bg-brand-terracotta">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <line x1="7" y1="17" x2="17" y2="7"></line>
+                                <polyline points="7 7 17 7 17 17"></polyline>
+                            </svg>
+                            <span>Top 10% of Team</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Background watermark effect -->
+                <div class="absolute inset-0 flex items-center justify-end pointer-events-none opacity-10">
+                    <span class="text-[30rem] font-black leading-none blur-sm -mr-32">88</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Animated Marquee Footer Strip -->
+        <div
+            class="mt-auto h-12 bg-brand-mustard border-t-2 border-brand-ink flex items-center w-full marquee-container">
+            <div class="marquee-content font-mono text-xs uppercase tracking-widest font-bold flex gap-12">
+                <span><span class="text-brand-red">●</span> PATTERN ALERT: VALUE DROP FLAGGED 3X THIS WEEK</span>
+                <span>LEVEL UP IMMINENT: 210 XP TO GO</span>
+                <span>NEW COURSE ADDED: NAVIGATING THE SCARED SWITCHER</span>
+                <!-- Duplicated for infinite scroll -->
+                <span><span class="text-brand-red">●</span> PATTERN ALERT: VALUE DROP FLAGGED 3X THIS WEEK</span>
+                <span>LEVEL UP IMMINENT: 210 XP TO GO</span>
+                <span>NEW COURSE ADDED: NAVIGATING THE SCARED SWITCHER</span>
+            </div>
+        </div>
+    </main>
+
+</body>
+
+</html>

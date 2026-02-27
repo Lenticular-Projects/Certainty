@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Certainty System — Performance Dashboard</title>
+
+  <!-- Geist Sans (same CDN as Gemini used) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-sans/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-mono/style.css">
+
+  <!-- Playfair Display for editorial serif moments -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400;1,700&display=swap" rel="stylesheet">
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* Palette — warm paper, warm black, one yellow accent */
+      --ink:       #0E0B06;
+      --cream:     #FAF7F0;
+      --cream-2:   #EDE8DC;   /* score block bg — slightly toasted */
+      --cream-3:   #D8D0C0;   /* ring track, dotted leaders */
+      --sidebar:   #0E0B06;   /* sidebar is fully inverted */
+      --sf:        #EDE8DC;   /* sidebar foreground text */
+      --t2:        #78726A;
+      --t3:        #B0A898;
+      --t4:        #CAC2B6;
+      --hl:        #F0D254;   /* ONE accent — yellow, for text highlights only */
+      --sage:      #3D6B52;
+      --err:       #8A3030;
+      --rule:      1.5px solid #0E0B06;
+      --rule-lt:   1px solid rgba(14,11,6,0.08);
+    }
+
+    html, body {
+      background: #E4DDD0;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 28px;
+      font-family: 'Geist', system-ui, -apple-system, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ═══════════════════════════════════════
+       THE DASHBOARD — structural grid shell
+    ═══════════════════════════════════════ */
+    .dashboard {
+      width: 100%;
+      max-width: 1280px;
+      background: var(--cream);
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      grid-template-rows: auto;
+      border: var(--rule);
+      box-shadow: 0 24px 80px rgba(14,11,6,0.18);
+    }
+
+    /* ═══════════════════════════════════════
+       LEFT SIDEBAR — inverted, editorial nav
+    ═══════════════════════════════════════ */
+    .sidebar {
+      grid-row: 1 / -1;
+      background: var(--sidebar);
+      border-right: var(--rule);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sb-brand {
+      padding: 22px 20px 18px;
+      border-bottom: 1px solid rgba(237,232,220,0.10);
+    }
+
+    .sb-wordmark {
+      font-size: 19px;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: var(--sf);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .sb-tagline {
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: rgba(237,232,220,0.35);
+    }
+
+    .sb-nav {
+      flex: 1;
+      padding: 14px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .sn-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      color: rgba(237,232,220,0.40);
+      text-decoration: none;
+      cursor: pointer;
+      border-left: 2px solid transparent;
+      transition: all 0.14s;
+    }
+
+    .sn-item:hover {
+      color: rgba(237,232,220,0.80);
+      border-left-color: rgba(240,210,84,0.50);
+      padding-left: 24px;
+    }
+
+    .sn-item.on {
+      color: var(--sf);
+      background: rgba(237,232,220,0.05);
+      border-left: 2px solid var(--hl);
+    }
+
+    .sb-divider {
+      height: 1px;
+      background: rgba(237,232,220,0.08);
+      margin: 4px 20px;
+    }
+
+    .sb-foot {
+      padding: 14px 20px;
+      border-top: 1px solid rgba(237,232,220,0.10);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sb-av {
+      width: 30px; height: 30px;
+      border: 1px solid rgba(237,232,220,0.20);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 800;
+      color: var(--sf); letter-spacing: 0.04em;
+      flex-shrink: 0;
+    }
+
+    .sb-uname { font-size: 12px; font-weight: 600; color: var(--sf); }
+    .sb-ulv {
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px; letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(237,232,220,0.38);
+      margin-top: 1px;
+    }
+
+    /* ═══════════════════════════════════════
+       MAIN — flex column of rows
+    ═══════════════════════════════════════ */
+    .main { display: flex; flex-direction: column; }
+
+    /* ─── HEADER ROW ─── */
+    .header-row {
+      padding: 18px 28px 14px;
+      border-bottom: var(--rule);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .hdr-eyebrow {
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--t3); margin-bottom: 6px;
+    }
+
+    .hdr-title {
+      font-size: 34px; font-weight: 900;
+      letter-spacing: -0.04em; line-height: 0.95;
+      text-transform: uppercase; color: var(--ink);
+    }
+
+    .hdr-right { text-align: right; }
+
+    .hdr-date {
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px; font-weight: 600;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      color: var(--t3); margin-bottom: 8px;
+    }
+
+    /* The current focus chip — hl color, editorial */
+    .hdr-focus-chip {
+      display: inline-block;
+      background: var(--hl);
+      border: var(--rule);
+      padding: 4px 10px;
+      font-size: 10px; font-weight: 800;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    /* ─── HERO ROW ─── */
+    .hero-row {
+      display: grid;
+      grid-template-columns: 58% 42%;
+      border-bottom: var(--rule);
+      min-height: 300px;
+    }
+
+    /* Score block — toasted cream bg */
+    .score-block {
+      background: var(--cream-2);
+      border-right: var(--rule);
+      padding: 24px 28px 22px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle vignette in top-right to imply the ring glowing */
+    .score-block::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 240px; height: 240px;
+      background: radial-gradient(circle, rgba(14,11,6,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .sc-eye {
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--t3); margin-bottom: 14px;
+    }
+
+    /* The main score visual row */
+    .sc-main {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex: 1;
+      margin-bottom: 18px;
+    }
+
+    /* MASSIVE score number — Artworld scale */
+    .sc-num-col { flex-shrink: 0; }
+
+    .sc-giant {
+      font-size: clamp(80px, 10vw, 108px);
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      line-height: 0.88;
+      color: var(--ink);
+      display: block;
+    }
+
+    .sc-denom {
+      font-size: 13px; font-weight: 400;
+      color: var(--t3); margin-top: 5px;
+      display: block; letter-spacing: 0;
+    }
+
+    /* The ring — a standalone diagram sitting to the right of the number */
+    .sc-ring-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+
+    .ring-svg-wrap {
+      position: relative;
+      width: 90px; height: 90px;
+    }
+
+    .ring-svg-wrap svg { width: 90px; height: 90px; }
+
+    .ring-pct {
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px; font-weight: 600;
+      letter-spacing: 0.06em; color: var(--t3);
+      text-align: center;
+    }
+
+    /* Level identity col */
+    .sc-id-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .sc-level-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px; font-weight: 400;
+      font-style: italic;
+      letter-spacing: -0.01em;
+      color: var(--ink); line-height: 1;
+    }
+
+    .sc-level-num {
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--t3);
+    }
+
+    .sc-trend {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 12px; font-weight: 500; color: var(--sage);
+      margin-top: 2px;
+    }
+
+    .sc-trend svg { width: 12px; height: 12px; }
+
+    /* XP section */
+    .sc-xp {
+      border-top: var(--rule-lt);
+      padding-top: 12px;
+    }
+
+    .xp-hd {
+      display: flex; justify-content: space-between;
+      margin-bottom: 5px;
+    }
+
+    .xp-lbl {
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px; font-weight: 600;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      color: var(--t3);
+    }
+
+    .xp-val {
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px; font-weight: 700;
+      color: var(--t2);
+    }
+
+    .xp-track { height: 2px; background: var(--cream-3); }
+
+    .xp-fill {
+      height: 100%; width: 0;
+      background: var(--ink);
+      transition: width 1.5s cubic-bezier(0.34, 1.3, 0.64, 1);
+    }
+
+    .xp-next {
+      font-size: 10px; color: var(--t3); margin-top: 5px;
+    }
+
+    .xp-next b { color: var(--t2); font-weight: 600; }
+
+    .sc-last {
+      margin-top: 8px; padding-top: 8px;
+      border-top: var(--rule-lt);
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px; color: var(--t3);
+      display: flex; align-items: center; gap: 5px;
+    }
+
+    .sc-last-tag {
+      font-size: 8px; font-weight: 800;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      border: 1.5px solid; padding: 1px 5px;
+    }
+
+    .slt-e { border-color: var(--sage); color: var(--sage); }
+    .slt-m { border-color: var(--err); color: var(--err); }
+
+    /* Insight / AI block */
+    .insight-block {
+      display: flex; flex-direction: column;
+      background: var(--cream);
+      overflow: hidden;
+    }
+
+    .insight-body {
+      flex: 1; padding: 24px 26px 20px;
+    }
+
+    .ib-eye {
+      display: flex; align-items: center; gap: 7px;
+      margin-bottom: 16px;
+    }
+
+    .ib-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--err); flex-shrink: 0;
+    }
+
+    .ib-label {
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px; font-weight: 800;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--err);
+    }
+
+    /* THE KEY EDITORIAL MOVE: Playfair pull quote with yellow highlight */
+    .ib-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: 19px; font-weight: 400;
+      font-style: italic; line-height: 1.45;
+      color: var(--ink); margin-bottom: 14px;
+    }
+
+    /* Yellow text highlight — stolen from Gemini, but used with more precision */
+    mark {
+      background: var(--hl);
+      color: inherit;
+      padding: 0 3px;
+      border-radius: 2px;
+      font-style: normal;
+    }
+
+    .ib-body {
+      font-size: 12px; font-weight: 300;
+      color: var(--t2); line-height: 1.7;
+      margin-bottom: 18px;
+    }
+
+    .ib-action {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 10px; font-weight: 800;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--ink);
+      border-bottom: 1.5px solid var(--ink);
+      padding-bottom: 2px;
+      cursor: pointer; transition: all 0.13s;
+    }
+
+    .ib-action:hover { color: var(--err); border-color: var(--err); }
+    .ib-action svg { width: 11px; height: 11px; }
+
+    /* INVERTED alert bar — bottom of insight block */
+    .alert-bar {
+      background: var(--ink);
+      border-top: var(--rule);
+      padding: 13px 24px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .ab-l { display: flex; align-items: center; gap: 8px; }
+    .ab-l svg { width: 13px; height: 13px; color: var(--hl); flex-shrink: 0; }
+    .ab-text {
+      font-size: 10px; font-weight: 800;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--sf);
+    }
+
+    .ab-r {
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px; letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(237,232,220,0.40);
+    }
+
+    .ab-btns {
+      display: flex; gap: 10px; margin-top: 8px;
+    }
+
+    .ab-btn {
+      font-size: 9px; font-weight: 800;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--sf);
+      border-bottom: 1px solid rgba(237,232,220,0.30);
+      padding-bottom: 1px;
+      cursor: pointer; transition: border-color 0.12s;
+      background: none; border-top: none; border-left: none; border-right: none;
+    }
+    .ab-btn:hover { border-bottom-color: var(--hl); color: var(--hl); }
+
+    /* ─── CALLS ROW ─── */
+    .calls-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      border-bottom: var(--rule);
+    }
+
+    .call-cell {
+      padding: 18px 22px 16px;
+      border-right: var(--rule);
+      cursor: pointer;
+      transition: background 0.13s;
+    }
+
+    .call-cell:last-child { border-right: none; }
+    .call-cell:hover { background: var(--cream-2); }
+
+    .cc-top {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .cc-date {
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      color: var(--t3);
+    }
+
+    .cc-status {
+      font-size: 8px; font-weight: 800;
+      letter-spacing: 0.09em; text-transform: uppercase;
+      border: 1.5px solid; padding: 2px 6px;
+      transition: all 0.13s;
+    }
+
+    .cs-e { border-color: var(--ink); color: var(--ink); }
+    .cs-m { border-color: var(--err); color: var(--err); }
+    .call-cell:hover .cs-e { background: var(--ink); color: var(--sf); }
+
+    .cc-type {
+      font-size: 9px; font-weight: 800;
+      letter-spacing: 0.09em; text-transform: uppercase;
+      color: var(--t2); margin-bottom: 5px;
+    }
+
+    .cc-score-line {
+      display: flex; align-items: baseline; gap: 4px;
+    }
+
+    .cc-score {
+      font-size: 46px; font-weight: 900;
+      letter-spacing: -0.05em; line-height: 1;
+      color: var(--ink);
+    }
+
+    .cc-denom { font-size: 11px; color: var(--t3); font-weight: 400; }
+
+    /* ─── CATEGORIES + COACH ROW ─── */
+    .lower-row {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      border-bottom: var(--rule);
+    }
+
+    /* Categories */
+    .cats-col { border-right: var(--rule); }
+
+    .row-hd {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 22px;
+      border-bottom: var(--rule-lt);
+    }
+
+    .rh-num {
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.12em; color: var(--t4);
+    }
+
+    .rh-title {
+      font-size: 9px; font-weight: 800;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--t3);
+    }
+
+    .rh-rule { flex: 1; height: 1px; background: rgba(14,11,6,0.07); }
+
+    .cat-list { padding: 2px 22px 8px; }
+
+    .cat-row {
+      display: flex; align-items: baseline;
+      padding: 10px 0;
+      border-bottom: var(--rule-lt);
+      cursor: pointer;
+      transition: opacity 0.12s;
+    }
+
+    .cat-row:last-child { border-bottom: none; }
+    .cat-row:hover { opacity: 0.60; }
+
+    .cr-num {
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px; font-weight: 600;
+      color: var(--t4); width: 22px; flex-shrink: 0;
+    }
+
+    .cr-name {
+      font-size: 13px; font-weight: 500;
+      color: var(--ink); letter-spacing: -0.01em;
+      min-width: 155px;
+    }
+
+    .cr-focus {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--hl);
+      border: 1px solid var(--ink);
+      margin: 0 0 2px 5px;
+      flex-shrink: 0; align-self: center;
+    }
+
+    .cr-leader {
+      flex: 1; margin: 0 10px;
+      border-bottom: 1px dotted var(--cream-3);
+      margin-bottom: 3px;
+    }
+
+    .cr-tier {
+      font-size: 10px; font-weight: 800;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      width: 80px; text-align: right;
+    }
+
+    .t-sharp { color: var(--ink); }
+    .t-prof { color: var(--sage); }
+    .t-dev { color: var(--t3); }
+
+    .focus-strip {
+      display: flex; align-items: center; gap: 7px;
+      padding: 9px 22px;
+      border-top: var(--rule-lt);
+    }
+
+    .fs-lbl {
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      color: var(--t4);
+    }
+
+    .fs-chip {
+      font-size: 9px; font-weight: 800;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      background: var(--ink); color: var(--sf);
+      padding: 2px 7px;
+    }
+
+    .fs-edit { margin-left: auto; font-size: 10px; color: var(--t3); cursor: pointer; }
+    .fs-edit:hover { color: var(--t1); }
+
+    /* Coach col */
+    .coach-col {
+      padding: 22px 22px 18px;
+      display: flex; flex-direction: column;
+    }
+
+    .co-eye {
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--t3); margin-bottom: 12px;
+    }
+
+    .co-head {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px; font-weight: 400;
+      font-style: italic; line-height: 1.2;
+      color: var(--ink); margin-bottom: 10px;
+    }
+
+    .co-body {
+      font-size: 12px; font-weight: 300;
+      color: var(--t2); line-height: 1.65;
+      flex: 1; margin-bottom: 16px;
+    }
+
+    .co-body em { color: var(--ink); font-style: italic; }
+
+    .co-cta {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 10px; font-weight: 800;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--ink);
+      border-bottom: 1.5px solid var(--ink);
+      padding-bottom: 2px;
+      cursor: pointer; transition: all 0.13s;
+      background: none; border-top: none; border-left: none; border-right: none;
+    }
+
+    .co-cta:hover { color: var(--err); border-bottom-color: var(--err); }
+    .co-cta svg { width: 11px; height: 11px; }
+
+    .co-sec {
+      display: block; margin-top: 7px;
+      font-size: 10px; color: var(--t3); cursor: pointer;
+    }
+
+    .co-sec:hover { color: var(--t2); }
+
+    /* ─── FEED ROW ─── */
+    .feed-row { padding: 0; }
+
+    .feed-inner {
+      padding: 4px 22px 22px;
+    }
+
+    /* Timeline */
+    .tl { display: flex; gap: 0; }
+
+    .tl-spine {
+      width: 1px;
+      background: rgba(14,11,6,0.09);
+      margin: 10px 20px 0 4px;
+      flex-shrink: 0;
+    }
+
+    .tl-entries { flex: 1; display: flex; flex-direction: column; }
+
+    .tl-item {
+      display: flex; gap: 0;
+      padding-bottom: 16px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .tl-item:last-child { padding-bottom: 0; }
+
+    .tl-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      border: 1.5px solid var(--ink);
+      background: var(--cream);
+      flex-shrink: 0;
+      margin-top: 3px;
+      margin-left: -24px;
+      margin-right: 14px;
+    }
+
+    .tl-dot.new   { background: var(--err); border-color: var(--err); }
+    .tl-dot.badge { background: var(--sage); border-color: var(--sage); }
+    .tl-dot.best  { background: var(--hl); border-color: var(--ink); }
+    .tl-dot.level { background: var(--ink); }
+
+    .tl-b { flex: 1; }
+
+    .tl-t {
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      color: var(--t3); margin-bottom: 2px;
+    }
+
+    .tl-x { font-size: 12px; font-weight: 400; color: var(--t2); line-height: 1.5; }
+    .tl-x strong { color: var(--ink); font-weight: 700; }
+
+    .tl-lnk {
+      font-size: 10px; font-weight: 800;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      color: var(--err); margin-top: 3px; display: block;
+    }
+
+    /* ═══════════════════════════════════════
+       ANIMATIONS
+    ═══════════════════════════════════════ */
+    .in { opacity: 0; transform: translateY(8px); }
+    @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* Score number gets a bold entrance */
+    #scoreGiantNum {
+      display: block;
+      opacity: 0;
+      transform: scale(0.94) translateY(6px);
+      animation: scoreIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.25s forwards;
+    }
+
+    @keyframes scoreIn {
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="dashboard">
+
+  <!-- ════════════════════════
+       LEFT SIDEBAR
+  ════════════════════════ -->
+  <aside class="sidebar">
+    <div class="sb-brand">
+      <div class="sb-wordmark">Certainty<br>System</div>
+      <div class="sb-tagline">Performance Engine v4</div>
+    </div>
+
+    <nav class="sb-nav">
+      <a class="sn-item on" href="#">Dashboard</a>
+      <a class="sn-item" href="#">Knowledge Hub</a>
+      <a class="sn-item" href="#">My Calls</a>
+      <a class="sn-item" href="#">AI Coach</a>
+    </nav>
+
+    <div class="sb-foot">
+      <div class="sb-av">MR</div>
+      <div>
+        <div class="sb-uname">Marcus Rivera</div>
+        <div class="sb-ulv">Level 3 · The Reader</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ════════════════════════
+       MAIN
+  ════════════════════════ -->
+  <main class="main">
+
+    <!-- ── HEADER ── -->
+    <div class="header-row in" style="animation: slideUp 0.45s ease 0.05s forwards;">
+      <div>
+        <div class="hdr-eyebrow">Currently Viewing</div>
+        <div class="hdr-title">Performance<br>Dashboard</div>
+      </div>
+      <div class="hdr-right">
+        <div class="hdr-date">Feb 26 · 2026 · Q1</div>
+        <div class="hdr-focus-chip">Focus: Objection Handling</div>
+      </div>
+    </div>
+
+    <!-- ── HERO ROW ── -->
+    <div class="hero-row in" style="animation: slideUp 0.45s ease 0.13s forwards;">
+
+      <!-- Score block -->
+      <div class="score-block">
+        <div class="sc-eye">Overall Score · Avg of Last 5 Calls</div>
+
+        <div class="sc-main">
+          <!-- The number — biggest thing on screen -->
+          <div class="sc-num-col">
+            <span class="sc-giant" id="scoreGiantNum">
+              <span id="scoreNum">0</span>
+            </span>
+            <span class="sc-denom">/100</span>
+          </div>
+
+          <!-- Ring diagram — separate from the number -->
+          <div class="sc-ring-col">
+            <div class="ring-svg-wrap">
+              <svg viewBox="0 0 90 90">
+                <circle cx="45" cy="45" r="36"
+                  fill="none" stroke="#D8D0C0"
+                  stroke-width="6" stroke-linecap="round"/>
+                <circle id="mainRing" cx="45" cy="45" r="36"
+                  fill="none" stroke="#0E0B06"
+                  stroke-width="6" stroke-linecap="round"
+                  stroke-dasharray="226.2"
+                  stroke-dashoffset="226.2"
+                  transform="rotate(-90 45 45)"/>
+              </svg>
+            </div>
+            <div class="ring-pct">74%</div>
+          </div>
+
+          <!-- Level identity -->
+          <div class="sc-id-col">
+            <div class="sc-level-name">The Reader</div>
+            <div class="sc-level-num">Level 3 of 8</div>
+            <div class="sc-trend">
+              <i data-lucide="trending-up"></i>
+              +6 pts vs. last 5 calls
+            </div>
+          </div>
+        </div>
+
+        <!-- XP -->
+        <div class="sc-xp">
+          <div class="xp-hd">
+            <span class="xp-lbl">Level Progress</span>
+            <span class="xp-val">2,840 / 4,000 XP</span>
+          </div>
+          <div class="xp-track">
+            <div class="xp-fill" id="xpFill"></div>
+          </div>
+          <div class="xp-next"><b>1,160 XP</b> to The Builder</div>
+        </div>
+
+        <div class="sc-last">
+          <span>Last call:</span>
+          <b style="color:var(--t2)">Feb 24 · Scared Switcher · 71</b>
+          <span class="sc-last-tag slt-e">Enrolled</span>
+        </div>
+      </div>
+
+      <!-- AI Insight block -->
+      <div class="insight-block">
+        <div class="insight-body">
+          <div class="ib-eye">
+            <div class="ib-dot"></div>
+            <div class="ib-label">The Closer's Edge</div>
+          </div>
+
+          <!-- Playfair pull quote with yellow highlight — the key editorial move -->
+          <div class="ib-quote">
+            "You're moving past objections before they're <mark>fully resolved</mark>.
+            The prospect still carries the concern when you proceed."
+          </div>
+
+          <div class="ib-body">
+            In 4 of your last 5 calls, you identified the objection correctly but
+            advanced too quickly. Acknowledge the risk explicitly before introducing
+            The Math Breakdown — the prospect needs to feel heard first.
+          </div>
+
+          <button class="ib-action">
+            Review call analysis
+            <i data-lucide="arrow-right"></i>
+          </button>
+        </div>
+
+        <!-- INVERTED alert strip — Pattern alert -->
+        <div class="alert-bar">
+          <div>
+            <div class="ab-l">
+              <i data-lucide="alert-triangle"></i>
+              <span class="ab-text">Pattern 7 · Objection Misread</span>
+            </div>
+            <div class="ab-btns">
+              <button class="ab-btn">Study this pattern</button>
+              <button class="ab-btn">See the calls</button>
+            </div>
+          </div>
+          <div class="ab-r">Flagged 4×</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── CALLS ROW ── -->
+    <div class="calls-row in" style="animation: slideUp 0.45s ease 0.22s forwards;">
+
+      <a class="call-cell" href="#">
+        <div class="cc-top">
+          <span class="cc-date">Feb 24</span>
+          <span class="cc-status cs-e">Enrolled</span>
+        </div>
+        <div class="cc-type">Scared Switcher</div>
+        <div class="cc-score-line">
+          <span class="cc-score">71</span>
+          <span class="cc-denom">/100</span>
+        </div>
+      </a>
+
+      <a class="call-cell" href="#">
+        <div class="cc-top">
+          <span class="cc-date">Feb 21</span>
+          <span class="cc-status cs-m">Missed Opp.</span>
+        </div>
+        <div class="cc-type">Money Caller</div>
+        <div class="cc-score-line">
+          <span class="cc-score">58</span>
+          <span class="cc-denom">/100</span>
+        </div>
+      </a>
+
+      <a class="call-cell" href="#">
+        <div class="cc-top">
+          <span class="cc-date">Feb 19</span>
+          <span class="cc-status cs-e">Enrolled</span>
+        </div>
+        <div class="cc-type">Comparison Shopper</div>
+        <div class="cc-score-line">
+          <span class="cc-score">82</span>
+          <span class="cc-denom">/100</span>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- ── CATEGORIES + COACH ── -->
+    <div class="lower-row in" style="animation: slideUp 0.45s ease 0.30s forwards;">
+
+      <div class="cats-col">
+        <div class="row-hd">
+          <span class="rh-num">01</span>
+          <span class="rh-title">Categories</span>
+          <span class="rh-rule"></span>
+        </div>
+
+        <div class="cat-list">
+          <div class="cat-row">
+            <span class="cr-num">01</span>
+            <span class="cr-name">Lead</span>
+            <span class="cr-leader"></span>
+            <span class="cr-tier t-prof">Proficient</span>
+          </div>
+          <div class="cat-row">
+            <span class="cr-num">02</span>
+            <span class="cr-name">Signal Reading</span>
+            <div class="cr-focus"></div>
+            <span class="cr-leader"></span>
+            <span class="cr-tier t-dev">Developing</span>
+          </div>
+          <div class="cat-row">
+            <span class="cr-num">03</span>
+            <span class="cr-name">Math Breakdown</span>
+            <span class="cr-leader"></span>
+            <span class="cr-tier t-sharp">Sharp</span>
+          </div>
+          <div class="cat-row">
+            <span class="cr-num">04</span>
+            <span class="cr-name">Objection Handling</span>
+            <div class="cr-focus"></div>
+            <span class="cr-leader"></span>
+            <span class="cr-tier t-dev">Developing</span>
+          </div>
+          <div class="cat-row">
+            <span class="cr-num">05</span>
+            <span class="cr-name">Call Outcome Quality</span>
+            <span class="cr-leader"></span>
+            <span class="cr-tier t-prof">Proficient</span>
+          </div>
+          <div class="cat-row">
+            <span class="cr-num">06</span>
+            <span class="cr-name">Compliance</span>
+            <span class="cr-leader"></span>
+            <span class="cr-tier t-prof">Proficient</span>
+          </div>
+        </div>
+
+        <div class="focus-strip">
+          <span class="fs-lbl">Focus</span>
+          <span class="fs-chip">Objection Handling</span>
+          <span class="fs-chip">Signal Reading</span>
+          <span class="fs-edit">Change</span>
+        </div>
+      </div>
+
+      <div class="coach-col">
+        <div class="co-eye">Your Coach</div>
+        <div class="co-head">Ask me anything.</div>
+        <div class="co-body">
+          I know your numbers. Ask me about <em>Pattern 7 — Objection Misread</em>.
+          I can show you exactly what to say when a prospect goes quiet after pushback.
+        </div>
+        <button class="co-cta">
+          Start a session
+          <i data-lucide="arrow-right"></i>
+        </button>
+        <span class="co-sec">Continue last conversation</span>
+      </div>
+
+    </div>
+
+    <!-- ── FEED ── -->
+    <div class="feed-row in" style="animation: slideUp 0.45s ease 0.38s forwards;">
+      <div class="row-hd">
+        <span class="rh-num">02</span>
+        <span class="rh-title">Coaching Record</span>
+        <span class="rh-rule"></span>
+      </div>
+
+      <div class="feed-inner">
+        <div class="tl">
+          <div class="tl-spine"></div>
+          <div class="tl-entries">
+
+            <div class="tl-item">
+              <div class="tl-dot new"></div>
+              <div class="tl-b">
+                <div class="tl-t">2 days ago</div>
+                <div class="tl-x">
+                  <strong>Pattern 7 (Objection Misread)</strong> flagged — appeared in 4 of your last 5 calls.
+                </div>
+                <span class="tl-lnk">Study it →</span>
+              </div>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-dot badge"></div>
+              <div class="tl-b">
+                <div class="tl-t">4 days ago</div>
+                <div class="tl-x">
+                  <strong>Math Breakdown</strong> badge upgraded to Sharp.
+                </div>
+              </div>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-dot best"></div>
+              <div class="tl-b">
+                <div class="tl-t">1 week ago</div>
+                <div class="tl-x">
+                  New personal best — <strong>Math Breakdown: 19/20</strong> on your last call.
+                </div>
+              </div>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-dot level"></div>
+              <div class="tl-b">
+                <div class="tl-t">2 weeks ago</div>
+                <div class="tl-x">
+                  You reached <strong>Level 3: The Reader</strong>.
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  lucide.createIcons();
+
+  const SCORE = 74;
+  const CIRC  = 2 * Math.PI * 36; // r=36 → 226.2
+  const ring  = document.getElementById('mainRing');
+  const numEl = document.getElementById('scoreNum');
+  const xp    = document.getElementById('xpFill');
+
+  // Spring-ish easing — easeOutBack overshoots and settles
+  function easeOutBack(x) {
+    const c1 = 1.70158, c3 = c1 + 1;
+    return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
+  }
+
+  function easeOutCubic(x) { return 1 - Math.pow(1 - x, 3); }
+
+  const DUR = 1500;
+  let t0 = null;
+
+  function animate(ts) {
+    if (!t0) t0 = ts;
+    const p  = Math.min((ts - t0) / DUR, 1);
+    const eb = Math.max(0, Math.min(easeOutBack(p), 1));
+    ring.style.strokeDashoffset = CIRC * (1 - (SCORE / 100) * eb);
+    numEl.textContent = Math.round(SCORE * easeOutCubic(p));
+    if (p < 1) requestAnimationFrame(animate);
+    else numEl.textContent = SCORE;
+  }
+
+  // Delay slightly so the entrance animation plays first
+  setTimeout(() => {
+    requestAnimationFrame(animate);
+    xp.style.width = '71%';
+  }, 450);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Certainty — Morning Brief</title>
+  <!--
+    Geist Sans via FontSource CDN.
+    In production (Next.js), replace with: import { GeistSans } from 'geist/font/sans'
+  -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/geist-sans@5.1.1/index.min.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:           #F4F0E8;
+      --bg-nav:       #EDE8DE;
+      --surface:      #FDFCFA;
+      --rule:         rgba(25, 22, 15, 0.10);
+      --rule-lt:      rgba(25, 22, 15, 0.06);
+      --text-1:       #19160F;
+      --text-2:       #706B62;
+      --text-3:       #ADA69C;
+      --text-4:       #CDC6BB;
+      --accent:       #BE3B22;    /* one color, used max 3 times */
+      --accent-08:    rgba(190, 59, 34, 0.08);
+      --sage:         #4A7A4A;
+      --sage-08:      rgba(74, 122, 74, 0.08);
+      --error:        #A03333;
+      --error-08:     rgba(160, 51, 51, 0.08);
+      --ring-track:   #D8D2C4;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text-1);
+      font-family: 'Geist Sans Variable', 'Geist', system-ui, -apple-system, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* ─── Top Nav ─── */
+    .topnav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 44px;
+      background: var(--bg-nav);
+      border-bottom: 1px solid var(--rule);
+      display: flex;
+      align-items: center;
+      padding: 0 36px;
+      z-index: 100;
+      gap: 0;
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 8px;
+      margin-right: 36px;
+    }
+
+    .nav-mark {
+      width: 22px; height: 22px;
+      border-radius: 4px;
+      background: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700; color: white;
+      letter-spacing: -0.02em; flex-shrink: 0;
+    }
+
+    .nav-brand {
+      font-size: 13px; font-weight: 600;
+      color: var(--text-1); letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 2px;
+      flex: 1;
+    }
+
+    .nav-link {
+      font-size: 12px; font-weight: 500;
+      color: var(--text-3); padding: 4px 12px;
+      border-radius: 4px; cursor: pointer;
+      text-decoration: none; letter-spacing: 0.01em;
+      transition: color 0.12s;
+    }
+
+    .nav-link:hover { color: var(--text-1); }
+    .nav-link.on { color: var(--text-1); font-weight: 600; }
+
+    .nav-user {
+      width: 26px; height: 26px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent) 0%, #E06040 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 700; color: white;
+    }
+
+    /* ─── Page ─── */
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 88px 52px 80px;
+    }
+
+    /* ─── Masthead ─── */
+    .masthead {
+      margin-bottom: 0;
+    }
+
+    .masthead-eyebrow {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+    }
+
+    .eyebrow-left {
+      font-size: 10px; font-weight: 500;
+      letter-spacing: 0.13em; text-transform: uppercase;
+      color: var(--text-3);
+    }
+
+    .eyebrow-right {
+      font-size: 10px; font-weight: 500;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      color: var(--text-3);
+    }
+
+    /* Thick rule under eyebrow */
+    .rule-thick {
+      height: 1px; background: var(--text-1);
+      margin-bottom: 12px;
+    }
+
+    .masthead-title {
+      font-size: 52px; font-weight: 800;
+      letter-spacing: -0.04em; line-height: 1;
+      color: var(--text-1);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    .rule-thin {
+      height: 1px; background: var(--rule);
+      margin-bottom: 12px;
+    }
+
+    .masthead-byline {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0;
+    }
+
+    .byline-name {
+      font-size: 13px; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text-1);
+    }
+
+    .byline-level {
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--text-2);
+    }
+
+    /* ─── Score Spread ─── */
+    .score-spread {
+      border-top: 1px solid var(--text-1);
+      border-bottom: 1px solid var(--rule);
+      padding: 44px 0 40px;
+      display: grid;
+      grid-template-columns: auto 1px 1fr;
+      gap: 0 48px;
+      align-items: center;
+    }
+
+    /* Left: the giant number */
+    .score-numeral-block { }
+
+    .score-giant {
+      font-size: 128px;
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      line-height: 0.88;
+      color: var(--text-1);
+    }
+
+    .score-under {
+      display: flex; align-items: center; gap: 16px;
+      margin-top: 10px;
+    }
+
+    .score-denom {
+      font-size: 14px; font-weight: 400;
+      color: var(--text-3);
+      letter-spacing: -0.01em;
+    }
+
+    .score-caption {
+      font-size: 11px; font-weight: 400;
+      color: var(--text-3); letter-spacing: 0.02em;
+    }
+
+    /* Vertical divider */
+    .score-vr {
+      width: 1px;
+      height: 100px;
+      background: var(--rule);
+      align-self: center;
+    }
+
+    /* Right: ring + identity */
+    .score-identity {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+
+    /* The ring — a standalone diagram, not a widget */
+    .ring-diagram {
+      position: relative;
+      width: 180px; height: 180px;
+      flex-shrink: 0;
+    }
+
+    .ring-diagram svg {
+      width: 180px; height: 180px;
+    }
+
+    /* NO number inside the ring. The ring is pure diagram. */
+    .ring-label {
+      position: absolute;
+      bottom: -22px;
+      left: 50%; transform: translateX(-50%);
+      font-size: 9px; font-weight: 600;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      color: var(--text-3); white-space: nowrap;
+    }
+
+    .score-id-text { }
+
+    .id-level-name {
+      font-size: 28px; font-weight: 300;
+      letter-spacing: -0.02em;
+      color: var(--text-1); line-height: 1;
+      margin-bottom: 8px;
+      font-style: italic;
+    }
+
+    .id-level-num {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--text-3); margin-bottom: 16px;
+    }
+
+    .id-trend {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 13px; font-weight: 500;
+      color: var(--sage);
+      margin-bottom: 6px;
+    }
+
+    .id-trend svg { width: 13px; height: 13px; }
+
+    .id-xp {
+      font-size: 11px; color: var(--text-3);
+      margin-bottom: 2px;
+    }
+
+    /* XP bar inline with identity */
+    .xp-line-wrap {
+      display: flex; align-items: center; gap: 10px;
+      margin-top: 8px;
+    }
+
+    .xp-bar-bg {
+      width: 120px; height: 2px;
+      background: var(--ring-track); border-radius: 1px; overflow: hidden;
+    }
+
+    .xp-bar-fg {
+      height: 100%; width: 0; background: var(--text-2);
+      border-radius: 1px;
+      transition: width 1.5s cubic-bezier(0.34, 1.3, 0.64, 1);
+    }
+
+    .xp-text {
+      font-size: 11px; color: var(--text-3);
+    }
+
+    /* ─── Two-column editorial grid ─── */
+    .editorial-grid {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 0 52px;
+      padding-top: 0;
+    }
+
+    .col-main { border-right: 1px solid var(--rule); padding-right: 52px; }
+    .col-side { padding-top: 36px; }
+
+    /* ─── Section Labels ─── */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 32px 0 20px;
+    }
+
+    .sl-num {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-4);
+    }
+
+    .sl-title {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-3);
+    }
+
+    .sl-rule {
+      flex: 1; height: 1px; background: var(--rule-lt);
+    }
+
+    .sl-link {
+      font-size: 11px; font-weight: 500;
+      color: var(--text-3); cursor: pointer;
+      text-decoration: none;
+    }
+    .sl-link:hover { color: var(--text-1); }
+
+    /* ─── Calls — three columns, no cards ─── */
+    .calls-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .call-col {
+      padding: 0 20px 28px 0;
+      border-right: 1px solid var(--rule-lt);
+      cursor: pointer;
+    }
+
+    .call-col:first-child { padding-left: 0; }
+    .call-col:last-child { border-right: none; padding-right: 0; }
+    .call-col:not(:first-child) { padding-left: 20px; }
+
+    .cc-score {
+      font-size: 56px; font-weight: 800;
+      letter-spacing: -0.04em; line-height: 1;
+      color: var(--text-1); margin-bottom: 6px;
+    }
+
+    .cc-score-rule {
+      height: 1px; background: var(--rule);
+      margin-bottom: 10px; width: 100%;
+    }
+
+    .cc-date {
+      font-size: 10px; font-weight: 500;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      color: var(--text-3); margin-bottom: 2px;
+    }
+
+    .cc-type {
+      font-size: 13px; font-weight: 600;
+      color: var(--text-1); letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+
+    .cc-row {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .cc-tag {
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.07em; text-transform: uppercase;
+    }
+
+    .ct-e { color: var(--sage); }
+    .ct-m { color: var(--error); }
+
+    .cc-ring { width: 32px; height: 32px; }
+
+    /* ─── Categories — editorial directory ─── */
+    .cat-dir { }
+
+    .cat-row {
+      display: flex; align-items: baseline;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--rule-lt);
+      cursor: pointer;
+      transition: opacity 0.12s;
+    }
+    .cat-row:hover { opacity: 0.7; }
+    .cat-row:first-child { border-top: 1px solid var(--rule-lt); }
+
+    .cat-num {
+      font-size: 10px; font-weight: 500;
+      color: var(--text-4); width: 24px; flex-shrink: 0;
+      letter-spacing: 0.04em;
+    }
+
+    .cat-name {
+      font-size: 13px; font-weight: 500;
+      color: var(--text-1); letter-spacing: -0.01em;
+      min-width: 160px;
+    }
+
+    .cat-focus-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--accent); margin-left: 6px;
+      flex-shrink: 0; align-self: center;
+    }
+
+    .cat-leader {
+      flex: 1; margin: 0 12px;
+      border-bottom: 1px dotted var(--rule);
+      margin-bottom: 3px;
+    }
+
+    .cat-tier {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      width: 90px; text-align: right;
+    }
+
+    .t-sharp { color: var(--accent); }
+    .t-prof { color: var(--sage); }
+    .t-dev { color: var(--text-3); }
+
+    /* Focus mode line */
+    .focus-line {
+      display: flex; align-items: center; gap: 8px;
+      padding-top: 14px;
+    }
+
+    .fl-lbl {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      color: var(--text-4); margin-right: 4px;
+    }
+
+    .fl-chip {
+      font-size: 11px; font-weight: 500;
+      color: var(--text-2); background: rgba(25,22,15,0.06);
+      padding: 2px 8px; border-radius: 3px;
+    }
+
+    .fl-edit {
+      margin-left: auto; font-size: 11px;
+      color: var(--text-3); cursor: pointer;
+    }
+    .fl-edit:hover { color: var(--text-2); }
+
+    /* ─── Right Column ─── */
+
+    /* Pattern Alert as Pull Quote */
+    .pull-quote {
+      display: flex; gap: 0;
+      margin-bottom: 36px;
+      padding-bottom: 36px;
+      border-bottom: 1px solid var(--rule-lt);
+    }
+
+    .pq-bar {
+      width: 2px; flex-shrink: 0;
+      background: var(--accent);
+      border-radius: 1px;
+      margin-right: 16px;
+    }
+
+    .pq-body { flex: 1; }
+
+    .pq-eyebrow {
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 10px;
+    }
+
+    .pq-name {
+      font-size: 20px; font-weight: 700;
+      letter-spacing: -0.03em; line-height: 1.15;
+      color: var(--text-1); margin-bottom: 6px;
+    }
+
+    .pq-freq {
+      font-size: 11px; font-weight: 600;
+      color: var(--accent); margin-bottom: 12px;
+    }
+
+    .pq-text {
+      font-size: 13px; color: var(--text-2);
+      line-height: 1.65; margin-bottom: 16px;
+      font-weight: 300;
+    }
+
+    .pq-actions { display: flex; flex-direction: column; gap: 6px; }
+
+    .pq-link-primary {
+      font-size: 12px; font-weight: 600;
+      color: var(--text-1); cursor: pointer;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .pq-link-primary:hover { color: var(--accent); }
+    .pq-link-primary svg { width: 12px; height: 12px; }
+
+    .pq-link-secondary {
+      font-size: 11px; font-weight: 400;
+      color: var(--text-3); cursor: pointer;
+    }
+    .pq-link-secondary:hover { color: var(--text-2); }
+
+    /* Coach — text only, no container */
+    .coach-block {
+      margin-bottom: 36px;
+      padding-bottom: 36px;
+      border-bottom: 1px solid var(--rule-lt);
+    }
+
+    .cb-eyebrow {
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-3); margin-bottom: 10px;
+    }
+
+    .cb-head {
+      font-size: 17px; font-weight: 700;
+      letter-spacing: -0.02em; color: var(--text-1);
+      margin-bottom: 8px;
+    }
+
+    .cb-sub {
+      font-size: 13px; font-weight: 300;
+      color: var(--text-2); line-height: 1.6;
+      margin-bottom: 14px;
+    }
+
+    .cb-sub em { color: var(--text-1); font-style: italic; font-weight: 400; }
+
+    .cb-link {
+      font-size: 12px; font-weight: 600;
+      color: var(--text-1); cursor: pointer;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .cb-link:hover { color: var(--accent); }
+    .cb-link svg { width: 12px; height: 12px; }
+
+    .cb-link-2 {
+      display: block; margin-top: 6px;
+      font-size: 11px; color: var(--text-3); cursor: pointer;
+    }
+    .cb-link-2:hover { color: var(--text-2); }
+
+    /* Last call in sidebar */
+    .sidebar-last-call {
+      font-size: 11px; color: var(--text-3);
+    }
+
+    /* ─── Feed — newspaper timeline ─── */
+    .feed-section {
+      border-top: 1px solid var(--rule);
+      padding-top: 32px;
+      margin-top: 0;
+    }
+
+    .feed-header {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .feed-title {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-3);
+    }
+
+    .feed-rule { flex: 1; height: 1px; background: var(--rule-lt); }
+
+    /* Timeline */
+    .timeline {
+      display: flex; gap: 0;
+      position: relative;
+    }
+
+    .timeline-spine {
+      width: 1px; background: var(--rule);
+      margin: 0 20px 0 0;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .timeline-items {
+      flex: 1; display: flex; flex-direction: column;
+    }
+
+    .tl-item {
+      display: flex; gap: 0;
+      padding-bottom: 24px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .tl-item:last-child { padding-bottom: 0; }
+
+    /* Dot on the spine */
+    .tl-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      flex-shrink: 0;
+      margin-right: 16px;
+      margin-top: 4px;
+      position: relative;
+      left: -23px;
+      background: var(--ring-track);
+      border: 1px solid var(--bg);
+      box-sizing: border-box;
+    }
+
+    .tl-dot.new { background: var(--accent); }
+    .tl-dot.badge { background: var(--sage); }
+    .tl-dot.best { background: var(--text-2); }
+    .tl-dot.level { background: var(--text-1); }
+
+    .tl-body { flex: 1; margin-left: -7px; }
+
+    .tl-time {
+      font-size: 10px; font-weight: 500;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      color: var(--text-3); margin-bottom: 3px;
+    }
+
+    .tl-text {
+      font-size: 13px; color: var(--text-2);
+      line-height: 1.5; font-weight: 300;
+    }
+
+    .tl-text strong { color: var(--text-1); font-weight: 600; }
+
+    .tl-link {
+      font-size: 11px; font-weight: 600;
+      color: var(--accent); margin-top: 4px; display: block;
+    }
+
+    /* ─── Animations ─── */
+    .reveal { opacity: 0; transform: translateY(6px); }
+    @keyframes reveal { to { opacity: 1; transform: translateY(0); } }
+
+    /* Score number special animation — fade in from slightly larger */
+    #scoreGiant {
+      opacity: 0;
+      transform: scale(0.96);
+      animation: scoreReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+    }
+
+    @keyframes scoreReveal {
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Version badge */
+    .vtag {
+      position: fixed; bottom: 16px; right: 16px;
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--text-3); background: var(--surface);
+      padding: 4px 10px; border-radius: 3px;
+      border: 1px solid var(--rule);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Top Nav ── -->
+  <nav class="topnav">
+    <div class="nav-logo">
+      <div class="nav-mark">CS</div>
+      <span class="nav-brand">Certainty</span>
+    </div>
+    <div class="nav-links">
+      <a class="nav-link on" href="#">Dashboard</a>
+      <a class="nav-link" href="#">My Calls</a>
+      <a class="nav-link" href="#">Knowledge Hub</a>
+      <a class="nav-link" href="#">AI Coach</a>
+    </div>
+    <div class="nav-user">MR</div>
+  </nav>
+
+  <!-- ── Page ── -->
+  <div class="page">
+
+    <!-- ── Masthead ── -->
+    <div class="masthead reveal" style="animation: reveal 0.5s ease 0.05s forwards;">
+      <div class="masthead-eyebrow">
+        <span class="eyebrow-left">Certainty System · Performance Brief</span>
+        <span class="eyebrow-right">Thursday · 26 Feb 2026</span>
+      </div>
+      <div class="rule-thick"></div>
+      <div class="masthead-title">Morning Brief</div>
+      <div class="rule-thin"></div>
+      <div class="masthead-byline">
+        <span class="byline-name">Marcus Rivera</span>
+        <span class="byline-level">Level 3 · The Reader · 2,840 XP</span>
+      </div>
+    </div>
+
+    <!-- ── Score Spread ── -->
+    <div class="score-spread reveal" style="animation: reveal 0.5s ease 0.15s forwards;">
+
+      <!-- Giant number -->
+      <div class="score-numeral-block">
+        <div class="score-giant" id="scoreGiant">
+          <span id="scoreNum">0</span>
+        </div>
+        <div class="score-under">
+          <span class="score-denom">/100</span>
+          <span class="score-caption">avg of last 5 calls</span>
+        </div>
+      </div>
+
+      <!-- Vertical rule -->
+      <div class="score-vr"></div>
+
+      <!-- Ring + identity -->
+      <div class="score-identity">
+
+        <!-- The ring: a diagram, not a widget -->
+        <div class="ring-diagram">
+          <svg viewBox="0 0 180 180">
+            <!-- Track -->
+            <circle cx="90" cy="90" r="74"
+              fill="none" stroke="#D8D2C4"
+              stroke-width="8" stroke-linecap="round"/>
+            <!-- Fill — the ONE use of accent color #1 -->
+            <circle id="mainRing" cx="90" cy="90" r="74"
+              fill="none" stroke="#BE3B22"
+              stroke-width="8" stroke-linecap="round"
+              stroke-dasharray="464.9"
+              stroke-dashoffset="464.9"
+              transform="rotate(-90 90 90)"/>
+          </svg>
+          <div class="ring-label">Certainty Score</div>
+        </div>
+
+        <div class="score-id-text">
+          <div class="id-level-name">The Reader</div>
+          <div class="id-level-num">Level 3 of 8</div>
+          <div class="id-trend">
+            <i data-lucide="trending-up"></i>
+            +6 pts vs. your last 5 calls
+          </div>
+          <div class="xp-line-wrap">
+            <div class="xp-bar-bg">
+              <div class="xp-bar-fg" id="xpBar"></div>
+            </div>
+            <span class="xp-text">1,160 XP to The Builder</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── Two-column editorial grid ── -->
+    <div class="editorial-grid">
+
+      <!-- Main column -->
+      <div class="col-main">
+
+        <!-- 01 — Recent Calls -->
+        <div class="section-label reveal" style="animation: reveal 0.5s ease 0.25s forwards;">
+          <span class="sl-num">01</span>
+          <span class="sl-title">Recent Calls</span>
+          <span class="sl-rule"></span>
+          <a class="sl-link" href="#">View all →</a>
+        </div>
+
+        <div class="calls-cols reveal" style="animation: reveal 0.5s ease 0.28s forwards;">
+
+          <!-- Call 1 -->
+          <div class="call-col">
+            <div class="cc-score">71</div>
+            <div class="cc-score-rule"></div>
+            <div class="cc-date">Feb 24, 2026</div>
+            <div class="cc-type">Scared Switcher</div>
+            <div class="cc-row">
+              <span class="cc-tag ct-e">Enrolled</span>
+              <svg class="cc-ring" viewBox="0 0 32 32">
+                <circle cx="16" cy="16" r="12" fill="none" stroke="#D8D2C4" stroke-width="3" stroke-linecap="round"/>
+                <circle cx="16" cy="16" r="12" fill="none" stroke="#BE3B22" stroke-width="3"
+                  stroke-linecap="round" stroke-dasharray="75.4" stroke-dashoffset="21.9"
+                  transform="rotate(-90 16 16)"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Call 2 -->
+          <div class="call-col">
+            <div class="cc-score">58</div>
+            <div class="cc-score-rule"></div>
+            <div class="cc-date">Feb 21, 2026</div>
+            <div class="cc-type">Money Caller</div>
+            <div class="cc-row">
+              <span class="cc-tag ct-m">Missed Opp.</span>
+              <svg class="cc-ring" viewBox="0 0 32 32">
+                <circle cx="16" cy="16" r="12" fill="none" stroke="#D8D2C4" stroke-width="3" stroke-linecap="round"/>
+                <circle cx="16" cy="16" r="12" fill="none" stroke="#A03333" stroke-width="3"
+                  stroke-linecap="round" stroke-dasharray="75.4" stroke-dashoffset="31.7"
+                  transform="rotate(-90 16 16)"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Call 3 -->
+          <div class="call-col">
+            <div class="cc-score">82</div>
+            <div class="cc-score-rule"></div>
+            <div class="cc-date">Feb 19, 2026</div>
+            <div class="cc-type">Comparison Shopper</div>
+            <div class="cc-row">
+              <span class="cc-tag ct-e">Enrolled</span>
+              <svg class="cc-ring" viewBox="0 0 32 32">
+                <circle cx="16" cy="16" r="12" fill="none" stroke="#D8D2C4" stroke-width="3" stroke-linecap="round"/>
+                <circle cx="16" cy="16" r="12" fill="none" stroke="#4A7A4A" stroke-width="3"
+                  stroke-linecap="round" stroke-dasharray="75.4" stroke-dashoffset="13.6"
+                  transform="rotate(-90 16 16)"/>
+              </svg>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 02 — Categories -->
+        <div class="section-label reveal" style="animation: reveal 0.5s ease 0.32s forwards;">
+          <span class="sl-num">02</span>
+          <span class="sl-title">Categories</span>
+          <span class="sl-rule"></span>
+        </div>
+
+        <div class="cat-dir reveal" style="animation: reveal 0.5s ease 0.35s forwards;">
+
+          <div class="cat-row">
+            <span class="cat-num">01</span>
+            <span class="cat-name">Lead</span>
+            <span class="cat-leader"></span>
+            <span class="cat-tier t-prof">Proficient</span>
+          </div>
+
+          <div class="cat-row">
+            <span class="cat-num">02</span>
+            <span class="cat-name">Signal Reading</span>
+            <div class="cat-focus-dot"></div>
+            <span class="cat-leader"></span>
+            <span class="cat-tier t-dev">Developing</span>
+          </div>
+
+          <div class="cat-row">
+            <span class="cat-num">03</span>
+            <span class="cat-name">Math Breakdown</span>
+            <span class="cat-leader"></span>
+            <span class="cat-tier t-sharp">Sharp</span>
+          </div>
+
+          <div class="cat-row">
+            <span class="cat-num">04</span>
+            <span class="cat-name">Objection Handling</span>
+            <div class="cat-focus-dot"></div>
+            <span class="cat-leader"></span>
+            <span class="cat-tier t-dev">Developing</span>
+          </div>
+
+          <div class="cat-row">
+            <span class="cat-num">05</span>
+            <span class="cat-name">Call Outcome</span>
+            <span class="cat-leader"></span>
+            <span class="cat-tier t-prof">Proficient</span>
+          </div>
+
+          <div class="cat-row">
+            <span class="cat-num">06</span>
+            <span class="cat-name">Compliance</span>
+            <span class="cat-leader"></span>
+            <span class="cat-tier t-prof">Proficient</span>
+          </div>
+
+        </div>
+
+        <!-- Focus mode -->
+        <div class="focus-line reveal" style="animation: reveal 0.5s ease 0.38s forwards;">
+          <span class="fl-lbl">Focus</span>
+          <span class="fl-chip">Objection Handling</span>
+          <span class="fl-chip">Signal Reading</span>
+          <span class="fl-edit">Change</span>
+        </div>
+
+      </div>
+
+      <!-- Side column -->
+      <div class="col-side">
+
+        <!-- Pattern Alert as pull quote — accent color use #2 -->
+        <div class="pull-quote reveal" style="animation: reveal 0.5s ease 0.30s forwards;">
+          <div class="pq-bar"></div>
+          <div class="pq-body">
+            <div class="pq-eyebrow">Focus Area</div>
+            <div class="pq-name">Pattern 7 —<br>Objection Misread</div>
+            <div class="pq-freq">Flagged in 4 of your last 5 calls</div>
+            <div class="pq-text">
+              You're moving past objections before they're fully resolved. The prospect still carries the concern when you proceed.
+            </div>
+            <div class="pq-actions">
+              <div class="pq-link-primary">
+                Study this pattern
+                <i data-lucide="arrow-right"></i>
+              </div>
+              <div class="pq-link-secondary">See the calls</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Coach — plain text, no container -->
+        <div class="coach-block reveal" style="animation: reveal 0.5s ease 0.34s forwards;">
+          <div class="cb-eyebrow">Your Coach</div>
+          <div class="cb-head">Ask me anything.</div>
+          <div class="cb-sub">
+            Ask about <em>Pattern 7 — Objection Misread</em>. I can show you exactly what to say when a prospect goes quiet after pushback.
+          </div>
+          <div class="cb-link">
+            Start a session
+            <i data-lucide="arrow-right"></i>
+          </div>
+          <div class="cb-link-2">Continue last conversation</div>
+        </div>
+
+        <!-- Last call snapshot -->
+        <div class="sidebar-last-call reveal" style="animation: reveal 0.5s ease 0.36s forwards;">
+          <span style="letter-spacing:0.07em;text-transform:uppercase;font-size:9px;font-weight:700;color:var(--text-4);">Last Analyzed</span><br>
+          <span style="color:var(--text-2);font-size:12px;">Feb 24 · Scared Switcher · 71/100</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── Feed ── -->
+    <div class="feed-section reveal" style="animation: reveal 0.5s ease 0.42s forwards;">
+      <div class="feed-header">
+        <span class="feed-title">03 — Coaching Record</span>
+        <span class="feed-rule"></span>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-spine"></div>
+        <div class="timeline-items">
+
+          <div class="tl-item">
+            <div class="tl-dot new"></div>
+            <div class="tl-body">
+              <div class="tl-time">2 days ago</div>
+              <div class="tl-text">
+                <strong>Pattern 7 (Objection Misread)</strong> flagged — appeared in 4 of your last 5 calls.
+              </div>
+              <span class="tl-link">Study it →</span>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-dot badge"></div>
+            <div class="tl-body">
+              <div class="tl-time">4 days ago</div>
+              <div class="tl-text">
+                <strong>Math Breakdown</strong> badge upgraded to Sharp.
+              </div>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-dot best"></div>
+            <div class="tl-body">
+              <div class="tl-time">1 week ago</div>
+              <div class="tl-text">
+                New personal best — <strong>Math Breakdown: 19/20</strong> on your last call.
+              </div>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-dot level"></div>
+            <div class="tl-body">
+              <div class="tl-time">2 weeks ago</div>
+              <div class="tl-text">
+                You reached <strong>Level 3: The Reader</strong>.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="vtag">v4 · Morning Brief</div>
+
+  <script>
+    lucide.createIcons();
+
+    const SCORE = 74;
+    const CIRC = 2 * Math.PI * 74; // 464.9
+    const ring = document.getElementById('mainRing');
+    const numEl = document.getElementById('scoreNum');
+    const xpBar = document.getElementById('xpBar');
+
+    // Spring-ish easing: overshoots and settles
+    function easeOutBack(x) {
+      const c1 = 1.70158, c3 = c1 + 1;
+      return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
+    }
+
+    function easeOutCubic(x) { return 1 - Math.pow(1 - x, 3); }
+
+    // Slower, more deliberate animation for the editorial feel
+    const DUR = 1600;
+    let t0;
+
+    function animate(ts) {
+      if (!t0) t0 = ts;
+      const p = Math.min((ts - t0) / DUR, 1);
+      const eb = Math.max(0, Math.min(easeOutBack(p), 1));
+      ring.style.strokeDashoffset = CIRC * (1 - (SCORE / 100) * eb);
+      numEl.textContent = Math.round(SCORE * easeOutCubic(p));
+      if (p < 1) requestAnimationFrame(animate);
+      else numEl.textContent = SCORE;
+    }
+
+    setTimeout(() => {
+      requestAnimationFrame(animate);
+      xpBar.style.width = '71%';
+    }, 400);
+  </script>
+
+</body>
+</html>

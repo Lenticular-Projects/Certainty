@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Certainty — Knowledge Hub</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-sans/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-mono/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400;1,700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sage:        #8FAF94;
+      --sage-dark:   #6A8B6E;
+      --ink:         #131110;
+      --terracotta:  #E05C34;
+      --mustard:     #E9B840;
+      --cream:       #FBF8F3;
+      --cream-2:     #F0EBE1;
+      --dark-text:   #FAF5EC;
+      --tc-text:     #1A0D08;
+      --rule:        1.5px solid #131110;
+      --rule-lt:     1px solid rgba(19,17,16,0.12);
+    }
+
+    html, body {
+      height: 100%;
+      background: #1A1614;
+      font-family: 'Geist', system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ═══════════════════════════════════════════
+       SHELL
+    ═══════════════════════════════════════════ */
+    .shell {
+      display: grid;
+      grid-template-columns: 72px 210px 1fr;
+      min-height: 100vh;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    /* ═══════════════════════════════════════════
+       COL 1 — SAGE ICON NAV
+    ═══════════════════════════════════════════ */
+    .col-nav {
+      grid-column: 1;
+      background: var(--sage);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      z-index: 2;
+    }
+
+    .nav-logo {
+      width: 38px; height: 38px;
+      background: var(--ink);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 800;
+      letter-spacing: 0.02em;
+      color: var(--dark-text);
+      margin-bottom: 32px;
+      flex-shrink: 0;
+    }
+
+    .nav-links { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 100%; flex: 1; }
+
+    .nav-item {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      padding: 10px 8px; width: 100%;
+      cursor: pointer; text-decoration: none;
+      color: rgba(19,17,16,0.5);
+      transition: color 0.15s, background 0.15s;
+      border-left: 2.5px solid transparent;
+    }
+
+    .nav-item:hover { color: var(--ink); background: rgba(19,17,16,0.08); }
+    .nav-item.active { color: var(--ink); border-left-color: var(--ink); background: rgba(19,17,16,0.10); }
+    .nav-item svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+    .nav-label {
+      font-size: 8px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase; line-height: 1;
+    }
+
+    .nav-foot { margin-top: auto; display: flex; flex-direction: column; align-items: center; }
+
+    .nav-avatar {
+      width: 34px; height: 34px; background: var(--ink);
+      color: var(--dark-text); display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 800; letter-spacing: 0.04em;
+    }
+
+    /* ═══════════════════════════════════════════
+       COL 2 — INK PANEL: TOPIC NAVIGATION
+    ═══════════════════════════════════════════ */
+    .col-panel {
+      grid-column: 2;
+      background: var(--ink);
+      display: flex;
+      flex-direction: column;
+      padding: 28px 0 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 1;
+    }
+
+    .panel-eyebrow {
+      font-family: 'Geist Mono', monospace;
+      font-size: 8.5px; font-weight: 600;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(250,245,236,0.30);
+      padding: 0 20px 14px;
+      border-bottom: 1px solid rgba(250,245,236,0.07);
+      margin-bottom: 6px;
+    }
+
+    .topic-list { display: flex; flex-direction: column; padding: 4px 0; }
+
+    .topic-item {
+      display: flex;
+      align-items: center;
+      padding: 9px 20px;
+      gap: 10px;
+      cursor: pointer;
+      transition: background 0.12s;
+      border-left: 2.5px solid transparent;
+      text-decoration: none;
+    }
+
+    .topic-item:hover { background: rgba(250,245,236,0.04); }
+
+    .topic-item.active {
+      background: rgba(250,245,236,0.06);
+      border-left-color: var(--mustard);
+    }
+
+    .topic-name {
+      font-size: 11.5px; font-weight: 600;
+      color: rgba(250,245,236,0.55);
+      letter-spacing: -0.01em;
+    }
+
+    .topic-item.active .topic-name { color: var(--dark-text); }
+
+    .topic-count {
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px;
+      color: rgba(250,245,236,0.25);
+      margin-left: auto;
+    }
+
+    .topic-item.active .topic-count { color: rgba(250,245,236,0.45); }
+
+    /* Panel separator */
+    .panel-sep {
+      height: 1px;
+      background: rgba(250,245,236,0.07);
+      margin: 10px 0;
+    }
+
+    /* Search input */
+    .panel-search {
+      padding: 0 16px 0;
+    }
+
+    .search-input {
+      width: 100%;
+      background: rgba(250,245,236,0.06);
+      border: 1px solid rgba(250,245,236,0.10);
+      color: var(--dark-text);
+      font-family: 'Geist Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.02em;
+      padding: 8px 12px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .search-input::placeholder { color: rgba(250,245,236,0.28); }
+    .search-input:focus { border-color: rgba(250,245,236,0.25); }
+
+    /* Level + XP */
+    .panel-level {
+      padding: 14px 20px;
+      border-top: 1px solid rgba(250,245,236,0.07);
+      margin-top: auto;
+    }
+
+    .pl-eyebrow {
+      font-family: 'Geist Mono', monospace;
+      font-size: 8px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(250,245,236,0.28);
+      margin-bottom: 5px;
+    }
+
+    .pl-name {
+      font-size: 12px; font-weight: 700;
+      color: var(--dark-text);
+      letter-spacing: -0.01em;
+      margin-bottom: 10px;
+    }
+
+    .xp-track { width: 100%; height: 3px; background: rgba(250,245,236,0.10); overflow: hidden; }
+
+    .xp-bar {
+      height: 100%; background: var(--mustard);
+      width: 0%;
+      transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .xp-label {
+      font-family: 'Geist Mono', monospace;
+      font-size: 8px; color: rgba(250,245,236,0.28);
+      letter-spacing: 0.06em; margin-top: 5px;
+    }
+
+    /* ═══════════════════════════════════════════
+       COL 3 — CREAM MAIN CONTENT
+       (KEY: background: var(--cream) — reading mode)
+    ═══════════════════════════════════════════ */
+    .col-main {
+      grid-column: 3;
+      background: var(--cream);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Header strip */
+    .main-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 28px 36px 20px;
+      border-bottom: var(--rule);
+      flex-shrink: 0;
+    }
+
+    .main-title {
+      font-size: 28px; font-weight: 900;
+      color: var(--ink);
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .main-subtitle {
+      font-family: 'Geist Mono', monospace;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      color: rgba(19,17,16,0.38);
+    }
+
+    /* Content body */
+    .main-body {
+      padding: 32px 36px;
+      flex: 1;
+    }
+
+    /* Tile grid — 3 columns */
+    .tile-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    /* Individual tile */
+    .tile {
+      border: var(--rule-lt);
+      background: #fff;
+      cursor: pointer;
+      transition: border 0.14s, box-shadow 0.14s, transform 0.14s;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1),
+                  border 0.14s, box-shadow 0.14s;
+    }
+
+    .tile:hover {
+      border: var(--rule);
+      box-shadow: 2px 2px 0 rgba(19,17,16,0.14);
+    }
+
+    .tile.visible { opacity: 1; transform: translateY(0); }
+
+    /* Signal pill — flush top, full width */
+    .signal-pill {
+      padding: 6px 12px;
+      font-family: 'Geist Mono', monospace;
+      font-size: 8px; font-weight: 800;
+      letter-spacing: 0.14em; text-transform: uppercase;
+    }
+
+    .signal-pill.green  { background: var(--sage); color: var(--ink); }
+    .signal-pill.red    { background: var(--terracotta); color: #fff; }
+    .signal-pill.yellow { background: var(--mustard); color: var(--tc-text); }
+
+    .tile-body { padding: 14px 14px 12px; flex: 1; display: flex; flex-direction: column; }
+
+    .tile-title {
+      font-size: 14px; font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+      line-height: 1.2;
+    }
+
+    .tile-summary {
+      font-size: 11px; font-weight: 400;
+      color: rgba(19,17,16,0.58);
+      line-height: 1.55;
+      flex: 1;
+      margin-bottom: 10px;
+    }
+
+    .tile-footer {
+      font-family: 'Geist Mono', monospace;
+      font-size: 8px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: rgba(19,17,16,0.30);
+      padding-top: 8px;
+      border-top: 1px solid rgba(19,17,16,0.07);
+    }
+
+    /* Separator under grid */
+    .main-sep {
+      height: 1px;
+      background: rgba(19,17,16,0.10);
+      margin-bottom: 20px;
+    }
+
+    /* Quick reference chips row */
+    .chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .chips-label {
+      font-family: 'Geist Mono', monospace;
+      font-size: 8.5px; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(19,17,16,0.35);
+      margin-right: 4px;
+    }
+
+    .chip {
+      border: var(--rule);
+      background: transparent;
+      color: var(--ink);
+      padding: 6px 14px;
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.12s, color 0.12s;
+    }
+
+    .chip:hover { background: var(--ink); color: var(--cream); }
+
+    /* ─── Search results state (shown when searching) ─── */
+    .search-results {
+      display: none;
+    }
+
+    .search-results.active {
+      display: block;
+    }
+
+    .tile-grid.search-mode {
+      display: none;
+    }
+
+    .sr-eyebrow {
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(19,17,16,0.38);
+      margin-bottom: 16px;
+    }
+
+    .sr-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(19,17,16,0.08);
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+
+    .sr-item:hover { padding-left: 8px; }
+
+    .sr-pill {
+      font-family: 'Geist Mono', monospace;
+      font-size: 7px; font-weight: 800;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      padding: 3px 7px;
+      flex-shrink: 0;
+    }
+
+    .sr-pill.green  { background: var(--sage); color: var(--ink); }
+    .sr-pill.red    { background: var(--terracotta); color: #fff; }
+    .sr-pill.yellow { background: var(--mustard); color: var(--tc-text); }
+
+    .sr-name { font-size: 13px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; }
+    .sr-desc { font-size: 11px; color: rgba(19,17,16,0.50); }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════ */
+    @media (max-width: 1100px) {
+      .shell { grid-template-columns: 72px 0 1fr; }
+      .col-panel { display: none; }
+      .tile-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .shell { grid-template-columns: 48px 0 1fr; }
+      .nav-label { display: none; }
+      .tile-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="shell">
+
+    <!-- ──────────────────────────────────────
+         COL 1: SAGE ICON NAV
+    ────────────────────────────────────────── -->
+    <aside class="col-nav">
+      <div class="nav-logo">CS</div>
+      <nav class="nav-links">
+        <a class="nav-item" href="agent-dashboard.html">
+          <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+          <span class="nav-label">Dash</span>
+        </a>
+        <!-- Hub — active -->
+        <a class="nav-item active" href="#">
+          <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+          </svg>
+          <span class="nav-label">Hub</span>
+        </a>
+        <a class="nav-item" href="call-report.html">
+          <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.39 19a19.45 19.45 0 0 1-6-6A19.79 19.79 0 0 1 3.1 4.18 2 2 0 0 1 5.07 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L9.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+          <span class="nav-label">Calls</span>
+        </a>
+        <a class="nav-item" href="#">
+          <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          <span class="nav-label">Coach</span>
+        </a>
+      </nav>
+      <div class="nav-foot">
+        <div class="nav-avatar">AJ</div>
+      </div>
+    </aside>
+
+    <!-- ──────────────────────────────────────
+         COL 2: INK PANEL — BROWSE NAV
+    ────────────────────────────────────────── -->
+    <div class="col-panel">
+      <p class="panel-eyebrow">Browse</p>
+
+      <div class="topic-list" id="topicList">
+        <div class="topic-item active" data-topic="calltypes">
+          <span class="topic-name">Call Types</span>
+          <span class="topic-count">9</span>
+        </div>
+        <div class="topic-item" data-topic="objections">
+          <span class="topic-name">Objections</span>
+          <span class="topic-count">9</span>
+        </div>
+        <div class="topic-item" data-topic="signals">
+          <span class="topic-name">Three Signals</span>
+          <span class="topic-count">3</span>
+        </div>
+        <div class="topic-item" data-topic="pillars">
+          <span class="topic-name">Four Pillars</span>
+          <span class="topic-count">4</span>
+        </div>
+        <div class="topic-item" data-topic="math">
+          <span class="topic-name">Math Breakdown</span>
+          <span class="topic-count">1</span>
+        </div>
+        <div class="topic-item" data-topic="close">
+          <span class="topic-name">Close Confirmation</span>
+          <span class="topic-count">1</span>
+        </div>
+        <div class="topic-item" data-topic="patterns">
+          <span class="topic-name">Nine Patterns</span>
+          <span class="topic-count">9</span>
+        </div>
+      </div>
+
+      <div class="panel-sep"></div>
+
+      <!-- Search -->
+      <div class="panel-search">
+        <input type="text" class="search-input" id="searchInput" placeholder="Search the system...">
+      </div>
+
+      <div class="panel-sep"></div>
+
+      <!-- Level + XP -->
+      <div class="panel-level">
+        <div class="pl-eyebrow">Level Progress</div>
+        <div class="pl-name">Lvl 4 — The Reframer</div>
+        <div class="xp-track"><div class="xp-bar" id="xpBar"></div></div>
+        <div class="xp-label">2,840 / 4,000 XP — 210 to next</div>
+      </div>
+    </div>
+
+    <!-- ──────────────────────────────────────
+         COL 3: CREAM MAIN — KNOWLEDGE GRID
+         (KEY: cream background = reading mode)
+    ────────────────────────────────────────── -->
+    <main class="col-main">
+
+      <header class="main-header">
+        <span class="main-title">Knowledge Hub</span>
+        <span class="main-subtitle" id="mainSubtitle">Call Types · 9</span>
+      </header>
+
+      <div class="main-body">
+
+        <!-- Search results (hidden by default) -->
+        <div class="search-results" id="searchResults">
+          <div class="sr-eyebrow" id="srEyebrow">Search results</div>
+          <div id="srList"></div>
+        </div>
+
+        <!-- Call Types tile grid (default) -->
+        <div class="tile-grid" id="tileGrid">
+
+          <!-- 1: Money Caller — GREEN -->
+          <div class="tile" id="tile0">
+            <div class="signal-pill green">Green Signal</div>
+            <div class="tile-body">
+              <div class="tile-title">Money Caller</div>
+              <div class="tile-summary">Motivated. Called about a specific benefit they want to understand fully.</div>
+              <div class="tile-footer">Last studied: 3 days ago</div>
+            </div>
+          </div>
+
+          <!-- 2: Scared Switcher — RED -->
+          <div class="tile" id="tile1">
+            <div class="signal-pill red">Red Signal</div>
+            <div class="tile-body">
+              <div class="tile-title">Scared Switcher</div>
+              <div class="tile-summary">Afraid of losing something they already have. Name the fear first.</div>
+              <div class="tile-footer">Not yet studied</div>
+            </div>
+          </div>
+
+          <!-- 3: Misinformed — RED -->
+          <div class="tile" id="tile2">
+            <div class="signal-pill red">Red Signal</div>
+            <div class="tile-body">
+              <div class="tile-title">Misinformed</div>
+              <div class="tile-summary">Operating on false information. Use live verification before moving forward.</div>
+              <div class="tile-footer">Last studied: 1 week ago</div>
+            </div>
+          </div>
+
+          <!-- 4: Third Party Controlled — GREEN -->
+          <div class="tile" id="tile3">
+            <div class="signal-pill green">Green Signal</div>
+            <div class="tile-body">
+              <div class="tile-title">Third Party Controlled</div>
+              <div class="tile-summary">The real decision maker isn't on the call. Identify and involve them.</div>
+              <div class="tile-footer">Not yet studied</div>
+            </div>
+          </div>
+
+          <!-- 5: Detail Staller — YELLOW -->
+          <div class="tile" id="tile4">
+            <div class="signal-pill yellow">Yellow Signal</div>
+            <div class="tile-body">
+              <div class="tile-title">Detail Staller</div>
+              <div class="tile-summary">Polite exit strategy disguised as curiosity. Quantify the cost of waiting.</div>
+              <div class="tile-footer">Last studied: 2 days ago</div>
+            </div>
+          </div>
+
+          <!-- 6: Time Bomb — GREEN -->
+          <div class="tile" id="tile5">
+            <div class="signal-pill green">Green Signal</div>
+            <div class="tile-body">
+              <div class="tile-title">Time Bomb</div>
+              <div class="tile-summary">Willing but operating under a time constraint. Accelerate the process.</div>
+              <div class="tile-footer">Not yet studied</div>
+            </div>
+          </div>
+
+          <!-- 7: Commercial Myth Caller — RED -->
+          <div class="tile" id="tile6">
+            <div class="signal-pill red">Red Signal</div>
+            <div class="tile-body">
+              <div class="tile-title">Commercial Myth Caller</div>
+              <div class="tile-summary">Saw a misleading commercial. Don't correct them — become their ally.</div>
+              <div class="tile-footer">Last studied: 5 days ago</div>
+            </div>
+          </div>
+
+          <!-- 8: Veteran — RED -->
+          <div class="tile" id="tile7">
+            <div class="signal-pill red">Red Signal</div>
+            <div class="tile-body">
+              <div class="tile-title">Veteran</div>
+              <div class="tile-summary">Fears Medicare Advantage replaces VA benefits. Correct this myth first.</div>
+              <div class="tile-footer">Not yet studied</div>
+            </div>
+          </div>
+
+          <!-- 9: Timing Objector — RED -->
+          <div class="tile" id="tile8">
+            <div class="signal-pill red">Red Signal</div>
+            <div class="tile-body">
+              <div class="tile-title">Timing Objector</div>
+              <div class="tile-summary">Stalling with a timing excuse. Quantify what delay costs them.</div>
+              <div class="tile-footer">Last studied: 3 days ago</div>
+            </div>
+          </div>
+
+        </div><!-- /tile-grid -->
+
+        <div class="main-sep"></div>
+
+        <!-- Quick reference chips -->
+        <div class="chips-row">
+          <span class="chips-label">Quick ref:</span>
+          <button class="chip" data-topic="signals">Three Signals</button>
+          <button class="chip" data-topic="pillars">Four Pillars</button>
+          <button class="chip" data-topic="math">Math Breakdown</button>
+          <button class="chip" data-topic="close">Close Confirmation</button>
+          <button class="chip" data-topic="patterns">Nine Patterns</button>
+        </div>
+
+      </div><!-- /main-body -->
+    </main>
+
+  </div><!-- /shell -->
+
+  <script>
+    // ─── Topic data ──────────────────────────────────────────────────────
+    const TOPICS = {
+      calltypes: {
+        subtitle: 'Call Types · 9',
+        tiles: [
+          { signal: 'green', title: 'Money Caller',          summary: 'Motivated. Called about a specific benefit they want to understand fully.', studied: 'Last studied: 3 days ago' },
+          { signal: 'red',   title: 'Scared Switcher',       summary: 'Afraid of losing something they already have. Name the fear first.', studied: 'Not yet studied' },
+          { signal: 'red',   title: 'Misinformed',           summary: 'Operating on false information. Use live verification before moving forward.', studied: 'Last studied: 1 week ago' },
+          { signal: 'green', title: 'Third Party Controlled',summary: 'The real decision maker isn\'t on the call. Identify and involve them.', studied: 'Not yet studied' },
+          { signal: 'yellow',title: 'Detail Staller',        summary: 'Polite exit strategy disguised as curiosity. Quantify the cost of waiting.', studied: 'Last studied: 2 days ago' },
+          { signal: 'green', title: 'Time Bomb',             summary: 'Willing but operating under a time constraint. Accelerate the process.', studied: 'Not yet studied' },
+          { signal: 'red',   title: 'Commercial Myth Caller',summary: 'Saw a misleading commercial. Don\'t correct them — become their ally.', studied: 'Last studied: 5 days ago' },
+          { signal: 'red',   title: 'Veteran',               summary: 'Fears Medicare Advantage replaces VA benefits. Correct this myth first.', studied: 'Not yet studied' },
+          { signal: 'red',   title: 'Timing Objector',       summary: 'Stalling with a timing excuse. Quantify what delay costs them.', studied: 'Last studied: 3 days ago' },
+        ]
+      },
+      objections: {
+        subtitle: 'Objections · 9',
+        tiles: [
+          { signal: 'red',   title: 'What happens to my Medicare?', summary: 'Fear of loss, not curiosity. Validate the concern before answering.', studied: 'Not yet studied' },
+          { signal: 'red',   title: 'My doctor won\'t be covered',  summary: 'Specific fear. Name it, verify live, and show the path forward.', studied: 'Last studied: 1 week ago' },
+          { signal: 'yellow',title: 'Sounds too good to be true',  summary: 'Distrust of the offer. Use specific numbers and social proof.', studied: 'Not yet studied' },
+          { signal: 'red',   title: 'I need to talk to my daughter', summary: 'Third party control. Acknowledge the relationship, involve them.', studied: 'Last studied: 4 days ago' },
+          { signal: 'yellow',title: 'I\'m fine with what I have',  summary: 'Status quo bias. Quantify the gap between what they have and could have.', studied: 'Not yet studied' },
+          { signal: 'green', title: 'Can I get this in writing?',  summary: 'Actually engaged. They want to move forward — give them what they need.', studied: 'Last studied: 2 days ago' },
+          { signal: 'red',   title: 'I saw a commercial about this', summary: 'Misinformation in play. Become their ally in finding the truth.', studied: 'Not yet studied' },
+          { signal: 'yellow',title: 'The timing isn\'t right',     summary: 'Stall tactic. Quantify what another month of delay costs them.', studied: 'Last studied: 3 days ago' },
+          { signal: 'red',   title: 'I\'ve been burned before',    summary: 'Past trauma. Build trust through radical transparency.', studied: 'Not yet studied' },
+        ]
+      },
+      signals: {
+        subtitle: 'Three Signals · 3',
+        tiles: [
+          { signal: 'green', title: 'Green Signal', summary: 'Prospect is engaged and moving toward a decision. Maintain pace and reinforce value.', studied: 'Last studied: 1 day ago' },
+          { signal: 'yellow',title: 'Yellow Signal',summary: 'Prospect is hesitant or uncertain. Slow down, ask open questions, surface the real concern.', studied: 'Last studied: 3 days ago' },
+          { signal: 'red',   title: 'Red Signal',   summary: 'Prospect is emotionally resistant. Stop selling. Validate their fear or concern first.', studied: 'Not yet studied' },
+        ]
+      },
+      pillars: {
+        subtitle: 'Four Pillars · 4',
+        tiles: [
+          { signal: 'green', title: 'Trust',     summary: 'Established through consistency, accuracy, and genuine concern for the prospect\'s outcome.', studied: 'Last studied: 2 days ago' },
+          { signal: 'green', title: 'Clarity',   summary: 'The prospect fully understands what they\'re enrolling in and why it benefits them specifically.', studied: 'Last studied: 5 days ago' },
+          { signal: 'yellow',title: 'Urgency',   summary: 'Grounded in real consequence, not manufactured pressure. Use the Math Breakdown to quantify delay.', studied: 'Not yet studied' },
+          { signal: 'green', title: 'Commitment',summary: 'Verbal confirmation and emotional buy-in before paperwork. Secure the close before the close.', studied: 'Last studied: 1 week ago' },
+        ]
+      },
+      math: {
+        subtitle: 'Math Breakdown · 1',
+        tiles: [
+          { signal: 'green', title: 'The Math Breakdown',   summary: 'Walk the prospect through the exact dollar difference between their current plan and the proposed plan — monthly and annually.', studied: 'Last studied: 2 days ago' },
+          { signal: 'yellow',title: 'Cost of Delay',        summary: 'Calculate what every month of inaction costs the prospect in missed savings or uncovered benefits.', studied: 'Not yet studied' },
+          { signal: 'green', title: 'Benefit Comparison',   summary: 'Side-by-side comparison of current vs proposed benefits. Let the numbers make the case.', studied: 'Last studied: 4 days ago' },
+        ]
+      },
+      close: {
+        subtitle: 'Close Confirmation · 1',
+        tiles: [
+          { signal: 'green', title: 'The Verbal Yes',        summary: 'Get explicit verbal confirmation of intent before initiating paperwork. The close precedes the paperwork.', studied: 'Last studied: 1 day ago' },
+          { signal: 'yellow',title: 'Soft Commitment Check', summary: 'Ask a commitment question that surfaces hidden objections before they become cancellations.', studied: 'Not yet studied' },
+          { signal: 'green', title: 'Post-Close Validation', summary: 'After enrollment, affirm the decision. Reduce buyer\'s remorse before it starts.', studied: 'Last studied: 3 days ago' },
+        ]
+      },
+      patterns: {
+        subtitle: 'Nine Patterns · 9',
+        tiles: [
+          { signal: 'red',   title: 'Pattern 1: Logic to Emotion',    summary: 'Responding with facts when the prospect needs validation. Leads to defense.', studied: 'Not yet studied' },
+          { signal: 'red',   title: 'Pattern 2: Value Drop',          summary: 'Underselling the benefit of the plan change. Prospect doesn\'t see the point.', studied: 'Last studied: 2 days ago' },
+          { signal: 'red',   title: 'Pattern 3: Missed Signal',       summary: 'Client gave a clear buying signal that went unweaponized.', studied: 'Not yet studied' },
+          { signal: 'yellow',title: 'Pattern 4: Premature Close',     summary: 'Attempting to close before trust or clarity is established.', studied: 'Last studied: 1 week ago' },
+          { signal: 'red',   title: 'Pattern 5: Dead Air',            summary: 'Silence after an objection interpreted as rejection, not invitation.', studied: 'Not yet studied' },
+          { signal: 'yellow',title: 'Pattern 6: Over-explaining',     summary: 'Too much information before the prospect\'s concern is addressed.', studied: 'Last studied: 5 days ago' },
+          { signal: 'red',   title: 'Pattern 7: Third Party Ignored', summary: 'Spouse or family member mentioned but not engaged in the process.', studied: 'Not yet studied' },
+          { signal: 'yellow',title: 'Pattern 8: No Urgency Built',    summary: 'Call ends without quantifying the cost of delay or inaction.', studied: 'Last studied: 4 days ago' },
+          { signal: 'red',   title: 'Pattern 9: Assumption Close',    summary: 'Assuming enrollment without confirming verbal buy-in first.', studied: 'Not yet studied' },
+        ]
+      }
+    };
+
+    // ─── Search data (all tiles flattened) ──────────────────────────────
+    const ALL_ITEMS = Object.entries(TOPICS).flatMap(([topic, data]) =>
+      data.tiles.map(t => ({ ...t, topic }))
+    );
+
+    // ─── Render tile grid ────────────────────────────────────────────────
+    const tileGrid = document.getElementById('tileGrid');
+
+    function renderTiles(topicKey) {
+      const data = TOPICS[topicKey];
+      if (!data) return;
+
+      document.getElementById('mainSubtitle').textContent = data.subtitle;
+      tileGrid.innerHTML = '';
+
+      data.tiles.forEach((t, i) => {
+        const el = document.createElement('div');
+        el.className = 'tile';
+        el.style.transitionDelay = `${i * 40}ms`;
+        el.innerHTML = `
+          <div class="signal-pill ${t.signal}">${t.signal.charAt(0).toUpperCase() + t.signal.slice(1)} Signal</div>
+          <div class="tile-body">
+            <div class="tile-title">${t.title}</div>
+            <div class="tile-summary">${t.summary}</div>
+            <div class="tile-footer">${t.studied}</div>
+          </div>`;
+        tileGrid.appendChild(el);
+        requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('visible')));
+      });
+    }
+
+    // ─── Topic switching ─────────────────────────────────────────────────
+    document.querySelectorAll('.topic-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.topic-item').forEach(t => t.classList.remove('active'));
+        item.classList.add('active');
+        const topic = item.dataset.topic;
+        hideSearch();
+        renderTiles(topic);
+      });
+    });
+
+    // Chip buttons
+    document.querySelectorAll('.chip[data-topic]').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const topic = chip.dataset.topic;
+        document.querySelectorAll('.topic-item').forEach(t => {
+          t.classList.toggle('active', t.dataset.topic === topic);
+        });
+        hideSearch();
+        renderTiles(topic);
+      });
+    });
+
+    // ─── Search ──────────────────────────────────────────────────────────
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+    const srList = document.getElementById('srList');
+    const srEyebrow = document.getElementById('srEyebrow');
+
+    let searchTimer = null;
+
+    function showSearch(query) {
+      tileGrid.classList.add('search-mode');
+      searchResults.classList.add('active');
+
+      const q = query.toLowerCase();
+      const matches = ALL_ITEMS.filter(item =>
+        item.title.toLowerCase().includes(q) || item.summary.toLowerCase().includes(q)
+      );
+
+      srEyebrow.textContent = matches.length
+        ? `${matches.length} result${matches.length !== 1 ? 's' : ''} for "${query}"`
+        : `No results for "${query}"`;
+
+      srList.innerHTML = matches.map(item => `
+        <div class="sr-item">
+          <span class="sr-pill ${item.signal}">${item.signal.charAt(0).toUpperCase() + item.signal.slice(1)}</span>
+          <div>
+            <div class="sr-name">${item.title}</div>
+            <div class="sr-desc">${item.summary}</div>
+          </div>
+        </div>`).join('');
+    }
+
+    function hideSearch() {
+      tileGrid.classList.remove('search-mode');
+      searchResults.classList.remove('active');
+      searchInput.value = '';
+    }
+
+    searchInput.addEventListener('input', () => {
+      clearTimeout(searchTimer);
+      const q = searchInput.value.trim();
+      if (!q) { hideSearch(); renderTiles('calltypes'); return; }
+      searchTimer = setTimeout(() => showSearch(q), 200);
+    });
+
+    // ─── Entrance animations ─────────────────────────────────────────────
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('xpBar').style.width = '71%';
+        document.querySelectorAll('.tile').forEach((tile, i) => {
+          setTimeout(() => tile.classList.add('visible'), 60 + i * 45);
+        });
+      }, 100);
+    });
+  </script>
+</body>
+</html>

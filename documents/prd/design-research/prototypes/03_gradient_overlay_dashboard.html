@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Certainty System | Prototype 03 - Gradient & Transparency</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-sans/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-mono/style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Geist', 'sans-serif'],
+                        mono: ['Geist Mono', 'monospace'],
+                        editorial: ['"Playfair Display"', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            cream: '#FDFBF7',
+                            ink: '#0F0F0F'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Geist', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* The core gradient from the "88" reference */
+        .bg-gradient-radiant {
+            background: linear-gradient(135deg, #E6513A 0%, #EDB844 100%);
+        }
+
+        /* Massive overlapping translucent type */
+        .massive-transparent-bg {
+            font-size: clamp(20rem, 50vw, 40rem);
+            font-weight: 900;
+            line-height: 0.75;
+            letter-spacing: -0.05em;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: rgba(255, 255, 255, 0.15);
+            mix-blend-mode: overlay;
+            z-index: 0;
+            pointer-events: none;
+            user-select: none;
+            display: flex;
+        }
+
+        .massive-transparent-bg span:nth-child(2) {
+            margin-left: -0.1em;
+            mix-blend-mode: soft-light;
+            opacity: 0.8;
+        }
+
+        /* Crisp overlay cards */
+        .glass-card {
+            background: rgba(253, 251, 247, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(15, 15, 15, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Reveal Animation */
+        .reveal {
+            animation: reveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(30px) scale(0.98);
+        }
+
+        .delay-100 {
+            animation-delay: 100ms;
+        }
+
+        .delay-200 {
+            animation-delay: 200ms;
+        }
+
+        @keyframes reveal {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body
+    class="min-h-screen bg-gradient-radiant text-brand-ink relative overflow-hidden flex flex-col justify-center items-center p-4 md:p-12">
+
+    <!-- THE BACKGROUND LAYER: Massive 88 -->
+    <div class="massive-transparent-bg">
+        <span>8</span>
+        <span>8</span>
+    </div>
+
+    <!-- THE FOREGROUND LAYER: The Dashboard UI -->
+    <main class="w-full max-w-6xl z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 relative">
+
+        <!-- Header Strip -->
+        <header
+            class="lg:col-span-12 flex justify-between items-center text-white mix-blend-overlay font-bold uppercase tracking-widest text-xs reveal mb-4">
+            <div class="flex items-center gap-4">
+                <span>Perform.Engine_v4</span>
+                <span class="opacity-50">/</span>
+                <span>Alex J.</span>
+            </div>
+            <div>
+                <span>Top 10% Overall</span>
+            </div>
+        </header>
+
+        <!-- Score Detail Card -->
+        <div class="lg:col-span-5 glass-card p-10 flex flex-col reveal delay-100 h-[500px]">
+            <div class="flex justify-between items-start mb-auto">
+                <h2 class="font-mono text-xs uppercase tracking-widest font-bold opacity-60">Certainty Score</h2>
+                <span class="bg-brand-ink text-brand-cream text-[10px] font-black uppercase px-2 py-1">Last 5
+                    Calls</span>
+            </div>
+
+            <div>
+                <div class="flex items-baseline gap-2 mb-4">
+                    <span class="text-8xl font-black tracking-tighter leading-none">88</span>
+                    <span class="text-2xl font-mono opacity-40">/100</span>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-black/5 h-2 mb-2">
+                    <div class="bg-brand-ink h-full" style="width: 88%"></div>
+                </div>
+                <div class="flex justify-between font-mono text-[10px] uppercase font-bold opacity-60">
+                    <span>Level 4</span>
+                    <span>210 XP to next</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Editorial Coach Card -->
+        <div class="lg:col-span-7 glass-card p-10 flex flex-col justify-between reveal delay-200 h-[500px]">
+
+            <div>
+                <div class="flex items-center gap-2 mb-8">
+                    <div class="w-2 h-2 bg-[#E6513A] rounded-full"></div>
+                    <p class="font-mono text-[10px] uppercase tracking-widest font-bold text-[#E6513A]">The Closer's
+                        Edge</p>
+                </div>
+
+                <h3 class="font-editorial italic text-3xl md:text-4xl leading-snug mb-6 text-brand-ink">
+                    "You consistently close high-margin deals. But you missed a <mark
+                        class="bg-[#EDB844] text-brand-ink font-sans not-italic font-bold px-2 py-1">buying
+                        signal</mark> at 14:02 today."
+                </h3>
+
+                <p class="text-lg opacity-80 max-w-xl font-sans leading-relaxed">
+                    The prospect used the <strong>'Scared Switcher'</strong> pattern. You responded with logic instead
+                    of empathy, triggering a defense mechanism. Acknowledge risk before introducing The Math Breakdown
+                    to secure the close.
+                </p>
+            </div>
+
+            <!-- Action Button -->
+            <div class="mt-8 border-t border-brand-ink/10 pt-6">
+                <button
+                    class="flex items-center gap-3 font-bold uppercase tracking-widest text-sm hover:translate-x-2 transition-transform">
+                    <span>Review Annotated Call</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+</body>
+
+</html>

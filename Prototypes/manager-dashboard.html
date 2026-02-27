@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Certainty — Manager Dashboard</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-sans/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-mono/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400;1,700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sage:        #8FAF94;
+      --sage-dark:   #6A8B6E;
+      --ink:         #131110;
+      --terracotta:  #E05C34;
+      --mustard:     #E9B840;
+      --cream:       #FBF8F3;
+      --cream-2:     #F0EBE1;
+      --dark-text:   #FAF5EC;
+      --tc-text:     #1A0D08;
+      --rule:        1.5px solid #131110;
+      --rule-lt:     1px solid rgba(19,17,16,0.12);
+    }
+
+    html, body {
+      height: 100%;
+      background: #1A1614;
+      font-family: 'Geist', system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ═══════════════════════════════════════════
+       SHELL
+    ═══════════════════════════════════════════ */
+    .shell {
+      display: grid;
+      grid-template-columns: 72px 210px 1fr;
+      grid-template-rows: 1fr auto auto auto;
+      min-height: 100vh;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    /* ═══════════════════════════════════════════
+       COL 1 — SAGE ICON NAV (manager version)
+    ═══════════════════════════════════════════ */
+    .col-nav {
+      grid-column: 1;
+      grid-row: 1 / -1;
+      background: var(--sage);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .nav-logo {
+      width: 38px; height: 38px;
+      background: var(--ink);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 800;
+      letter-spacing: 0.02em; color: var(--dark-text);
+      margin-bottom: 32px; flex-shrink: 0;
+    }
+
+    .nav-links { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 100%; flex: 1; }
+
+    .nav-item {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      padding: 10px 8px; width: 100%;
+      cursor: pointer; text-decoration: none;
+      color: rgba(19,17,16,0.5);
+      transition: color 0.15s, background 0.15s;
+      border-left: 2.5px solid transparent;
+    }
+
+    .nav-item:hover { color: var(--ink); background: rgba(19,17,16,0.08); }
+    .nav-item.active { color: var(--ink); border-left-color: var(--ink); background: rgba(19,17,16,0.10); }
+    .nav-item svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+    /* Manager-only "Upload Call" nav item — terracotta-tinted icon */
+    .nav-item.upload-nav { color: rgba(224,92,52,0.65); }
+    .nav-item.upload-nav:hover { color: var(--terracotta); background: rgba(224,92,52,0.08); }
+
+    .nav-label { font-size: 8px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; line-height: 1; }
+
+    .nav-foot { margin-top: auto; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+
+    .nav-avatar {
+      width: 34px; height: 34px; background: var(--ink);
+      color: var(--dark-text); display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 800; letter-spacing: 0.04em;
+    }
+
+    /* ═══════════════════════════════════════════
+       COL 2 — INK PANEL: TEAM STATS + RADAR
+    ═══════════════════════════════════════════ */
+    .col-panel {
+      grid-column: 2;
+      grid-row: 1;
+      background: var(--ink);
+      display: flex;
+      flex-direction: column;
+      padding: 28px 0 0;
+      z-index: 1;
+    }
+
+    .panel-eyebrow {
+      font-family: 'Geist Mono', monospace;
+      font-size: 8.5px; font-weight: 600;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(250,245,236,0.30);
+      padding: 0 20px 12px;
+      border-bottom: 1px solid rgba(250,245,236,0.07);
+      margin-bottom: 4px;
+    }
+
+    /* Team stats rows */
+    .stat-list { padding: 6px 0; }
+
+    .stat-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 8px 20px;
+      gap: 8px;
+    }
+
+    .stat-label {
+      font-size: 10px; font-weight: 500;
+      color: rgba(250,245,236,0.45);
+      letter-spacing: -0.01em;
+    }
+
+    .stat-val {
+      font-size: 26px; font-weight: 900;
+      color: var(--dark-text);
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+
+    .stat-sub {
+      font-family: 'Geist Mono', monospace;
+      font-size: 8px;
+      color: rgba(250,245,236,0.28);
+      letter-spacing: 0.04em;
+      margin-top: 1px;
+      text-align: right;
+    }
+
+    .stat-val.warning { color: var(--terracotta); }
+
+    .panel-sep {
+      height: 1px;
+      background: rgba(250,245,236,0.07);
+      margin: 8px 0;
+    }
+
+    /* Pattern Radar */
+    .radar-list { padding: 4px 0 8px; }
+
+    .radar-item { padding: 7px 20px; }
+
+    .radar-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 5px;
+    }
+
+    .radar-name {
+      font-size: 11px; font-weight: 600;
+      color: rgba(250,245,236,0.65);
+      letter-spacing: -0.01em;
+    }
+
+    .radar-count {
+      font-family: 'Geist Mono', monospace;
+      font-size: 8px;
+      color: rgba(250,245,236,0.28);
+    }
+
+    .radar-track {
+      width: 100%;
+      height: 3px;
+      background: rgba(250,245,236,0.08);
+      overflow: hidden;
+    }
+
+    .radar-bar {
+      height: 100%;
+      width: 0%;
+      transition: width 1.0s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .radar-bar.tc  { background: var(--terracotta); }
+    .radar-bar.mu  { background: var(--mustard); }
+    .radar-bar.sa  { background: var(--sage); }
+
+    /* Upload CTA — PRIMARY action */
+    .panel-upload-cta {
+      padding: 16px 20px;
+    }
+
+    .btn-upload {
+      width: 100%;
+      background: var(--mustard);
+      color: var(--tc-text);
+      border: var(--rule);
+      padding: 11px 16px;
+      font-size: 11px; font-weight: 800;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.14s, transform 0.08s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-upload:hover { background: #f0c040; }
+    .btn-upload:active { transform: scale(0.98); }
+
+    /* Panel footer */
+    .panel-footer {
+      font-family: 'Geist Mono', monospace;
+      font-size: 8px;
+      color: rgba(250,245,236,0.22);
+      letter-spacing: 0.06em;
+      padding: 12px 20px;
+      border-top: 1px solid rgba(250,245,236,0.07);
+      margin-top: auto;
+    }
+
+    /* ═══════════════════════════════════════════
+       COL 3 — TERRACOTTA HERO: TEAM SUMMARY
+    ═══════════════════════════════════════════ */
+    .col-main {
+      grid-column: 3;
+      grid-row: 1;
+      background: var(--terracotta);
+      display: flex;
+      flex-direction: column;
+      min-height: 380px;
+    }
+
+    .main-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 32px 14px;
+      border-bottom: 1.5px solid rgba(26,13,8,0.18);
+      flex-shrink: 0;
+    }
+
+    .mh-title {
+      font-size: 13px; font-weight: 700;
+      color: var(--tc-text); letter-spacing: -0.01em;
+    }
+
+    .mh-date {
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(26,13,8,0.45);
+    }
+
+    /* 2×2 stat cards grid */
+    .stat-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      flex: 1;
+      gap: 0;
+    }
+
+    .stat-card {
+      padding: 28px 32px;
+      border-right: 1.5px solid rgba(26,13,8,0.12);
+      border-bottom: 1.5px solid rgba(26,13,8,0.12);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .stat-card:nth-child(2n) { border-right: none; }
+    .stat-card:nth-child(n+3) { border-bottom: none; }
+
+    .stat-card.visible { opacity: 1; transform: translateY(0); }
+
+    /* Warning card within terracotta — cream bg + ink text */
+    .stat-card.warning-card {
+      background: var(--cream);
+    }
+
+    .sc-label {
+      font-family: 'Geist Mono', monospace;
+      font-size: 8.5px; font-weight: 600;
+      letter-spacing: 0.13em; text-transform: uppercase;
+      color: rgba(26,13,8,0.45);
+      margin-bottom: 8px;
+    }
+
+    .stat-card.warning-card .sc-label { color: rgba(19,17,16,0.45); }
+
+    .sc-val {
+      font-size: clamp(48px, 7vw, 80px);
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      line-height: 0.9;
+      color: var(--tc-text);
+    }
+
+    .stat-card.warning-card .sc-val { color: var(--ink); }
+
+    .sc-denom {
+      font-family: 'Geist Mono', monospace;
+      font-size: 12px;
+      color: rgba(26,13,8,0.40);
+      letter-spacing: 0.02em;
+      margin-top: 4px;
+    }
+
+    .stat-card.warning-card .sc-denom { color: rgba(19,17,16,0.40); }
+
+    /* ═══════════════════════════════════════════
+       ROW 2 — CREAM TEAM TABLE
+    ═══════════════════════════════════════════ */
+    .col-table {
+      grid-column: 2 / -1;
+      grid-row: 2;
+      background: var(--cream);
+      border-top: var(--rule);
+    }
+
+    .table-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 28px 12px;
+      border-bottom: 1px solid rgba(19,17,16,0.10);
+    }
+
+    .table-eyebrow {
+      font-size: 15px; font-weight: 800;
+      color: var(--ink); letter-spacing: -0.02em;
+    }
+
+    .table-meta {
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px; font-weight: 600;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      color: rgba(19,17,16,0.35);
+    }
+
+    /* Column headers */
+    .col-heads {
+      display: grid;
+      grid-template-columns: 35% 10% 18% 17% 8% 12%;
+      padding: 8px 28px;
+      border-bottom: 1px solid rgba(19,17,16,0.10);
+      background: var(--cream-2);
+    }
+
+    .col-head {
+      font-family: 'Geist Mono', monospace;
+      font-size: 8px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(19,17,16,0.40);
+    }
+
+    .col-head:not(:first-child) { text-align: center; }
+    .col-head:last-child { text-align: right; }
+
+    /* Table rows */
+    .team-row {
+      display: grid;
+      grid-template-columns: 35% 10% 18% 17% 8% 12%;
+      padding: 13px 28px;
+      border-bottom: 1px solid rgba(19,17,16,0.08);
+      border-left: 3px solid transparent;
+      cursor: pointer;
+      transition: background 0.12s, border-left-color 0.12s;
+      align-items: center;
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16,1,0.3,1),
+                  background 0.12s, border-left-color 0.12s;
+    }
+
+    .team-row.visible { opacity: 1; transform: translateX(0); }
+    .team-row:hover { background: var(--cream-2); border-left-color: var(--sage); }
+
+    /* Warning row: terracotta left border + cream-2 tint */
+    .team-row.warning-row {
+      border-left-color: var(--terracotta);
+      background: rgba(224,92,52,0.04);
+    }
+
+    .team-row.warning-row:hover { background: rgba(224,92,52,0.07); }
+
+    /* Dormant row: muted agent name */
+    .team-row.dormant-row .row-agent { opacity: 0.55; }
+
+    .row-agent { display: flex; align-items: center; gap: 10px; }
+
+    .agent-name {
+      font-size: 13px; font-weight: 700;
+      color: var(--ink); letter-spacing: -0.01em;
+    }
+
+    .level-pill {
+      border: 1px solid rgba(19,17,16,0.18);
+      padding: 2px 7px;
+      font-family: 'Geist Mono', monospace;
+      font-size: 8px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: rgba(19,17,16,0.55);
+      white-space: nowrap;
+    }
+
+    .row-score {
+      text-align: center;
+      font-size: 20px; font-weight: 900;
+      letter-spacing: -0.04em;
+      color: var(--ink);
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+    }
+
+    .row-score.no-score {
+      font-size: 11px; font-weight: 500;
+      color: rgba(19,17,16,0.30);
+      letter-spacing: 0;
+    }
+
+    .trend {
+      font-size: 12px;
+      display: inline-block;
+    }
+
+    .trend.up    { color: var(--sage-dark); }
+    .trend.down  { color: var(--terracotta); }
+    .trend.flat  { color: rgba(19,17,16,0.35); }
+
+    .row-call { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+
+    .call-date {
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: rgba(19,17,16,0.50);
+    }
+
+    .call-date.dormant { color: var(--terracotta); }
+
+    .call-badge {
+      font-size: 8px; font-weight: 800;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 2px 6px;
+    }
+
+    .call-badge.enrolled { background: var(--sage); color: var(--ink); }
+    .call-badge.missed   { background: var(--terracotta); color: #fff; }
+    .call-badge.none     { color: rgba(19,17,16,0.28); font-weight: 500; font-size: 9px; }
+
+    .row-pattern {
+      text-align: center;
+      font-family: 'Geist Mono', monospace;
+      font-size: 10px;
+      color: rgba(19,17,16,0.50);
+      letter-spacing: 0.01em;
+    }
+
+    .row-pattern.no-pattern { color: rgba(19,17,16,0.22); }
+
+    .row-calls {
+      text-align: center;
+      font-family: 'Geist Mono', monospace;
+      font-size: 11px; font-weight: 700;
+      color: rgba(19,17,16,0.55);
+    }
+
+    .row-actions {
+      text-align: right;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .action-link {
+      font-size: 10px; font-weight: 600;
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      transition: opacity 0.12s;
+    }
+
+    .action-link.upload { color: var(--terracotta); }
+    .action-link.profile { color: rgba(19,17,16,0.38); }
+    .action-link:hover { opacity: 0.7; }
+
+    .action-sep {
+      width: 1px; height: 10px;
+      background: rgba(19,17,16,0.15);
+    }
+
+    /* New agent row */
+    .team-row.new-agent-row .agent-name { color: rgba(19,17,16,0.45); }
+
+    /* ═══════════════════════════════════════════
+       ROW 3 — CREAM RECENT ACTIVITY STRIP
+    ═══════════════════════════════════════════ */
+    .col-activity {
+      grid-column: 2 / -1;
+      grid-row: 3;
+      background: var(--cream);
+      border-top: 1px solid rgba(19,17,16,0.10);
+      padding: 20px 28px;
+    }
+
+    .activity-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .activity-title {
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.13em; text-transform: uppercase;
+      color: rgba(19,17,16,0.38);
+    }
+
+    .activity-all {
+      font-size: 10px; font-weight: 600;
+      color: rgba(19,17,16,0.35);
+      text-decoration: none;
+      transition: color 0.12s;
+    }
+
+    .activity-all:hover { color: var(--ink); }
+
+    .activity-list {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+
+    .activity-list::-webkit-scrollbar { display: none; }
+
+    .activity-card {
+      flex-shrink: 0;
+      background: #fff;
+      border: var(--rule-lt);
+      padding: 14px 16px;
+      width: 200px;
+      cursor: pointer;
+      transition: border 0.14s, box-shadow 0.14s;
+    }
+
+    .activity-card:hover { border: var(--rule); box-shadow: 2px 2px 0 rgba(19,17,16,0.10); }
+
+    .ac-type {
+      font-family: 'Geist Mono', monospace;
+      font-size: 8px; font-weight: 800;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .ac-type.call    { color: var(--sage-dark); }
+    .ac-type.level   { color: var(--mustard); }
+    .ac-type.badge   { color: var(--sage); }
+    .ac-type.pattern { color: var(--terracotta); }
+    .ac-type.best    { color: var(--mustard); }
+
+    .ac-desc {
+      font-size: 11.5px; font-weight: 600;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .ac-meta {
+      font-family: 'Geist Mono', monospace;
+      font-size: 8px;
+      color: rgba(19,17,16,0.35);
+      letter-spacing: 0.04em;
+    }
+
+    /* ═══════════════════════════════════════════
+       ROW 4 — MUSTARD MARQUEE
+    ═══════════════════════════════════════════ */
+    .col-marquee {
+      grid-column: 1 / -1;
+      grid-row: 4;
+      background: var(--mustard);
+      border-top: var(--rule);
+      height: 38px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .marquee-track {
+      display: flex;
+      white-space: nowrap;
+      animation: marquee 26s linear infinite;
+      will-change: transform;
+    }
+
+    .marquee-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 32px;
+      font-family: 'Geist Mono', monospace;
+      font-size: 9.5px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--tc-text);
+    }
+
+    .marquee-dot { width: 5px; height: 5px; background: var(--ink); border-radius: 50%; opacity: 0.35; flex-shrink: 0; }
+    .marquee-dot.alert { background: var(--terracotta); opacity: 1; }
+
+    @keyframes marquee {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ═══════════════════════════════════════════
+       UPLOAD CALL SLIDEOVER
+    ═══════════════════════════════════════════ */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(19,17,16,0.35);
+      z-index: 10;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .overlay.open { opacity: 1; pointer-events: all; }
+
+    .slideover {
+      position: fixed;
+      right: 0; top: 0;
+      height: 100%; width: 420px;
+      background: var(--cream);
+      border-left: var(--rule);
+      z-index: 11;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .slideover.open { transform: translateX(0); }
+
+    .so-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 28px 18px;
+      border-bottom: var(--rule-lt);
+      flex-shrink: 0;
+    }
+
+    .so-title {
+      font-size: 18px; font-weight: 800;
+      color: var(--ink); letter-spacing: -0.02em;
+    }
+
+    .so-close {
+      width: 28px; height: 28px;
+      background: transparent;
+      border: var(--rule-lt);
+      cursor: pointer;
+      font-size: 16px; color: rgba(19,17,16,0.55);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.12s;
+    }
+
+    .so-close:hover { background: var(--cream-2); }
+
+    .so-body { padding: 28px 28px; flex: 1; }
+
+    .form-group { margin-bottom: 20px; }
+
+    .form-label {
+      display: block;
+      font-family: 'Geist Mono', monospace;
+      font-size: 8.5px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(19,17,16,0.45);
+      margin-bottom: 7px;
+    }
+
+    .form-input,
+    .form-select {
+      width: 100%;
+      background: #fff;
+      border: var(--rule-lt);
+      color: var(--ink);
+      font-family: 'Geist', system-ui, sans-serif;
+      font-size: 13px;
+      padding: 9px 12px;
+      outline: none;
+      transition: border-color 0.15s;
+      appearance: none;
+    }
+
+    .form-input:focus,
+    .form-select:focus { border-color: var(--ink); }
+
+    /* File upload zone */
+    .upload-zone {
+      border: 2px dashed rgba(19,17,16,0.22);
+      padding: 28px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.14s, background 0.14s;
+    }
+
+    .upload-zone:hover { border-color: var(--ink); background: var(--cream-2); }
+
+    .uz-main {
+      font-size: 13px; font-weight: 600;
+      color: rgba(19,17,16,0.55);
+      letter-spacing: -0.01em;
+      margin-bottom: 4px;
+    }
+
+    .uz-browse {
+      color: var(--ink);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .uz-meta {
+      font-family: 'Geist Mono', monospace;
+      font-size: 8px;
+      color: rgba(19,17,16,0.30);
+      letter-spacing: 0.06em;
+      margin-top: 8px;
+    }
+
+    .btn-analyze {
+      width: 100%;
+      background: var(--mustard);
+      color: var(--tc-text);
+      border: var(--rule);
+      padding: 13px 20px;
+      font-size: 12px; font-weight: 800;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.14s;
+      margin-top: 24px;
+    }
+
+    .btn-analyze:hover { background: #f0c040; }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════ */
+    @media (max-width: 1100px) {
+      .shell { grid-template-columns: 72px 0 1fr; }
+      .col-panel { display: none; }
+      .col-table, .col-activity { grid-column: 2 / -1; }
+    }
+
+    @media (max-width: 768px) {
+      .shell { grid-template-columns: 48px 0 1fr; }
+      .nav-label { display: none; }
+      .slideover { width: 100%; }
+      .col-heads, .team-row { grid-template-columns: 1fr auto auto; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="shell">
+
+    <!-- ──────────────────────────────────────
+         COL 1: SAGE ICON NAV (manager)
+    ────────────────────────────────────────── -->
+    <aside class="col-nav">
+      <div class="nav-logo">CS</div>
+      <nav class="nav-links">
+        <!-- Dashboard — active -->
+        <a class="nav-item active" href="#">
+          <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+          <span class="nav-label">Dash</span>
+        </a>
+        <!-- Team -->
+        <a class="nav-item" href="#">
+          <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <span class="nav-label">Team</span>
+        </a>
+        <!-- Upload Call — manager only, terracotta tint -->
+        <a class="nav-item upload-nav" href="#" id="navUpload">
+          <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          <span class="nav-label">Upload</span>
+        </a>
+        <!-- Admin -->
+        <a class="nav-item" href="#">
+          <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M16.24 7.76a6 6 0 0 1 0 8.48M3.76 16.24a6 6 0 0 1 0-8.48M1.93 19.07a10 10 0 0 1 0-14.14"/>
+          </svg>
+          <span class="nav-label">Admin</span>
+        </a>
+        <!-- Profile -->
+        <a class="nav-item" href="#">
+          <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/>
+          </svg>
+          <span class="nav-label">Profile</span>
+        </a>
+      </nav>
+      <div class="nav-foot">
+        <div class="nav-avatar">MR</div>
+      </div>
+    </aside>
+
+    <!-- ──────────────────────────────────────
+         COL 2: INK PANEL — TEAM STATS + RADAR + CTA
+    ────────────────────────────────────────── -->
+    <div class="col-panel">
+      <p class="panel-eyebrow">Team Overview</p>
+
+      <!-- Team Stats -->
+      <div class="stat-list">
+        <div class="stat-row">
+          <div>
+            <div class="stat-label">Team Score</div>
+            <div class="stat-sub">↓ from last week</div>
+          </div>
+          <div class="stat-val" id="teamScore">0</div>
+        </div>
+        <div class="stat-row">
+          <div><div class="stat-label">Active Agents</div></div>
+          <div class="stat-val">12</div>
+        </div>
+        <div class="stat-row">
+          <div><div class="stat-label">Calls This Week</div></div>
+          <div class="stat-val">34</div>
+        </div>
+        <div class="stat-row">
+          <div><div class="stat-label">No Recent Calls</div></div>
+          <div class="stat-val warning">2</div>
+        </div>
+      </div>
+
+      <div class="panel-sep"></div>
+
+      <p class="panel-eyebrow" style="border-bottom:none; margin-bottom: 0; padding-bottom: 8px;">Pattern Radar</p>
+
+      <!-- Pattern Radar -->
+      <div class="radar-list">
+        <div class="radar-item">
+          <div class="radar-meta">
+            <span class="radar-name">Value Drop</span>
+            <span class="radar-count">5 agents</span>
+          </div>
+          <div class="radar-track"><div class="radar-bar tc" data-w="83%"></div></div>
+        </div>
+        <div class="radar-item">
+          <div class="radar-meta">
+            <span class="radar-name">Logic Response</span>
+            <span class="radar-count">3 agents</span>
+          </div>
+          <div class="radar-track"><div class="radar-bar mu" data-w="50%"></div></div>
+        </div>
+        <div class="radar-item">
+          <div class="radar-meta">
+            <span class="radar-name">Dead Air</span>
+            <span class="radar-count">2 agents</span>
+          </div>
+          <div class="radar-track"><div class="radar-bar sa" data-w="33%"></div></div>
+        </div>
+      </div>
+
+      <div class="panel-sep"></div>
+
+      <!-- Upload CTA — primary action -->
+      <div class="panel-upload-cta">
+        <button class="btn-upload" id="uploadCTABtn">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          Upload Call +
+        </button>
+      </div>
+
+      <div class="panel-footer">12 active agents · 3 managers</div>
+    </div>
+
+    <!-- ──────────────────────────────────────
+         COL 3: TERRACOTTA HERO — TEAM SUMMARY
+    ────────────────────────────────────────── -->
+    <main class="col-main">
+      <header class="main-header">
+        <span class="mh-title">Team Dashboard</span>
+        <span class="mh-date">Oct 24</span>
+      </header>
+
+      <div class="stat-cards">
+        <!-- Team Certainty Score -->
+        <div class="stat-card" id="sc0">
+          <div class="sc-label">Team Certainty Score</div>
+          <div class="sc-val" id="scoreVal">0</div>
+          <div class="sc-denom">/ 100</div>
+        </div>
+        <!-- Active Agents -->
+        <div class="stat-card" id="sc1">
+          <div class="sc-label">Active Agents</div>
+          <div class="sc-val">12</div>
+        </div>
+        <!-- Calls This Week -->
+        <div class="stat-card" id="sc2">
+          <div class="sc-label">Calls This Week</div>
+          <div class="sc-val">34</div>
+        </div>
+        <!-- Inactive 14+ days — warning treatment -->
+        <div class="stat-card warning-card" id="sc3">
+          <div class="sc-label">Inactive 14+ Days</div>
+          <div class="sc-val">2</div>
+          <div class="sc-denom">agents</div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ──────────────────────────────────────
+         ROW 2: CREAM TEAM TABLE
+    ────────────────────────────────────────── -->
+    <section class="col-table">
+      <div class="table-header-row">
+        <span class="table-eyebrow">Agent Performance</span>
+        <span class="table-meta">Week of Oct 21 – 27</span>
+      </div>
+
+      <!-- Column headers -->
+      <div class="col-heads">
+        <div class="col-head">Agent</div>
+        <div class="col-head">Score</div>
+        <div class="col-head">Last Call</div>
+        <div class="col-head">Top Pattern</div>
+        <div class="col-head">Calls</div>
+        <div class="col-head" style="text-align:right;">Actions</div>
+      </div>
+
+      <!-- Row 1: Alex J. — normal -->
+      <div class="team-row" id="row0">
+        <div class="row-agent">
+          <div class="agent-name">Alex J.</div>
+          <div class="level-pill">L4 · Reframer</div>
+        </div>
+        <div class="row-score">88 <span class="trend up">↑</span></div>
+        <div class="row-call">
+          <span class="call-date">Oct 24</span>
+          <span class="call-badge enrolled">Enrolled</span>
+        </div>
+        <div class="row-pattern">Value Drop</div>
+        <div class="row-calls">47</div>
+        <div class="row-actions">
+          <a href="#" class="action-link upload" onclick="openSlideOver(); return false;">Upload +</a>
+          <span class="action-sep"></span>
+          <a href="#" class="action-link profile">Profile</a>
+        </div>
+      </div>
+
+      <!-- Row 2: Maria S. — WARNING (pattern 3+ calls) -->
+      <div class="team-row warning-row" id="row1">
+        <div class="row-agent">
+          <div class="agent-name">Maria S.</div>
+          <div class="level-pill">L3 · Reader</div>
+        </div>
+        <div class="row-score">71 <span class="trend down">↓</span></div>
+        <div class="row-call">
+          <span class="call-date">Oct 23</span>
+          <span class="call-badge missed">Missed</span>
+        </div>
+        <div class="row-pattern">Value Drop</div>
+        <div class="row-calls">23</div>
+        <div class="row-actions">
+          <a href="#" class="action-link upload" onclick="openSlideOver(); return false;">Upload +</a>
+          <span class="action-sep"></span>
+          <a href="#" class="action-link profile">Profile</a>
+        </div>
+      </div>
+
+      <!-- Row 3: Chris T. — DORMANT -->
+      <div class="team-row dormant-row" id="row2">
+        <div class="row-agent">
+          <div class="agent-name">Chris T.</div>
+          <div class="level-pill">L5 · Shifter</div>
+        </div>
+        <div class="row-score">82 <span class="trend flat">→</span></div>
+        <div class="row-call">
+          <span class="call-date dormant">Sep 09</span>
+          <span class="call-badge enrolled">Enrolled</span>
+        </div>
+        <div class="row-pattern no-pattern">—</div>
+        <div class="row-calls">68</div>
+        <div class="row-actions">
+          <a href="#" class="action-link upload" onclick="openSlideOver(); return false;">Upload +</a>
+          <span class="action-sep"></span>
+          <a href="#" class="action-link profile">Profile</a>
+        </div>
+      </div>
+
+      <!-- Row 4: Priya K. — NEW AGENT (0 calls) -->
+      <div class="team-row new-agent-row" id="row3">
+        <div class="row-agent">
+          <div class="agent-name" style="opacity:0.45;">Priya K.</div>
+          <div class="level-pill" style="opacity:0.5;">L2 · Listener</div>
+        </div>
+        <div class="row-score no-score">—</div>
+        <div class="row-call">
+          <span class="call-badge none">No calls yet</span>
+        </div>
+        <div class="row-pattern no-pattern">—</div>
+        <div class="row-calls" style="color:rgba(19,17,16,0.25)">0</div>
+        <div class="row-actions">
+          <a href="#" class="action-link upload" onclick="openSlideOver(); return false;" style="font-weight:700;">Upload first call →</a>
+        </div>
+      </div>
+
+      <!-- Row 5: Jordan M. — normal -->
+      <div class="team-row" id="row4">
+        <div class="row-agent">
+          <div class="agent-name">Jordan M.</div>
+          <div class="level-pill">L4 · Reframer</div>
+        </div>
+        <div class="row-score">79 <span class="trend up">↑</span></div>
+        <div class="row-call">
+          <span class="call-date">Oct 22</span>
+          <span class="call-badge enrolled">Enrolled</span>
+        </div>
+        <div class="row-pattern">Logic Response</div>
+        <div class="row-calls">31</div>
+        <div class="row-actions">
+          <a href="#" class="action-link upload" onclick="openSlideOver(); return false;">Upload +</a>
+          <span class="action-sep"></span>
+          <a href="#" class="action-link profile">Profile</a>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ──────────────────────────────────────
+         ROW 3: CREAM RECENT ACTIVITY
+    ────────────────────────────────────────── -->
+    <section class="col-activity">
+      <div class="activity-header">
+        <span class="activity-title">Recent Activity</span>
+        <a href="#" class="activity-all">View all activity →</a>
+      </div>
+      <div class="activity-list">
+        <div class="activity-card">
+          <div class="ac-type call">Call Analyzed</div>
+          <div class="ac-desc">Alex J. — Oct 24 · 92 score</div>
+          <div class="ac-meta">Money Caller · 2 hours ago</div>
+        </div>
+        <div class="activity-card">
+          <div class="ac-type level">Level Up</div>
+          <div class="ac-desc">Jordan M. reached Level 4</div>
+          <div class="ac-meta">The Reframer · Yesterday</div>
+        </div>
+        <div class="activity-card">
+          <div class="ac-type badge">Badge Earned</div>
+          <div class="ac-desc">Maria S. earned Signal Spotter</div>
+          <div class="ac-meta">3 signals in 1 call · 2 days ago</div>
+        </div>
+        <div class="activity-card">
+          <div class="ac-type pattern">Pattern Flagged</div>
+          <div class="ac-desc">Value Drop flagged for Maria S.</div>
+          <div class="ac-meta">3rd occurrence this week · 2 days ago</div>
+        </div>
+        <div class="activity-card">
+          <div class="ac-type best">Personal Best</div>
+          <div class="ac-desc">Alex J. scored 92 — new high</div>
+          <div class="ac-meta">Previous best: 90 · 3 days ago</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────────────
+         ROW 4: MUSTARD MARQUEE
+    ────────────────────────────────────────── -->
+    <div class="col-marquee">
+      <div class="marquee-track">
+        <span class="marquee-item"><span class="marquee-dot alert"></span>3 AGENTS INACTIVE 14+ DAYS</span>
+        <span class="marquee-item"><span class="marquee-dot alert"></span>VALUE DROP SPREADING — 5 AGENTS FLAGGED</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>TEAM AVG SCORE: 78 / 100</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>NEW COURSE ADDED: SCARED SWITCHER PLAYBOOK</span>
+        <span class="marquee-item"><span class="marquee-dot alert"></span>3 AGENTS INACTIVE 14+ DAYS</span>
+        <span class="marquee-item"><span class="marquee-dot alert"></span>VALUE DROP SPREADING — 5 AGENTS FLAGGED</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>TEAM AVG SCORE: 78 / 100</span>
+        <span class="marquee-item"><span class="marquee-dot"></span>NEW COURSE ADDED: SCARED SWITCHER PLAYBOOK</span>
+      </div>
+    </div>
+
+  </div><!-- /shell -->
+
+  <!-- ──────────────────────────────────────
+       UPLOAD CALL SLIDEOVER (starts open)
+  ────────────────────────────────────────── -->
+  <div class="overlay open" id="overlay"></div>
+
+  <div class="slideover open" id="slideover">
+    <div class="so-header">
+      <span class="so-title">Upload Call</span>
+      <button class="so-close" id="soClose">×</button>
+    </div>
+
+    <div class="so-body">
+      <div class="form-group">
+        <label class="form-label">Select Agent</label>
+        <select class="form-select">
+          <option selected>Alex J.</option>
+          <option>Maria S.</option>
+          <option>Chris T.</option>
+          <option>Priya K.</option>
+          <option>Jordan M.</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Call Date</label>
+        <input type="date" class="form-input" value="2024-10-24">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Call Type (optional)</label>
+        <select class="form-select">
+          <option value="" selected>— Select call type —</option>
+          <option>Money Caller</option>
+          <option>Scared Switcher</option>
+          <option>Misinformed</option>
+          <option>Third Party Controlled</option>
+          <option>Detail Staller</option>
+          <option>Time Bomb</option>
+          <option>Commercial Myth Caller</option>
+          <option>Veteran</option>
+          <option>Timing Objector</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Call Transcript</label>
+        <div class="upload-zone" id="dropZone">
+          <div class="uz-main">Drop TXT, PDF, or DOCX here<br>or <span class="uz-browse">Browse</span></div>
+          <div class="uz-meta">Supported formats: TXT, PDF, DOCX · Max 10MB</div>
+        </div>
+      </div>
+
+      <button class="btn-analyze">Analyze Call</button>
+    </div>
+  </div>
+
+  <script>
+    // ─── Score counter animation ─────────────────────────────────────────
+    function easeOutCubic(x) { return 1 - Math.pow(1 - x, 3); }
+
+    function animateCounter(el, target, duration) {
+      let t0 = null;
+      function step(ts) {
+        if (!t0) t0 = ts;
+        const p = Math.min((ts - t0) / duration, 1);
+        el.textContent = Math.round(target * easeOutCubic(p));
+        if (p < 1) requestAnimationFrame(step);
+        else el.textContent = target;
+      }
+      requestAnimationFrame(step);
+    }
+
+    // ─── SlideOver toggle ────────────────────────────────────────────────
+    function openSlideOver() {
+      document.getElementById('slideover').classList.add('open');
+      document.getElementById('overlay').classList.add('open');
+    }
+
+    function closeSlideOver() {
+      document.getElementById('slideover').classList.remove('open');
+      document.getElementById('overlay').classList.remove('open');
+    }
+
+    document.getElementById('soClose').addEventListener('click', closeSlideOver);
+    document.getElementById('overlay').addEventListener('click', closeSlideOver);
+    document.getElementById('uploadCTABtn').addEventListener('click', openSlideOver);
+    document.getElementById('navUpload').addEventListener('click', (e) => { e.preventDefault(); openSlideOver(); });
+
+    // ─── Entrance animations ──────────────────────────────────────────────
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        // Stat cards
+        ['sc0','sc1','sc2','sc3'].forEach((id, i) => {
+          setTimeout(() => document.getElementById(id).classList.add('visible'), i * 80);
+        });
+
+        // Score counter (hero + panel)
+        setTimeout(() => animateCounter(document.getElementById('scoreVal'), 78, 900), 100);
+        setTimeout(() => animateCounter(document.getElementById('teamScore'), 78, 900), 100);
+
+        // Pattern radar bars
+        setTimeout(() => {
+          document.querySelectorAll('.radar-bar').forEach(bar => {
+            bar.style.width = bar.dataset.w;
+          });
+        }, 500);
+
+        // Table rows
+        ['row0','row1','row2','row3','row4'].forEach((id, i) => {
+          setTimeout(() => document.getElementById(id).classList.add('visible'), 300 + i * 70);
+        });
+
+      }, 100);
+    });
+  </script>
+</body>
+</html>
