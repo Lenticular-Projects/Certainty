@@ -1,0 +1,96 @@
+/* ═══════════════════════════════════════════
+   DEV NAV PAGE
+═══════════════════════════════════════════ */
+
+.devNav {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ink);
+  padding: 24px;
+}
+
+.devCard {
+  width: 100%;
+  max-width: 380px;
+  background: var(--cream);
+  border-radius: 12px;
+  padding: 48px 36px 36px;
+  text-align: center;
+}
+
+.devLogo {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 20px;
+  background: var(--sage);
+  color: var(--ink);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-geist-mono), monospace;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.5px;
+}
+
+.devTitle {
+  font-family: var(--font-playfair), serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.devSubtitle {
+  font-size: 13px;
+  color: rgba(19, 17, 16, 0.5);
+  margin-bottom: 32px;
+}
+
+.devLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.devLink {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  background: var(--cream-2);
+  border: 1.5px solid rgba(19, 17, 16, 0.1);
+  border-radius: 8px;
+  text-decoration: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.devLink:hover {
+  background: #e8e3d9;
+  border-color: var(--ink);
+}
+
+.devLinkLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.devLinkPath {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11px;
+  color: rgba(19, 17, 16, 0.4);
+}
+
+.devHint {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: var(--rule-lt);
+  font-size: 11px;
+  color: rgba(19, 17, 16, 0.4);
+  line-height: 1.6;
+}

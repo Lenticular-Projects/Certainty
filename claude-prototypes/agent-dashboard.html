@@ -71,7 +71,10 @@
       color: var(--dark-text);
       margin-bottom: 32px;
       flex-shrink: 0;
+      text-decoration: none;
+      transition: background 0.15s;
     }
+    a.nav-logo:hover { background: #2a2724; }
 
     .nav-links {
       display: flex;
@@ -132,10 +135,9 @@
     }
 
     .panel-eyebrow {
-      font-family: 'Geist Mono', monospace;
       font-size: 8.5px; font-weight: 600;
-      letter-spacing: 0.15em; text-transform: uppercase;
-      color: rgba(250,245,236,0.30);
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: rgba(250,245,236,0.55);
       padding: 0 20px 14px;
       border-bottom: 1px solid rgba(250,245,236,0.07);
       margin-bottom: 8px;
@@ -184,7 +186,6 @@
     .cat-item.focused .cat-name { color: var(--dark-text); }
 
     .cat-score {
-      font-family: 'Geist Mono', monospace;
       font-size: 14px; font-weight: 700;
       color: rgba(250,245,236,0.35);
       flex-shrink: 0;
@@ -206,10 +207,9 @@
     }
 
     .pa-eyebrow {
-      font-family: 'Geist Mono', monospace;
       font-size: 8px; font-weight: 600;
-      letter-spacing: 0.13em; text-transform: uppercase;
-      color: rgba(250,245,236,0.28);
+      letter-spacing: 0.07em; text-transform: uppercase;
+      color: rgba(250,245,236,0.50);
       margin-bottom: 8px;
     }
 
@@ -255,10 +255,9 @@
     }
 
     .pl-eyebrow {
-      font-family: 'Geist Mono', monospace;
       font-size: 8px; font-weight: 600;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      color: rgba(250,245,236,0.28);
+      letter-spacing: 0.07em; text-transform: uppercase;
+      color: rgba(250,245,236,0.50);
       margin-bottom: 5px;
     }
 
@@ -284,10 +283,9 @@
     }
 
     .xp-label {
-      font-family: 'Geist Mono', monospace;
       font-size: 8px;
-      color: rgba(250,245,236,0.28);
-      letter-spacing: 0.06em;
+      color: rgba(250,245,236,0.45);
+      letter-spacing: 0.04em;
       margin-top: 5px;
     }
 
@@ -338,15 +336,14 @@
     }
 
     .mh-title {
-      font-size: 13px; font-weight: 700;
+      font-size: 19px; font-weight: 800;
       color: var(--tc-text);
-      letter-spacing: -0.01em;
+      letter-spacing: -0.02em;
     }
 
     .mh-date {
-      font-family: 'Geist Mono', monospace;
       font-size: 9px; font-weight: 600;
-      letter-spacing: 0.12em; text-transform: uppercase;
+      letter-spacing: 0.06em; text-transform: uppercase;
       color: rgba(26,13,8,0.45);
     }
 
@@ -381,9 +378,8 @@
     }
 
     .cc-eyebrow {
-      font-family: 'Geist Mono', monospace;
       font-size: 8.5px; font-weight: 700;
-      letter-spacing: 0.14em; text-transform: uppercase;
+      letter-spacing: 0.07em; text-transform: uppercase;
       color: var(--mustard);
     }
 
@@ -433,9 +429,8 @@
     }
 
     .cc-alert-text {
-      font-family: 'Geist Mono', monospace;
       font-size: 8.5px; font-weight: 700;
-      letter-spacing: 0.10em; text-transform: uppercase;
+      letter-spacing: 0.06em; text-transform: uppercase;
       color: rgba(250,245,236,0.40);
     }
 
@@ -506,7 +501,6 @@
     .score-ring-svg circle { transition: none; }
 
     .score-denom {
-      font-family: 'Geist Mono', monospace;
       font-size: 12px; font-weight: 400;
       color: rgba(26,13,8,0.40);
       letter-spacing: 0.02em;
@@ -556,9 +550,8 @@
     }
 
     .badge-name {
-      font-family: 'Geist Mono', monospace;
       font-size: 8px; font-weight: 600;
-      letter-spacing: 0.08em; text-transform: uppercase;
+      letter-spacing: 0.06em; text-transform: uppercase;
       color: rgba(19,17,16,0.50);
       margin-bottom: 4px;
       line-height: 1.3;
@@ -621,9 +614,8 @@
     }
 
     .cc-date {
-      font-family: 'Geist Mono', monospace;
       font-size: 9px; font-weight: 600;
-      letter-spacing: 0.12em; text-transform: uppercase;
+      letter-spacing: 0.06em; text-transform: uppercase;
       color: rgba(19,17,16,0.38);
     }
 
@@ -637,9 +629,8 @@
     .cc-outcome.missed   { background: var(--terracotta); color: #fff; }
 
     .cc-type {
-      font-family: 'Geist Mono', monospace;
       font-size: 9px; font-weight: 600;
-      letter-spacing: 0.10em; text-transform: uppercase;
+      letter-spacing: 0.06em; text-transform: uppercase;
       color: rgba(19,17,16,0.40);
       margin-bottom: 4px;
     }
@@ -651,7 +642,6 @@
     }
 
     .cc-num-denom {
-      font-family: 'Geist Mono', monospace;
       font-size: 11px; font-weight: 400;
       color: rgba(19,17,16,0.28);
     }
@@ -683,9 +673,8 @@
       align-items: center;
       gap: 6px;
       padding: 0 32px;
-      font-family: 'Geist Mono', monospace;
       font-size: 9.5px; font-weight: 700;
-      letter-spacing: 0.12em; text-transform: uppercase;
+      letter-spacing: 0.08em; text-transform: uppercase;
       color: var(--tc-text);
     }
 
@@ -722,6 +711,89 @@
       .nav-label { display: none; }
       .col-badges { grid-template-columns: repeat(3, 1fr); }
     }
+
+    /* ─── Focus panel subtitle ─── */
+    .focus-subtitle {
+      font-size: 8px; font-weight: 500;
+      letter-spacing: 0.04em;
+      color: rgba(250,245,236,0.48);
+      padding: 6px 20px 10px;
+      line-height: 1.4;
+    }
+
+    /* ─── AI coaching note label on Closer's Edge ─── */
+    .cc-ai-label {
+      font-size: 7.5px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: rgba(250,245,236,0.50);
+      margin-bottom: 10px;
+    }
+
+    /* ─── Certainty Score label stack below ring ─── */
+    .score-label-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 3px;
+      margin-top: 8px;
+    }
+
+    .score-cs-label {
+      font-size: 8px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: rgba(26,13,8,0.50);
+    }
+
+    .score-cs-desc {
+      font-size: 10.5px; font-weight: 400;
+      color: rgba(26,13,8,0.60);
+      letter-spacing: -0.01em;
+      text-align: right;
+      line-height: 1.3;
+      max-width: 200px;
+    }
+
+    /* ─── Badge cell descriptor line ─── */
+    .badge-desc {
+      font-size: 9.5px; font-weight: 400;
+      color: rgba(19,17,16,0.52);
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+      margin-top: 3px;
+    }
+
+    .badge-cell.sharp .badge-desc { color: rgba(250,245,236,0.55); }
+
+    /* ─── HELP OVERLAY ─── */
+    .help-btn {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(19,17,16,0.15); border: 1.5px solid rgba(19,17,16,0.22);
+      color: rgba(19,17,16,0.55); font-size: 12px; font-weight: 700;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background 0.12s, color 0.12s;
+    }
+    .help-btn:hover { background: rgba(19,17,16,0.28); color: var(--ink); }
+    .help-overlay {
+      position: fixed; inset: 0; background: rgba(19,17,16,0.48); z-index: 100;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
+    }
+    .help-overlay.open { opacity: 1; pointer-events: all; }
+    .help-modal {
+      background: var(--cream); border: var(--rule);
+      max-width: 480px; width: calc(100% - 40px); max-height: 80vh; overflow-y: auto;
+      padding: 28px 32px 32px;
+      transform: translateY(12px); transition: transform 0.25s cubic-bezier(0.16,1,0.3,1);
+    }
+    .help-overlay.open .help-modal { transform: translateY(0); }
+    .hm-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; gap: 16px; }
+    .hm-title { font-size: 15px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; line-height: 1.2; }
+    .hm-close { width: 28px; height: 28px; background: transparent; border: var(--rule-lt); font-size: 16px; color: rgba(19,17,16,0.45); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.12s; }
+    .hm-close:hover { background: var(--cream-2); color: var(--ink); }
+    .hm-section { margin-bottom: 16px; }
+    .hm-section:last-child { margin-bottom: 0; }
+    .hm-section-title { font-family: 'Geist Mono', monospace; font-size: 8px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(19,17,16,0.38); margin-bottom: 5px; }
+    .hm-section-text { font-size: 12.5px; color: rgba(19,17,16,0.68); line-height: 1.65; }
   </style>
 </head>
 
@@ -732,7 +804,7 @@
          COL 1: SAGE ICON NAV
     ────────────────────────────────────────── -->
     <aside class="col-nav">
-      <div class="nav-logo">CS</div>
+      <a class="nav-logo" href="manager-dashboard.html" title="Manager view">CS</a>
 
       <nav class="nav-links">
         <!-- Dashboard — active -->
@@ -767,6 +839,7 @@
       </nav>
 
       <div class="nav-foot">
+        <button class="help-btn" id="helpBtn" title="How to use this page">?</button>
         <div class="nav-avatar">AJ</div>
       </div>
     </aside>
@@ -776,6 +849,7 @@
     ────────────────────────────────────────── -->
     <div class="col-panel">
       <p class="panel-eyebrow">Your Focus</p>
+      <p class="focus-subtitle">Select up to 2 categories to prioritize this week</p>
 
       <div class="cat-list" id="catList">
         <!-- Signal Reading — FOCUSED -->
@@ -790,10 +864,10 @@
           <div class="cat-body"><div class="cat-name">Math Breakdown</div></div>
           <div class="cat-score">77</div>
         </div>
-        <!-- Objections — unfocused -->
+        <!-- Objection Handling — unfocused -->
         <div class="cat-item slide-in-left" data-cat="objection" style="transition-delay: 0.15s">
           <div class="cat-dot proficient"></div>
-          <div class="cat-body"><div class="cat-name">Objections</div></div>
+          <div class="cat-body"><div class="cat-name">Objection Handling</div></div>
           <div class="cat-score">82</div>
         </div>
         <!-- Lead Quality — unfocused -->
@@ -837,7 +911,7 @@
       <!-- Level + XP -->
       <div class="panel-level">
         <div class="pl-eyebrow">Level Progress</div>
-        <div class="pl-name">Lvl 4 — The Reframer</div>
+        <div class="pl-name">Lvl 4 — The Builder</div>
         <div class="xp-track">
           <div class="xp-bar" id="xpBar"></div>
         </div>
@@ -864,6 +938,7 @@
       <!-- Left: Closer's Edge coaching card -->
       <div class="main-left">
         <div class="coach-card" id="coachCard">
+          <div class="cc-ai-label">AI Coaching Note — from your last call</div>
           <div class="cc-label">
             <div class="cc-dot"></div>
             <span class="cc-eyebrow">The Closer's Edge</span>
@@ -903,6 +978,10 @@
             </svg>
             <span class="score-denom">/ 100 · Last 5 Calls</span>
           </div>
+          <div class="score-label-stack">
+            <span class="score-cs-label">Certainty Score</span>
+            <span class="score-cs-desc">How effectively you turn conversations into enrollments</span>
+          </div>
 
           <div class="score-badge">
             <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
@@ -917,33 +996,39 @@
     ────────────────────────────────────────── -->
     <section class="col-badges">
       <!-- Signal Reading: Proficient, focused -->
-      <div class="badge-cell proficient is-focused">
+      <div class="badge-cell proficient is-focused" title="Identifying call type and caller signals">
         <div class="badge-name">Signal Reading</div>
+        <div class="badge-desc">Identifying call type and caller signals</div>
         <div class="badge-tier">Proficient</div>
       </div>
       <!-- Math Breakdown: Developing, focused -->
-      <div class="badge-cell developing is-focused">
+      <div class="badge-cell developing is-focused" title="Comparing plans in live numbers">
         <div class="badge-name">Math Breakdown</div>
+        <div class="badge-desc">Comparing plans in live numbers</div>
         <div class="badge-tier">Developing</div>
       </div>
-      <!-- Objections: Proficient -->
-      <div class="badge-cell proficient">
-        <div class="badge-name">Objections</div>
+      <!-- Objection Handling: Proficient -->
+      <div class="badge-cell proficient" title="Responding to resistance and fear">
+        <div class="badge-name">Objection Handling</div>
+        <div class="badge-desc">Responding to resistance and fear</div>
         <div class="badge-tier">Proficient</div>
       </div>
-      <!-- Lead Quality: Sharp -->
-      <div class="badge-cell sharp">
-        <div class="badge-name">Lead Quality</div>
+      <!-- Client Gold: Sharp -->
+      <div class="badge-cell sharp" title="Recognizing and using what the client gives you">
+        <div class="badge-name">Client Gold</div>
+        <div class="badge-desc">Recognizing and using what the client gives you</div>
         <div class="badge-tier">Sharp</div>
       </div>
-      <!-- Compliance: Sharp -->
-      <div class="badge-cell sharp">
-        <div class="badge-name">Compliance</div>
+      <!-- Close Confirmation: Sharp -->
+      <div class="badge-cell sharp" title="Securing enrollment before the window closes">
+        <div class="badge-name">Close Confirmation</div>
+        <div class="badge-desc">Securing enrollment before the window closes</div>
         <div class="badge-tier">Sharp</div>
       </div>
-      <!-- Call Outcome: Proficient -->
-      <div class="badge-cell proficient">
-        <div class="badge-name">Call Outcome</div>
+      <!-- Communication: Proficient -->
+      <div class="badge-cell proficient" title="Clarity, confidence, and pacing">
+        <div class="badge-name">Communication</div>
+        <div class="badge-desc">Clarity, confidence, and pacing</div>
         <div class="badge-tier">Proficient</div>
       </div>
     </section>
@@ -1111,6 +1196,40 @@
     }
 
     window.addEventListener('load', () => setTimeout(reveal, 100));
+
+    // ─── Help overlay ─────────────────────────────────────────────────────
+    document.getElementById('helpBtn').addEventListener('click', () => document.getElementById('helpOverlay').classList.add('open'));
+    document.getElementById('helpClose').addEventListener('click', () => document.getElementById('helpOverlay').classList.remove('open'));
+    document.getElementById('helpOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) e.currentTarget.classList.remove('open'); });
   </script>
+
+  <div class="help-overlay" id="helpOverlay">
+    <div class="help-modal">
+      <div class="hm-header">
+        <div class="hm-title">Your Performance Dashboard</div>
+        <button class="hm-close" id="helpClose">×</button>
+      </div>
+      <div class="hm-section">
+        <div class="hm-section-title">Certainty Score</div>
+        <div class="hm-section-text">Your aggregate performance score across 6 categories — updated after every analyzed call. Scores below 60 show in terracotta, 60–84 in mustard, 85+ in sage.</div>
+      </div>
+      <div class="hm-section">
+        <div class="hm-section-title">Your Focus</div>
+        <div class="hm-section-text">Select up to 2 categories to prioritize this week. Clicking a third dequeues the oldest. Focus items are tracked in your AI coaching recommendations. Selected categories show a mustard border.</div>
+      </div>
+      <div class="hm-section">
+        <div class="hm-section-title">Category Badges</div>
+        <div class="hm-section-text">Six performance areas scored on every call: Signal Reading, Math Breakdown, Objection Handling, Client Gold, Close Confirmation, and Communication. Developing / Proficient / Sharp reflects your rolling average.</div>
+      </div>
+      <div class="hm-section">
+        <div class="hm-section-title">The Closer's Edge</div>
+        <div class="hm-section-text">The single most actionable coaching insight from your most recently analyzed call — generated by AI from your actual transcript. This is the one move that would have changed the outcome of that call.</div>
+      </div>
+      <div class="hm-section">
+        <div class="hm-section-title">Recent Calls</div>
+        <div class="hm-section-text">Your last 3 analyzed calls — date, caller type, enrollment outcome, and Certainty Score. Click any call to open the full analysis report.</div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

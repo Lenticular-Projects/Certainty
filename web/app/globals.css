@@ -1,0 +1,69 @@
+/* ═══════════════════════════════════════════
+   CERTAINTY SYSTEM — GLOBAL STYLES
+   v6 Color Block Design System
+═══════════════════════════════════════════ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --sage:        #8FAF94;
+  --sage-dark:   #6A8B6E;
+  --ink:         #131110;
+  --terracotta:  #E05C34;
+  --mustard:     #E9B840;
+  --cream:       #FBF8F3;
+  --cream-2:     #F0EBE1;
+  --dark-text:   #FAF5EC;
+  --tc-text:     #1A0D08;
+  --rule:        1.5px solid #131110;
+  --rule-lt:     1px solid rgba(19,17,16,0.12);
+}
+
+html, body {
+  height: 100%;
+  background: #1A1614;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
+  background: none;
+}
+
+/* ═══════════════════════════════════════════
+   ENTRANCE ANIMATIONS
+═══════════════════════════════════════════ */
+
+.slide-in-left {
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.slide-in-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.slide-in-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.slide-in-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}

@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Certainty System | Hybrid Call Report</title>
+
+    <!-- Web Fonts -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-sans/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-mono/style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Geist', 'sans-serif'],
+                        mono: ['Geist Mono', 'monospace'],
+                        editorial: ['"Playfair Display"', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            cream: '#FDFBF7',
+                            ink: '#0F0F0F',
+                            sage: '#A5BCA7',
+                            terracotta: '#E23528',
+                            mustard: '#FDE047',
+                            gray: '#EDEDE4',
+                            darkgray: '#8F8F8A'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: var(--color-brand-cream);
+            color: var(--color-brand-ink);
+            -webkit-font-smoothing: antialiased;
+            overflow: hidden;
+            /* Prevent body scroll, layout handles it */
+        }
+
+        .shell {
+            display: grid;
+            grid-template-columns: 80px 280px 1fr;
+            height: 100vh;
+            width: 100%;
+        }
+
+        .border-ink {
+            border-color: var(--color-brand-ink);
+        }
+
+        .border-b-ink {
+            border-bottom: 1.5px solid var(--color-brand-ink);
+        }
+
+        .border-r-ink {
+            border-right: 1.5px solid var(--color-brand-ink);
+        }
+
+        .border-t-ink {
+            border-top: 1.5px solid var(--color-brand-ink);
+        }
+
+        .border-l-ink {
+            border-left: 1.5px solid var(--color-brand-ink);
+        }
+
+        .col-nav {
+            background-color: var(--color-brand-ink);
+            color: var(--color-brand-cream);
+        }
+
+        .col-panel {
+            background-color: var(--color-brand-gray);
+        }
+
+        /* Hover & Active States */
+        .nav-item {
+            transition: all 0.2s;
+            opacity: 0.6;
+        }
+
+        .nav-item:hover {
+            opacity: 1;
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active {
+            opacity: 1;
+            border-left: 4px solid var(--color-brand-mustard);
+            padding-left: 12px;
+        }
+
+        .report-nav-item {
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .report-nav-item:hover {
+            background-color: rgba(15, 15, 15, 0.05);
+        }
+
+        .report-nav-item.active {
+            background-color: var(--color-brand-cream);
+            border-left-color: var(--color-brand-ink);
+        }
+
+        /* Gemini Specific Components */
+        .editorial-quote {
+            font-family: var(--font-editorial);
+            line-height: 1.4;
+        }
+
+        .highlight-mustard {
+            background-color: var(--color-brand-mustard);
+            color: var(--color-brand-ink);
+            padding: 0 4px;
+            font-weight: bold;
+        }
+
+        .score-bar-bg {
+            background-color: var(--color-brand-ink);
+            opacity: 0.1;
+            height: 4px;
+            width: 100%;
+        }
+
+        .score-bar-fill {
+            height: 100%;
+        }
+
+        .tag-enrolled {
+            background-color: var(--color-brand-sage);
+            border: 1px solid var(--color-brand-ink);
+            font-weight: 800;
+            font-family: var(--font-mono);
+            color: var(--color-brand-ink);
+            padding: 2px 8px;
+            text-transform: uppercase;
+            font-size: 10px;
+        }
+
+        .tag-missed {
+            background-color: var(--color-brand-terracotta);
+            border: 1px solid var(--color-brand-ink);
+            font-weight: 800;
+            font-family: var(--font-mono);
+            color: var(--color-brand-cream);
+            padding: 2px 8px;
+            text-transform: uppercase;
+            font-size: 10px;
+        }
+
+        /* Transcript Tags */
+        .transcript-tag {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            font-weight: 800;
+            padding: 2px 6px;
+            letter-spacing: 0.05em;
+            margin: 0 4px;
+            vertical-align: baseline;
+            text-transform: uppercase;
+            border: 1px solid var(--color-brand-ink);
+        }
+
+        .tt-pattern {
+            background-color: var(--color-brand-terracotta);
+            color: var(--color-brand-cream);
+        }
+
+        .tt-signal {
+            background-color: var(--color-brand-sage);
+            color: var(--color-brand-ink);
+        }
+
+        /* Smooth Scroll Behavior */
+        .col-main {
+            scroll-behavior: smooth;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--color-brand-ink);
+        }
+
+        @media (max-width: 1024px) {
+            .shell {
+                grid-template-columns: 80px 1fr;
+            }
+
+            .col-panel {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="shell">
+
+        <!-- COLUMN 1: ICON NAV -->
+        <nav class="col-nav border-r-ink flex flex-col items-center py-8 z-20">
+            <div
+                class="w-12 h-12 bg-brand-cream text-brand-ink flex items-center justify-center font-black text-lg mb-12 shadow-lg">
+                CS</div>
+
+            <div class="nav-links flex flex-col w-full gap-8 px-4 flex-grow">
+                <a href="agent-dashboard.html" class="nav-item flex flex-col items-center gap-1">
+                    <i data-lucide="layout-dashboard" class="w-6 h-6"></i>
+                    <span class="text-[9px] font-bold uppercase tracking-widest mt-1">Dash</span>
+                </a>
+                <a href="#" class="nav-item flex flex-col items-center gap-1">
+                    <i data-lucide="book-open" class="w-6 h-6"></i>
+                    <span class="text-[9px] font-bold uppercase tracking-widest mt-1">Hub</span>
+                </a>
+                <a href="#" class="nav-item active flex flex-col items-center gap-1">
+                    <i data-lucide="phone" class="w-6 h-6"></i>
+                    <span class="text-[9px] font-bold uppercase tracking-widest mt-1">Calls</span>
+                </a>
+                <a href="#" class="nav-item flex flex-col items-center gap-1">
+                    <i data-lucide="brain-circuit" class="w-6 h-6"></i>
+                    <span class="text-[9px] font-bold uppercase tracking-widest mt-1">Coach</span>
+                </a>
+            </div>
+
+            <div class="mt-auto">
+                <div
+                    class="w-10 h-10 border-2 border-brand-cream flex items-center justify-center font-bold text-xs uppercase bg-brand-mustard text-brand-ink">
+                    AJ</div>
+            </div>
+        </nav>
+
+        <!-- COLUMN 2: REPORT NAVIGATOR -->
+        <aside class="col-panel border-r-ink flex flex-col z-10 overflow-y-auto">
+
+            <!-- Report Meta Header -->
+            <div class="p-8 border-b-ink bg-brand-cream">
+                <p class="font-mono text-xs font-bold text-brand-darkgray tracking-widest uppercase mb-4">OCT 24 CALL
+                </p>
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="tag-enrolled">Enrolled</span>
+                </div>
+                <div class="flex items-baseline gap-1">
+                    <span class="text-6xl font-black text-brand-ink tracking-tighter">88</span>
+                    <span class="text-xs font-mono font-bold opacity-40">/100</span>
+                </div>
+            </div>
+
+            <!-- Anchor Links -->
+            <nav class="flex-grow py-4 flex flex-col text-sm border-b-ink">
+                <a href="#edge"
+                    class="report-nav-item active px-8 py-3 flex items-center justify-between font-bold uppercase tracking-tight text-brand-ink">
+                    <span>The Closer's Edge</span>
+                </a>
+                <a href="#summary"
+                    class="report-nav-item px-8 py-3 flex items-center justify-between font-bold uppercase tracking-tight opacity-70">
+                    <span>Executive Summary</span>
+                </a>
+                <a href="#scores"
+                    class="report-nav-item px-8 py-3 flex items-center justify-between font-bold uppercase tracking-tight opacity-70">
+                    <span>Score Breakdown</span>
+                </a>
+                <a href="#patterns"
+                    class="report-nav-item px-8 py-3 flex items-center justify-between font-bold uppercase tracking-tight opacity-70">
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-brand-terracotta rounded-full"></div>
+                        <span>Failure Patterns</span>
+                    </div>
+                </a>
+                <a href="#transcript"
+                    class="report-nav-item px-8 py-3 flex items-center justify-between font-bold uppercase tracking-tight opacity-70">
+                    <span>Transcript</span>
+                </a>
+            </nav>
+
+            <!-- Agent Info Bottom -->
+            <div class="p-6 mt-auto">
+                <p class="font-mono text-[10px] uppercase tracking-widest font-bold text-brand-darkgray mb-1">Agent</p>
+                <p class="font-bold text-sm uppercase">Alex J.</p>
+                <p class="font-mono text-[10px] uppercase text-brand-darkgray mt-1">Lvl 4 · Reframer</p>
+            </div>
+        </aside>
+
+        <!-- COLUMN 3: SCROLLABLE REPORT CONTENT -->
+        <main class="col-main overflow-y-auto bg-brand-cream relative">
+
+            <div class="max-w-4xl mx-auto p-12 lg:p-20 flex flex-col gap-24">
+
+                <!-- 1. The Closer's Edge -->
+                <section id="edge" class="fade-in pt-8">
+                    <div class="border-2 border-brand-ink bg-brand-cream shadow-[8px_8px_0_0_#0F0F0F] p-10 relative">
+                        <div
+                            class="absolute -top-3 -left-3 w-6 h-6 bg-brand-mustard border border-brand-ink rounded-full flex items-center justify-center">
+                        </div>
+                        <p class="font-mono text-xs uppercase tracking-widest text-brand-ink font-bold mb-8">The One
+                            Move That Changes This Call</p>
+
+                        <h2
+                            class="editorial-quote text-3xl md:text-4xl italic text-brand-ink mb-8 border-l-4 border-brand-mustard pl-6">
+                            "You heard the fear. You didn't name it. The prospect gave you everything you needed at
+                            <span class="highlight-mustard font-sans not-italic text-2xl">8:14</span> — and you
+                            responded with a quote layer."
+                        </h2>
+
+                        <div class="border-t-2 border-brand-ink pt-6 mt-6">
+                            <p
+                                class="font-mono text-[10px] font-bold uppercase tracking-widest text-brand-darkgray mb-3 border border-brand-ink w-max px-2 py-1">
+                                The Correct Implementation</p>
+                            <p class="text-lg font-sans leading-relaxed text-brand-ink font-medium max-w-2xl">
+                                When a prospect says "I just don't want to lose what I already have" — that's an
+                                invitation. Your next call starts with: "I completely understand. Let's make sure that
+                                doesn't happen. Can I show you exactly what's protected?"
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. Executive Summary -->
+                <section id="summary" class="fade-in" style="animation-delay: 0.1s">
+                    <p
+                        class="font-mono text-xs font-bold uppercase tracking-widest text-brand-darkgray mb-6 flex items-center gap-4">
+                        <span>Executive Summary</span>
+                        <span class="flex-grow h-px bg-brand-ink opacity-20"></span>
+                    </p>
+                    <div class="p-8 bg-brand-gray border-l-4 border-brand-ink">
+                        <p class="text-base font-medium leading-loose text-brand-ink">
+                            This was a strong call overall &mdash; you enrolled a <strong
+                                class="bg-brand-cream px-1 border border-brand-ink text-xs uppercase tracking-widest font-bold">Money
+                                Caller</strong> who had genuine intent from the first minute. Your Math Breakdown landed
+                            cleanly at 11:32 and directly influenced the close. The one missed opportunity was at 8:14,
+                            when the prospect surfaced a fear of switching and you provided pricing instead of
+                            validation. This is a repeating <strong
+                                class="text-brand-terracotta underline decoration-brand-terracotta underline-offset-4 decoration-2">Value
+                                Drop</strong> pattern.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- 3. Final Scores -->
+                <section id="scores" class="fade-in" style="animation-delay: 0.2s">
+                    <p
+                        class="font-mono text-xs font-bold uppercase tracking-widest text-brand-darkgray mb-8 flex items-center gap-4">
+                        <span>Score Breakdown</span>
+                        <span class="flex-grow h-px bg-brand-ink opacity-20"></span>
+                    </p>
+
+                    <div class="flex flex-col border-t-ink border-l-ink border-r-ink">
+
+                        <!-- Row 1 -->
+                        <div
+                            class="p-6 border-b-ink flex flex-col md:flex-row gap-8 items-start md:items-center bg-brand-cream hover:bg-brand-gray transition-colors">
+                            <div class="w-full md:w-1/3">
+                                <p class="font-bold text-lg uppercase tracking-tight text-brand-ink mb-1">Signal Reading
+                                </p>
+                                <div class="flex items-baseline gap-2 mb-2">
+                                    <span class="font-mono font-bold text-xl">91</span>
+                                    <span class="font-mono text-xs text-brand-darkgray">/100</span>
+                                </div>
+                                <!-- Progress -->
+                                <div class="score-bar-bg relative">
+                                    <div class="score-bar-fill bg-brand-sage absolute top-0 left-0" style="width: 91%">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-1 md:border-l-ink md:pl-8">
+                                <p class="editorial-quote italic text-brand-darkgray text-lg mb-3">"Strong detection.
+                                    One unweaponized moment at 8:14."</p>
+                                <p class="text-xs font-medium leading-relaxed">You detected the Green Signal at 11:32.
+                                    The 8:14 moment was a Yellow signal that went unacknowledged. Two signals detected,
+                                    one weaponized.</p>
+                            </div>
+                        </div>
+
+                        <!-- Row 2 -->
+                        <div
+                            class="p-6 border-b-ink flex flex-col md:flex-row gap-8 items-start md:items-center bg-brand-cream hover:bg-brand-gray transition-colors">
+                            <div class="w-full md:w-1/3">
+                                <p class="font-bold text-lg uppercase tracking-tight text-brand-ink mb-1">Objections</p>
+                                <div class="flex items-baseline gap-2 mb-2">
+                                    <span class="font-mono font-bold text-xl">88</span>
+                                    <span class="font-mono text-xs text-brand-darkgray">/100</span>
+                                </div>
+                                <div class="score-bar-bg relative">
+                                    <div class="score-bar-fill bg-brand-sage absolute top-0 left-0" style="width: 88%">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-1 md:border-l-ink md:pl-8">
+                                <p class="editorial-quote italic text-brand-darkgray text-lg mb-3">"Recovered well from
+                                    early resistance."</p>
+                                <p class="text-xs font-medium leading-relaxed">When the prospect raised the "timing
+                                    isn't right" objection at 9:45, you used the delay-cost calculation effectively.</p>
+                            </div>
+                        </div>
+
+                        <!-- Row 3 -->
+                        <div
+                            class="p-6 border-b-ink flex flex-col md:flex-row gap-8 items-start md:items-center bg-brand-cream hover:bg-brand-gray transition-colors">
+                            <div class="w-full md:w-1/3">
+                                <p class="font-bold text-lg uppercase tracking-tight text-brand-ink mb-1">Math Breakdown
+                                </p>
+                                <div class="flex items-baseline gap-2 mb-2">
+                                    <span class="font-mono font-bold text-xl">77</span>
+                                    <span class="font-mono text-xs text-brand-darkgray">/100</span>
+                                </div>
+                                <div class="score-bar-bg relative">
+                                    <div class="score-bar-fill bg-brand-mustard absolute top-0 left-0"
+                                        style="width: 77%"></div>
+                                </div>
+                            </div>
+                            <div class="flex-1 md:border-l-ink md:pl-8">
+                                <p class="editorial-quote italic text-brand-darkgray text-lg mb-3">"Numbers presented
+                                    but lacked personalization."</p>
+                                <p class="text-xs font-medium leading-relaxed">You delivered the Math Breakdown but used
+                                    generic monthly savings over specific gap calculations for this prospect's current
+                                    plan.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- 4. Patterns -->
+                <section id="patterns" class="fade-in" style="animation-delay: 0.3s">
+                    <p
+                        class="font-mono text-xs font-bold uppercase tracking-widest text-brand-darkgray mb-8 flex items-center gap-4">
+                        <span class="text-brand-terracotta">Failure Patterns</span>
+                        <span class="flex-grow h-px bg-brand-terracotta opacity-20"></span>
+                    </p>
+
+                    <div class="border-2 border-brand-terracotta bg-brand-cream shadow-[4px_4px_0_0_#E23528] p-8">
+                        <div class="flex justify-between items-start mb-6">
+                            <div>
+                                <h3 class="font-bold text-xl uppercase tracking-tight text-brand-ink">Value Drop</h3>
+                                <span
+                                    class="inline-block mt-2 font-mono text-[9px] uppercase tracking-widest font-bold bg-brand-terracotta/10 text-brand-terracotta px-2 py-1 border border-brand-terracotta">Flagged
+                                    3x this week</span>
+                            </div>
+                            <a href="#transcript"
+                                class="font-mono text-xs font-bold text-brand-terracotta border-b border-brand-terracotta hover:text-brand-ink hover:border-brand-ink transition-colors pb-1">Jump
+                                to moment ↓</a>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-8 border-t border-brand-terracotta/20 pt-6">
+                            <div>
+                                <p class="font-mono text-[10px] uppercase font-bold text-brand-darkgray mb-2">Definition
+                                </p>
+                                <p class="text-sm font-medium leading-relaxed">Rushing past an emotional concern to
+                                    deliver logic, causing the prospect to dig into defensive positions.</p>
+                            </div>
+                            <div>
+                                <p class="font-mono text-[10px] uppercase font-bold text-brand-darkgray mb-2">The Moment
+                                </p>
+                                <div
+                                    class="bg-brand-ink text-brand-cream p-4 font-mono text-xs border border-brand-ink">
+                                    <p class="text-brand-mustard mb-2">PROSPECT (8:14):</p>
+                                    <p class="leading-relaxed opacity-90">"I've had Humana for six years. I just don't
+                                        want to lose what I already have if I switch."</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. Annotated Transcript -->
+                <section id="transcript" class="fade-in" style="animation-delay: 0.4s">
+                    <p
+                        class="font-mono text-xs font-bold uppercase tracking-widest text-brand-darkgray mb-8 flex items-center gap-4">
+                        <span>Annotated Transcript</span>
+                        <span class="flex-grow h-px bg-brand-ink opacity-20"></span>
+                    </p>
+
+                    <div
+                        class="border-2 border-brand-ink bg-[#fff] p-10 font-sans text-[15px] leading-8 text-brand-ink shadow-lg">
+
+                        <!-- Speaker 1 -->
+                        <p
+                            class="font-mono text-[10px] font-bold uppercase tracking-widest text-brand-darkgray mb-1 mt-6">
+                            Alex J. (Agent) &bull; 08:12</p>
+                        <p class="mb-6">So looking at the Aetna plan, it covers Dr. Smith and lowers your co-pay by
+                            about $15 per visit.</p>
+
+                        <!-- Speaker 2 -->
+                        <p class="font-mono text-[10px] font-bold uppercase tracking-widest text-brand-mustard mb-1">
+                            Prospect &bull; 08:14</p>
+                        <p class="mb-6 font-medium">Yeah, I see that. It's just... I've had Humana for six years. I just
+                            don't want to lose what I already have if I switch over. <span
+                                class="transcript-tag tt-pattern">FLAG: VALUE DROP (UNACKNOWLEDGED FEAR)</span></p>
+
+                        <!-- Speaker 1 -->
+                        <p class="font-mono text-[10px] font-bold uppercase tracking-widest text-brand-darkgray mb-1">
+                            Alex J. (Agent) &bull; 08:21</p>
+                        <p class="mb-6">Well the premium is actually $0, so you aren't paying anything extra monthly.
+                            And the maximum out of pocket is lower.</p>
+
+                        <div
+                            class="my-10 border-t border-b border-brand-ink/10 py-6 text-center text-brand-darkgray font-editorial italic text-lg">
+                            ... Conversation continues (3 mins truncated) ...</div>
+
+                        <!-- Speaker 2 -->
+                        <p class="font-mono text-[10px] font-bold uppercase tracking-widest text-brand-mustard mb-1">
+                            Prospect &bull; 11:30</p>
+                        <p class="mb-6 font-medium">So I wouldn't have to change my pharmacy either? Because that was my
+                            biggest worry. <span class="transcript-tag tt-signal">GREEN SIGNAL</span></p>
+
+                        <!-- Speaker 1 -->
+                        <p class="font-mono text-[10px] font-bold uppercase tracking-widest text-brand-darkgray mb-1">
+                            Alex J. (Agent) &bull; 11:32</p>
+                        <p class="mb-6">Exactly. You keep CVS. And let's look at the math on that. Last year you spent
+                            $400 on those tier 3 drugs...</p>
+
+                    </div>
+                </section>
+
+            </div>
+        </main>
+
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // Simple intersection observer to highlight side nav on scroll
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.report-nav-item');
+
+        const observerOption = {
+            root: document.querySelector('.col-main'),
+            rootMargin: '0px',
+            threshold: 0.3
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href').includes(id)) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, observerOption);
+
+        sections.forEach(section => observer.observe(section));
+    </script>
+</body>
+
+</html>

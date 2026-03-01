@@ -1,0 +1,547 @@
+/* ═══════════════════════════════════════════
+   AGENT DASHBOARD
+   Reference: claude-prototypes/agent-dashboard.html
+═══════════════════════════════════════════ */
+
+/* ─── COL 2: INK PANEL ─── */
+
+.colPanel {
+  grid-column: 2;
+  grid-row: 1;
+  background: var(--ink);
+  display: flex;
+  flex-direction: column;
+  padding: 28px 0 0;
+  position: relative;
+  z-index: 1;
+}
+
+.panelEyebrow {
+  font-size: 8.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(250, 245, 236, 0.55);
+  padding: 0 20px 14px;
+  border-bottom: 1px solid rgba(250, 245, 236, 0.07);
+  margin-bottom: 8px;
+}
+
+.focusSubtitle {
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: rgba(250, 245, 236, 0.48);
+  padding: 6px 20px 10px;
+  line-height: 1.4;
+}
+
+.catList {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 0;
+}
+
+.catItem {
+  display: flex;
+  align-items: center;
+  padding: 9px 20px;
+  gap: 12px;
+  cursor: pointer;
+  transition: background 0.12s, opacity 0.2s;
+  border-left: 2.5px solid transparent;
+  opacity: 0.4;
+}
+
+.catItem:hover {
+  background: rgba(250, 245, 236, 0.04);
+}
+
+.catItem.focused {
+  background: rgba(250, 245, 236, 0.06);
+  border-left-color: var(--mustard);
+  opacity: 1;
+}
+
+.catDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.catDot.sharp {
+  background: var(--sage);
+  box-shadow: 0 0 6px rgba(143, 175, 148, 0.5);
+}
+
+.catDot.proficient {
+  background: var(--mustard);
+  box-shadow: 0 0 6px rgba(233, 184, 64, 0.4);
+}
+
+.catDot.developing {
+  background: var(--terracotta);
+  box-shadow: 0 0 6px rgba(224, 92, 52, 0.4);
+}
+
+.catBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.catName {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: rgba(250, 245, 236, 0.75);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.catItem.focused .catName {
+  color: var(--dark-text);
+}
+
+.catScore {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(250, 245, 236, 0.35);
+  flex-shrink: 0;
+  letter-spacing: -0.02em;
+}
+
+.catItem.focused .catScore {
+  color: rgba(250, 245, 236, 0.9);
+}
+
+.panelSep {
+  height: 1px;
+  background: rgba(250, 245, 236, 0.07);
+  margin: 10px 0;
+}
+
+/* ─── Pattern Alert ─── */
+
+.patternAlert {
+  padding: 10px 20px;
+}
+
+.paEyebrow {
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgba(250, 245, 236, 0.5);
+  margin-bottom: 8px;
+}
+
+.paPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--terracotta);
+  color: #fff;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  margin-bottom: 10px;
+}
+
+.paPillDot {
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+}
+
+.paLinks {
+  display: flex;
+  gap: 14px;
+}
+
+.paLink {
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(250, 245, 236, 0.45);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+  transition: color 0.12s;
+}
+
+.paLink:hover {
+  color: var(--mustard);
+}
+
+/* ─── Level + XP ─── */
+
+.panelLevel {
+  padding: 14px 20px;
+  border-top: 1px solid rgba(250, 245, 236, 0.07);
+  margin-top: auto;
+}
+
+.plEyebrow {
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgba(250, 245, 236, 0.5);
+  margin-bottom: 5px;
+}
+
+.plName {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--dark-text);
+  letter-spacing: -0.01em;
+  margin-bottom: 10px;
+}
+
+.xpTrack {
+  width: 100%;
+  height: 3px;
+  background: rgba(250, 245, 236, 0.1);
+  overflow: hidden;
+}
+
+.xpBar {
+  height: 100%;
+  background: var(--mustard);
+  transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.xpLabel {
+  font-size: 8px;
+  color: rgba(250, 245, 236, 0.45);
+  letter-spacing: 0.04em;
+  margin-top: 5px;
+}
+
+/* ═══════════════════════════════════════════
+   COL 3: TERRACOTTA HERO
+═══════════════════════════════════════════ */
+
+.colMain {
+  grid-column: 3;
+  grid-row: 1;
+  background: var(--terracotta);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  position: relative;
+  overflow: hidden;
+  min-height: 480px;
+}
+
+.mainHeader {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 32px 14px;
+  border-bottom: 1.5px solid rgba(26, 13, 8, 0.18);
+}
+
+.mhTitle {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--tc-text);
+  letter-spacing: -0.02em;
+}
+
+.mhDate {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(26, 13, 8, 0.45);
+}
+
+/* ─── Left: Closer's Edge ─── */
+
+.mainLeft {
+  grid-column: 1;
+  grid-row: 2;
+  padding: 32px 24px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.coachCard {
+  background: var(--ink);
+  padding: 24px 24px 0;
+  box-shadow: 6px 6px 0px rgba(26, 13, 8, 0.28);
+}
+
+.ccAiLabel {
+  font-size: 7.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(250, 245, 236, 0.5);
+  margin-bottom: 10px;
+}
+
+.ccLabel {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 14px;
+}
+
+.ccDot {
+  width: 7px;
+  height: 7px;
+  background: var(--mustard);
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(233, 184, 64, 0.6);
+}
+
+.ccEyebrow {
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--mustard);
+}
+
+.ccQuote {
+  font-family: var(--font-playfair), "Playfair Display", serif;
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--dark-text);
+  margin-bottom: 12px;
+}
+
+.ccQuote mark {
+  background: var(--mustard);
+  color: var(--tc-text);
+  font-style: normal;
+  padding: 0 3px;
+}
+
+.ccBody {
+  font-size: 11.5px;
+  line-height: 1.65;
+  color: rgba(250, 245, 236, 0.55);
+  margin-bottom: 16px;
+}
+
+/* ─── Right: Score ─── */
+
+.mainRight {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 32px 32px 32px 16px;
+  position: relative;
+}
+
+.scoreWatermark {
+  position: absolute;
+  bottom: -40px;
+  right: -20px;
+  font-size: clamp(180px, 26vw, 300px);
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  line-height: 1;
+  color: rgba(26, 13, 8, 0.06);
+  user-select: none;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.scoreDisplay {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.scoreGiant {
+  display: block;
+  font-size: clamp(90px, 13vw, 160px);
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  line-height: 0.88;
+  color: var(--tc-text);
+}
+
+.scoreRingWrap {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.scoreDenom {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(26, 13, 8, 0.4);
+  letter-spacing: 0.02em;
+}
+
+.scoreLabelStack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  margin-top: 8px;
+}
+
+.scoreLabel {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgba(26, 13, 8, 0.55);
+}
+
+.scoreDesc {
+  font-size: 8.5px;
+  color: rgba(26, 13, 8, 0.38);
+  letter-spacing: 0.02em;
+}
+
+.scoreBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  border: 1.5px solid rgba(26, 13, 8, 0.4);
+  padding: 5px 12px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tc-text);
+}
+
+/* ═══════════════════════════════════════════
+   ROW 2: CREAM CATEGORY BADGES
+═══════════════════════════════════════════ */
+
+.colBadges {
+  grid-column: 2 / -1;
+  grid-row: 2;
+  background: var(--cream);
+  border-top: var(--rule);
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.badgeCell {
+  padding: 14px 16px;
+  border-right: 1px solid rgba(19, 17, 16, 0.08);
+}
+
+.badgeCell:last-child {
+  border-right: none;
+}
+
+.badgeName {
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(19, 17, 16, 0.5);
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+
+.badgeTier {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(19, 17, 16, 0.38);
+  letter-spacing: -0.01em;
+}
+
+.badgeDesc {
+  font-size: 8px;
+  color: rgba(19, 17, 16, 0.42);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  margin-top: 3px;
+}
+
+/* Developing: plain */
+.developing .badgeTier {
+  color: rgba(19, 17, 16, 0.35);
+}
+
+/* Proficient: mustard left border */
+.proficient {
+  border-left: 2.5px solid var(--mustard);
+}
+
+.proficient .badgeTier {
+  color: rgba(19, 17, 16, 0.65);
+}
+
+/* Sharp: ink background, light text */
+.sharp {
+  background: var(--ink);
+}
+
+.sharp .badgeName {
+  color: rgba(250, 245, 236, 0.55);
+}
+
+.sharp .badgeTier {
+  color: var(--dark-text);
+}
+
+.sharp .badgeDesc {
+  color: rgba(250, 245, 236, 0.55);
+}
+
+/* ═══════════════════════════════════════════
+   ROW 3: DATA ROW (placeholder)
+═══════════════════════════════════════════ */
+
+.colData {
+  grid-column: 2 / -1;
+  grid-row: 3;
+  background: var(--cream);
+  border-top: var(--rule);
+  padding: 32px;
+}
+
+.dataPlaceholder {
+  font-size: 12px;
+  color: rgba(19, 17, 16, 0.35);
+  text-align: center;
+  padding: 40px;
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+
+@media (max-width: 1100px) {
+  .colPanel {
+    display: none;
+  }
+
+  .colBadges,
+  .colData {
+    grid-column: 2 / -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .colBadges {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

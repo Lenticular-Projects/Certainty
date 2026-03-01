@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Certainty System | Ethereal Knowledge Hub</title>
+
+    <!-- Typography -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-sans/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-mono/style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons & Styling -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Geist', 'sans-serif'],
+                        mono: ['Geist Mono', 'monospace'],
+                        editorial: ['"Playfair Display"', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            cream: '#FDFBF7',
+                            ink: '#080A0B', /* Deeper ink for focus mode */
+                            terracotta: '#E6513A',
+                            mustard: '#EDB844',
+                            sage: '#8AA68A',
+                            glass: 'rgba(253, 251, 247, 0.05)', /* Dark mode generic glass */
+                            glassPanel: 'rgba(25, 27, 30, 0.6)'
+                        }
+                    },
+                    animation: {
+                        'gradient-xy': 'gradient-xy 20s ease infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'reveal': 'reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        'gradient-xy': {
+                            '0%, 100%': { backgroundPosition: 'left center' },
+                            '50%': { backgroundPosition: 'right center' }
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-5px)' },
+                        },
+                        'reveal': {
+                            'from': { opacity: '0', transform: 'translateY(30px) scale(0.98)' },
+                            'to': { opacity: '1', transform: 'translateY(0) scale(1)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Geist', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* The Deep Space Canvas */
+        .ambient-gradient {
+            background: linear-gradient(-45deg, #050505, #111B1B, #1A1F20, #0F0F0F);
+            background-size: 300% 300%;
+            transition: background-position 3s ease-in-out;
+            color: #FDFBF7;
+            /* Defaulting to light text */
+        }
+
+        /* Glassmorphism for Dark Mode */
+        .glass-pane {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s ease;
+        }
+
+        .glass-pane:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transform: translateY(-4px);
+            box-shadow: 0 30px 50px -15px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Dimensional Filters */
+        .dimensional-filter {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .dimensional-filter.active {
+            background: #FDFBF7;
+            color: #0F0F0F;
+            border-color: #FDFBF7;
+            box-shadow: 0 0 20px rgba(253, 251, 247, 0.2);
+        }
+
+        /* Massive Typography Watermarks for Course Cards */
+        .course-watermark {
+            font-size: 15rem;
+            font-weight: 900;
+            line-height: 0.75;
+            letter-spacing: -0.05em;
+            position: absolute;
+            bottom: -2rem;
+            right: -2rem;
+            color: rgba(255, 255, 255, 0.04);
+            pointer-events: none;
+            user-select: none;
+            transition: color 0.4s ease;
+        }
+
+        .glass-pane:hover .course-watermark {
+            color: rgba(255, 255, 255, 0.08);
+        }
+
+        .delay-100 {
+            animation-delay: 100ms;
+        }
+
+        .delay-200 {
+            animation-delay: 200ms;
+        }
+
+        .delay-300 {
+            animation-delay: 300ms;
+        }
+
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen ambient-gradient relative overflow-x-hidden flex flex-col items-center pb-24 lg:pb-0"
+    id="main-bg">
+
+    <!-- FLOATING TOP NAVIGATION: Dimensional Filtering + Search -->
+    <header
+        class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-5xl px-6 flex flex-col items-center gap-6 animate-float">
+
+        <!-- Expanded Command Pill (Search Focus) -->
+        <div
+            class="glass-pane rounded-full p-2 flex items-center gap-4 w-full md:w-[600px] shadow-2xl relative overflow-hidden">
+            <!-- Ambient glow behind search -->
+            <div class="absolute inset-0 bg-brand-sage/10 blur-xl pointer-events-none"></div>
+
+            <div
+                class="w-10 h-10 bg-brand-cream text-brand-ink rounded-full flex items-center justify-center font-black text-sm shrink-0 cursor-pointer shadow-lg">
+                KH</div>
+
+            <i data-lucide="search" class="w-5 h-5 opacity-60 ml-2"></i>
+            <input type="text" placeholder="Search frameworks, patterns, objection handling..."
+                class="bg-transparent border-none outline-none text-brand-cream placeholder:text-brand-cream/40 flex-1 font-mono text-[11px] tracking-widest uppercase py-2">
+
+            <button
+                class="bg-brand-cream/10 hover:bg-brand-cream/20 px-4 py-2 rounded-full font-mono text-[10px] uppercase tracking-widest transition-colors backdrop-blur-md">
+                CMD+K
+            </button>
+        </div>
+
+        <!-- Dimensional Filters -->
+        <nav class="flex flex-wrapjustify-center gap-3">
+            <button
+                class="dimensional-filter active px-6 py-2 rounded-full font-mono text-[10px] uppercase tracking-widest font-bold">All
+                Modules</button>
+            <button
+                class="dimensional-filter px-6 py-2 rounded-full font-mono text-[10px] uppercase tracking-widest font-bold">Objection
+                Handling</button>
+            <button
+                class="dimensional-filter px-6 py-2 rounded-full font-mono text-[10px] uppercase tracking-widest font-bold">Pattern
+                Recognition</button>
+            <button
+                class="dimensional-filter px-6 py-2 rounded-full font-mono text-[10px] uppercase tracking-widest font-bold">Math
+                Breakdowns</button>
+        </nav>
+    </header>
+
+    <!-- Side Anchor Nav (Optional for consistency, but deemphasized in Hub) -->
+    <nav
+        class="hidden lg:flex fixed top-1/2 -translate-y-1/2 left-6 z-40 flex-col items-center gap-6 p-3 rounded-full opacity-40 hover:opacity-100 transition-opacity backdrop-blur-md">
+        <a href="#"
+            class="p-3 text-brand-cream/60 hover:text-brand-cream hover:bg-white/10 rounded-full transition-colors cursor-pointer group relative">
+            <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+        </a>
+        <a href="#"
+            class="p-3 text-brand-cream/60 hover:text-brand-cream hover:bg-white/10 rounded-full transition-colors cursor-pointer group relative">
+            <i data-lucide="phone" class="w-5 h-5"></i>
+        </a>
+        <a href="#"
+            class="p-3 bg-white/20 text-brand-cream rounded-full pointer-events-none shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+            <i data-lucide="book-open" class="w-5 h-5"></i>
+        </a>
+    </nav>
+
+    <!-- MAIN LIBRARY CONTENT -->
+    <main class="w-full max-w-7xl z-10 flex flex-col px-6 pt-48 lg:pt-52 gap-12 pb-24">
+
+        <!-- Section: Recommended (Editorial Hero style but for learning) -->
+        <section class="animate-reveal">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="font-mono text-[10px] uppercase tracking-widest opacity-50 relative">Priority Learning
+                    <span
+                        class="absolute -right-4 top-0 w-2 h-2 rounded-full bg-brand-mustard shadow-[0_0_8px_rgba(235,184,68,0.8)]"></span></span>
+                <div class="h-px bg-white/10 flex-1"></div>
+            </div>
+
+            <div
+                class="glass-pane rounded-[2rem] p-10 md:p-14 flex flex-col relative overflow-hidden group cursor-pointer border border-brand-mustard/30">
+                <div
+                    class="absolute -right-20 -top-20 w-80 h-80 bg-brand-mustard/10 rounded-full blur-[80px] group-hover:bg-brand-mustard/20 transition-all duration-1000">
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-10 items-center">
+                    <div>
+                        <div class="flex items-center gap-3 mb-6">
+                            <span
+                                class="font-mono text-[10px] uppercase tracking-widest bg-brand-mustard/20 text-brand-mustard px-3 py-1 rounded-full border border-brand-mustard/30">Mastery
+                                Track</span>
+                        </div>
+                        <h2
+                            class="font-editorial italic text-4xl md:text-5xl lg:text-5xl leading-[1.15] mb-6 shadow-sm">
+                            Navigating the <span class="text-brand-mustard not-italic font-sans font-bold px-1">Scared
+                                Switcher</span> Pattern
+                        </h2>
+                        <p class="text-base opacity-70 font-sans leading-relaxed mb-8 max-w-md">
+                            Recommended based on your recent performance. Learn to deploy empathy before logic when
+                            encountering defensive stalling tactics.
+                        </p>
+                        <div class="flex items-center gap-6">
+                            <button
+                                class="flex items-center gap-2 font-bold uppercase tracking-widest text-[10px] bg-brand-cream text-brand-ink px-6 py-4 rounded-full hover:scale-105 transition-transform">
+                                <i data-lucide="play-circle" class="w-4 h-4 text-brand-terracotta"></i> Start Module
+                            </button>
+                            <span class="font-mono text-[10px] uppercase tracking-widest opacity-50">14 Min Read &bull;
+                                2 Exercises</span>
+                        </div>
+                    </div>
+
+                    <!-- Abstract Visualization area instead of typical stock video thumbnail -->
+                    <div class="hidden lg:flex justify-end pr-10">
+                        <div
+                            class="w-64 h-64 rounded-full border border-white/20 flex items-center justify-center relative">
+                            <div
+                                class="w-48 h-48 rounded-full border border-white/10 flex items-center justify-center relative animate-[spin_30s_linear_infinite]">
+                                <div
+                                    class="absolute w-3 h-3 bg-brand-mustard rounded-full -top-1.5 shadow-[0_0_15px_rgba(235,184,68,1)]">
+                                </div>
+                            </div>
+                            <div
+                                class="absolute w-32 h-32 rounded-full border border-white/5 flex items-center justify-center">
+                                <i data-lucide="activity" class="w-8 h-8 opacity-40"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: The Library Grid -->
+        <section class="animate-reveal delay-100">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="font-mono text-[10px] uppercase tracking-widest opacity-50">Curated Architecture</span>
+                <div class="h-px bg-white/10 flex-1"></div>
+            </div>
+
+            <!-- Library Matrix -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- Course Card (Artifact) 1 -->
+                <div
+                    class="glass-pane rounded-3xl p-8 h-[360px] flex flex-col relative overflow-hidden group cursor-pointer">
+                    <div class="course-watermark">01</div>
+                    <div class="relative z-10 flex flex-col h-full">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                                <i data-lucide="calculator" class="w-5 h-5 text-brand-cream"></i>
+                            </div>
+                            <span
+                                class="font-mono text-[9px] uppercase tracking-widest bg-brand-sage/20 text-brand-sage border border-brand-sage/30 px-2 py-1 rounded-md">Advanced</span>
+                        </div>
+                        <h3 class="font-bold text-xl uppercase tracking-tight mb-3">The Math Breakdown</h3>
+                        <p class="text-sm opacity-60 leading-relaxed font-medium">Quantifying the cost of inaction to
+                            create irrefutable urgency.</p>
+
+                        <div class="mt-auto pt-6 border-t border-white/10">
+                            <div class="flex justify-between items-center mb-2">
+                                <span
+                                    class="font-mono text-[8px] uppercase tracking-widest opacity-50">Completion</span>
+                                <span
+                                    class="font-mono text-[8px] font-bold uppercase tracking-widest text-brand-sage">100%</span>
+                            </div>
+                            <div class="w-full bg-black/40 h-1 rounded-full overflow-hidden">
+                                <div class="w-full bg-brand-sage h-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course Card (Artifact) 2 -->
+                <div
+                    class="glass-pane rounded-3xl p-8 h-[360px] flex flex-col relative overflow-hidden group cursor-pointer border border-brand-terracotta/20">
+                    <div class="course-watermark">02</div>
+                    <div class="relative z-10 flex flex-col h-full">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                                <i data-lucide="shield-alert" class="w-5 h-5 text-brand-cream"></i>
+                            </div>
+                            <span
+                                class="font-mono text-[9px] uppercase tracking-widest bg-white/10 px-2 py-1 rounded-md">In
+                                Progress</span>
+                        </div>
+                        <h3 class="font-bold text-xl uppercase tracking-tight mb-3">Defusing Tone</h3>
+                        <p class="text-sm opacity-60 leading-relaxed font-medium">Identifying passive-aggressive markers
+                            and deploying pattern interrupts.</p>
+
+                        <div class="mt-auto pt-6 border-t border-white/10">
+                            <div class="flex justify-between items-center mb-2">
+                                <span
+                                    class="font-mono text-[8px] uppercase tracking-widest opacity-50">Completion</span>
+                                <span
+                                    class="font-mono text-[8px] font-bold uppercase tracking-widest text-brand-cream">45%</span>
+                            </div>
+                            <div class="w-full bg-black/40 h-1 rounded-full overflow-hidden">
+                                <div class="w-[45%] bg-brand-cream h-full relative overflow-hidden">
+                                    <div
+                                        class="absolute inset-0 bg-white/30 w-1/2 -skew-x-12 translate-x-full animate-[marquee_2s_infinite]">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course Card (Artifact) 3 -->
+                <div
+                    class="glass-pane rounded-3xl p-8 h-[360px] flex flex-col relative overflow-hidden group cursor-pointer">
+                    <div class="course-watermark">03</div>
+                    <div class="relative z-10 flex flex-col h-full">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                                <i data-lucide="crosshair" class="w-5 h-5 text-brand-cream"></i>
+                            </div>
+                        </div>
+                        <h3 class="font-bold text-xl uppercase tracking-tight mb-3">The Soft Challenge</h3>
+                        <p class="text-sm opacity-60 leading-relaxed font-medium">Calling out prospect contradictions
+                            politely but firmly to regain frame.</p>
+
+                        <div class="mt-auto pt-6 border-t border-white/10 flex items-center justify-between">
+                            <button
+                                class="font-mono text-[9px] uppercase tracking-widest font-bold opacity-60 group-hover:opacity-100 group-hover:text-brand-mustard transition-colors flex items-center gap-1">
+                                Begin Module <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                            </button>
+                            <span class="font-mono text-[8px] uppercase tracking-widest opacity-30">22 Min</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Init Lucide Icons
+        lucide.createIcons();
+
+        // Simple dimension filter interactivity logic
+        document.querySelectorAll('.dimensional-filter').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.dimensional-filter').forEach(str => str.classList.remove('active'));
+                e.target.classList.add('active');
+            });
+        });
+    </script>
+</body>
+
+</html>

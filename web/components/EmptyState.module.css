@@ -1,0 +1,16 @@
+.empty {
+  padding: 32px 20px;
+  text-align: center;
+}
+
+.emptyMsg {
+  font-size: 12px;
+  color: rgba(19, 17, 16, 0.35);
+  font-style: italic;
+}
+
+.emptySub {
+  font-size: 11px;
+  color: rgba(19, 17, 16, 0.25);
+  margin-top: 6px;
+}

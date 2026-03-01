@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Certainty — Call Report: Oct 24 · 88</title>
+  <title>Certainty — Call Report: Pegler · 28</title>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-sans/style.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-mono/style.css">
@@ -26,18 +26,12 @@
       --tc-text:     #1A0D08;
       --rule:        1.5px solid #131110;
       --rule-lt:     1px solid rgba(19,17,16,0.12);
-
-      /* Score bar colors by performance */
-      --bar-good: var(--sage);
-      --bar-mid:  var(--mustard);
-      --bar-low:  var(--terracotta);
     }
 
     html, body { height: 100%; background: #1A1614; font-family: 'Geist', system-ui, -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
 
     /* ═══════════════════════════════════════════
-       SHELL — 2-column report layout
-       72px sage nav | 260px ink report nav | 1fr cream content
+       SHELL — 72px sage nav | 260px ink report nav | 1fr cream content
     ═══════════════════════════════════════════ */
     .shell {
       display: grid;
@@ -53,15 +47,9 @@
     .col-nav {
       grid-column: 1;
       background: var(--sage);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px 0;
-      height: 100vh;
-      position: sticky;
-      top: 0;
-      overflow-y: auto;
-      z-index: 2;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 20px 0; height: 100vh; position: sticky; top: 0;
+      overflow-y: auto; z-index: 2;
     }
 
     .nav-logo {
@@ -69,7 +57,9 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 11px; font-weight: 800; letter-spacing: 0.02em;
       color: var(--dark-text); margin-bottom: 32px; flex-shrink: 0;
+      text-decoration: none; transition: background 0.15s;
     }
+    a.nav-logo:hover { background: #2a2724; }
 
     .nav-links { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 100%; flex: 1; }
 
@@ -83,11 +73,8 @@
     .nav-item:hover { color: var(--ink); background: rgba(19,17,16,0.08); }
     .nav-item.active { color: var(--ink); border-left-color: var(--ink); background: rgba(19,17,16,0.10); }
     .nav-item svg { width: 20px; height: 20px; flex-shrink: 0; }
-
     .nav-label { font-size: 8px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; line-height: 1; }
-
     .nav-foot { margin-top: auto; display: flex; flex-direction: column; align-items: center; }
-
     .nav-avatar {
       width: 34px; height: 34px; background: var(--ink); color: var(--dark-text);
       display: flex; align-items: center; justify-content: center;
@@ -98,488 +85,564 @@
        COL 2 — INK PANEL: REPORT NAVIGATOR
     ═══════════════════════════════════════════ */
     .col-panel {
-      grid-column: 2;
-      background: var(--ink);
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      position: sticky;
-      top: 0;
-      overflow-y: auto;
-      z-index: 1;
+      grid-column: 2; background: var(--ink);
+      display: flex; flex-direction: column;
+      height: 100vh; position: sticky; top: 0; overflow-y: auto; z-index: 1;
     }
 
-    /* Report header stub */
     .report-stub {
       padding: 24px 22px 20px;
       border-bottom: 1px solid rgba(250,245,236,0.07);
     }
 
     .rs-meta {
-      font-family: 'Geist Mono', monospace;
-      font-size: 9px; font-weight: 600;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: rgba(250,245,236,0.35);
-      margin-bottom: 8px;
+      font-size: 9px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+      color: rgba(250,245,236,0.55); margin-bottom: 8px;
     }
 
     .rs-badges { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
 
-    .rs-badge-enrolled {
-      background: var(--sage);
-      color: var(--ink);
+    .rs-badge-missed {
+      background: var(--terracotta); color: #fff;
       font-family: 'Geist Mono', monospace;
-      font-size: 8px; font-weight: 800;
-      letter-spacing: 0.10em; text-transform: uppercase;
+      font-size: 8px; font-weight: 800; letter-spacing: 0.10em; text-transform: uppercase;
       padding: 3px 8px;
     }
 
     .rs-score {
-      font-size: 36px; font-weight: 900;
-      letter-spacing: -0.05em;
-      line-height: 1;
-      color: var(--mustard);
+      font-size: 36px; font-weight: 900; letter-spacing: -0.05em; line-height: 1;
+      color: var(--terracotta);
     }
 
     .rs-score-denom {
-      font-family: 'Geist Mono', monospace;
-      font-size: 12px; color: rgba(250,245,236,0.30);
-      letter-spacing: 0.02em;
-      margin-top: 2px;
+      font-size: 12px; color: rgba(250,245,236,0.48); letter-spacing: 0.02em; margin-top: 2px;
     }
 
-    /* Section nav links */
     .report-nav { padding: 12px 0; flex: 1; }
 
     .rn-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 22px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.12s;
-      border-left: 2.5px solid transparent;
+      display: flex; align-items: center; gap: 10px;
+      padding: 7px 22px; cursor: pointer; text-decoration: none;
+      transition: background 0.12s; border-left: 2.5px solid transparent;
     }
 
     .rn-item:hover { background: rgba(250,245,236,0.04); }
-
-    .rn-item.active {
-      background: rgba(250,245,236,0.06);
-      border-left-color: var(--mustard);
-    }
+    .rn-item.active { background: rgba(250,245,236,0.06); border-left-color: var(--mustard); }
 
     .rn-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      background: transparent;
+      width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; background: transparent;
     }
 
-    .rn-dot.alert { background: var(--terracotta); }
+    .rn-dot.alert   { background: var(--terracotta); }
+    .rn-dot.positive { background: var(--sage); }
 
-    .rn-label {
-      font-size: 11px; font-weight: 600;
-      color: rgba(250,245,236,0.45);
-      letter-spacing: -0.01em;
-    }
-
+    .rn-label { font-size: 10.5px; font-weight: 600; color: rgba(250,245,236,0.45); letter-spacing: -0.01em; }
     .rn-item.active .rn-label { color: var(--dark-text); }
 
-    /* Agent at bottom */
     .rn-agent {
-      padding: 16px 22px;
-      border-top: 1px solid rgba(250,245,236,0.07);
-      margin-top: auto;
+      padding: 16px 22px; border-top: 1px solid rgba(250,245,236,0.07); margin-top: auto;
     }
 
     .rna-label {
-      font-family: 'Geist Mono', monospace;
-      font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase;
-      color: rgba(250,245,236,0.28); margin-bottom: 4px;
+      font-size: 8px; letter-spacing: 0.06em; text-transform: uppercase;
+      color: rgba(250,245,236,0.50); margin-bottom: 4px;
     }
 
     .rna-name { font-size: 12px; font-weight: 700; color: var(--dark-text); }
-    .rna-level { font-family: 'Geist Mono', monospace; font-size: 9px; color: rgba(250,245,236,0.38); margin-top: 2px; }
+    .rna-level { font-size: 9px; color: rgba(250,245,236,0.55); margin-top: 2px; }
 
     /* ═══════════════════════════════════════════
        COL 3 — CREAM REPORT CONTENT (scrollable)
     ═══════════════════════════════════════════ */
     .col-main {
-      grid-column: 3;
-      background: var(--cream);
-      height: 100vh;
-      overflow-y: auto;
+      grid-column: 3; background: var(--cream); height: 100vh; overflow-y: auto;
     }
 
-    /* Content wrapper */
-    .report-content {
-      max-width: 800px;
-      padding: 40px 48px 80px;
-    }
+    .report-content { max-width: 820px; padding: 40px 48px 80px; }
 
-    /* Section headers */
+    /* Section structure */
+    .section-gap { margin-bottom: 44px; }
+
     .section-eyebrow {
-      font-family: 'Geist Mono', monospace;
-      font-size: 8.5px; font-weight: 700;
-      letter-spacing: 0.16em; text-transform: uppercase;
-      color: rgba(19,17,16,0.35);
-      margin-bottom: 14px;
+      font-family: 'Geist', system-ui, -apple-system, sans-serif;
+      font-size: 14px; font-weight: 800; letter-spacing: -0.01em;
+      color: var(--ink);
+      border-bottom: var(--rule);
+      padding-bottom: 12px; margin-bottom: 18px;
     }
-
-    .section-gap { margin-bottom: 40px; }
 
     /* ─── SECTION 1: CLOSER'S EDGE ─── */
     .closers-edge-card {
       background: rgba(255,255,255,0.6);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: var(--rule-lt);
-      padding: 28px 28px 24px;
-      margin-bottom: 40px;
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border: var(--rule-lt); padding: 28px 28px 24px; margin-bottom: 40px;
       box-shadow: 0 2px 20px rgba(19,17,16,0.06);
-      opacity: 0;
-      transform: translateY(12px);
+      opacity: 0; transform: translateY(12px);
       transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16,1,0.3,1);
     }
 
     .closers-edge-card.visible { opacity: 1; transform: translateY(0); }
 
     .ce-header {
-      font-family: 'Geist Mono', monospace;
-      font-size: 8.5px; font-weight: 700;
-      letter-spacing: 0.18em; text-transform: uppercase;
-      color: rgba(19,17,16,0.38);
-      margin-bottom: 16px;
+      font-size: 8.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      color: rgba(19,17,16,0.55); margin-bottom: 16px;
     }
 
     .ce-quote {
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      font-size: 20px;
-      line-height: 1.55;
-      color: var(--ink);
-      margin-bottom: 16px;
+      font-family: 'Playfair Display', serif; font-style: italic;
+      font-size: 19px; line-height: 1.55; color: var(--ink); margin-bottom: 16px;
     }
 
     .ce-quote mark {
-      background: var(--mustard);
-      color: var(--tc-text);
-      font-style: normal;
-      padding: 0 3px;
+      background: var(--mustard); color: var(--tc-text);
+      font-style: normal; padding: 0 3px;
     }
 
     .ce-recovery {
-      border-top: 1px solid rgba(19,17,16,0.10);
-      padding-top: 16px;
-      margin-top: 12px;
+      border-top: 1px solid rgba(19,17,16,0.10); padding-top: 16px; margin-top: 12px;
     }
 
     .ce-recovery-label {
-      font-family: 'Geist Mono', monospace;
-      font-size: 8px; font-weight: 700;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: rgba(19,17,16,0.38);
-      margin-bottom: 8px;
+      font-size: 8px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: rgba(19,17,16,0.55); margin-bottom: 8px;
     }
 
     .ce-recovery-text {
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      font-size: 14px;
-      line-height: 1.6;
-      color: rgba(19,17,16,0.65);
+      font-family: 'Geist', system-ui, -apple-system, sans-serif;
+      font-size: 12.5px; line-height: 1.75;
+      background: var(--cream-2); border-left: 3px solid var(--ink);
+      padding: 16px 20px; color: rgba(19,17,16,0.82);
     }
 
-    /* ─── SECTION 2: EXECUTIVE SUMMARY ─── */
+    /* ─── SECTION 2: CALL SNAPSHOT ─── */
+    .snapshot-table {
+      width: 100%; border-collapse: collapse;
+      opacity: 0; transform: translateY(8px);
+      transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .snapshot-table.visible { opacity: 1; transform: translateY(0); }
+
+    .snapshot-table tr {
+      border-bottom: 1px solid rgba(19,17,16,0.08);
+    }
+
+    .snapshot-table td {
+      padding: 9px 12px; font-size: 13px; vertical-align: top;
+    }
+
+    .snapshot-table td:first-child {
+      font-size: 8.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: rgba(19,17,16,0.55); width: 180px; padding-top: 11px;
+    }
+
+    .snapshot-table td:last-child { color: var(--ink); font-weight: 500; }
+
+    .snapshot-badge {
+      font-family: 'Geist Mono', monospace;
+      font-size: 8px; font-weight: 800; letter-spacing: 0.10em; text-transform: uppercase;
+      padding: 3px 9px; display: inline-block;
+    }
+
+    .snapshot-badge.missed   { background: var(--terracotta); color: #fff; }
+    .snapshot-badge.enrolled { background: var(--sage); color: var(--ink); }
+
+    .snapshot-score {
+      font-size: 22px; font-weight: 900; letter-spacing: -0.04em;
+      color: var(--terracotta); line-height: 1;
+    }
+
+    /* ─── SECTION 3: EXECUTIVE SUMMARY ─── */
     .exec-summary {
-      background: var(--cream-2);
-      padding: 22px 24px;
-      border-left: 3px solid rgba(19,17,16,0.12);
-      margin-bottom: 40px;
-      opacity: 0;
-      transform: translateY(8px);
+      background: var(--cream-2); padding: 22px 24px;
+      border-left: 3px solid rgba(19,17,16,0.12); margin-bottom: 40px;
+      opacity: 0; transform: translateY(8px);
       transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1);
     }
 
     .exec-summary.visible { opacity: 1; transform: translateY(0); }
 
-    .exec-para {
-      font-size: 14px; font-weight: 400;
-      color: rgba(19,17,16,0.75);
-      line-height: 1.75;
-    }
+    .exec-para { font-size: 14px; font-weight: 400; color: rgba(19,17,16,0.75); line-height: 1.75; }
 
-    /* ─── SECTION 3: SCORE BREAKDOWN ─── */
+    /* ─── SECTION 4: SCORE BREAKDOWN ─── */
     .score-breakdown { margin-bottom: 40px; }
 
     .score-row {
-      padding: 16px 0;
-      border-bottom: 1px solid rgba(19,17,16,0.08);
-      opacity: 0;
-      transform: translateY(6px);
+      padding: 16px 0; border-bottom: 1px solid rgba(19,17,16,0.08);
+      opacity: 0; transform: translateY(6px);
       transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1);
     }
 
     .score-row.visible { opacity: 1; transform: translateY(0); }
 
     .sr-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 8px;
+      display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;
     }
 
-    .sr-cat {
-      font-size: 13px; font-weight: 700;
-      color: var(--ink); letter-spacing: -0.01em;
-    }
+    .sr-cat { font-size: 13px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; }
 
     .sr-pts {
-      font-family: 'Geist Mono', monospace;
-      font-size: 12px; font-weight: 700;
-      color: rgba(19,17,16,0.60);
-      letter-spacing: 0.02em;
+      font-size: 12px; font-weight: 700; color: rgba(19,17,16,0.60); letter-spacing: 0.02em;
     }
 
     .score-bar-track {
-      height: 4px;
-      background: rgba(19,17,16,0.08);
-      margin-bottom: 8px;
-      overflow: hidden;
+      height: 4px; background: rgba(19,17,16,0.08); margin-bottom: 10px; overflow: hidden;
     }
 
     .score-bar-fill {
-      height: 100%;
-      width: 0%;
-      transition: width 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+      height: 100%; width: 0%; transition: width 1.1s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .score-bar-fill.good  { background: var(--sage); }
-    .score-bar-fill.mid   { background: var(--mustard); }
-    .score-bar-fill.low   { background: var(--terracotta); }
+    .score-bar-fill.good { background: var(--sage); }
+    .score-bar-fill.mid  { background: var(--mustard); }
+    .score-bar-fill.low  { background: var(--terracotta); }
 
-    .sr-verdict {
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      font-size: 12px;
-      color: rgba(19,17,16,0.50);
-      margin-bottom: 6px;
+    .sr-narrative {
+      font-size: 12.5px; color: rgba(19,17,16,0.65); line-height: 1.7; margin-bottom: 10px;
     }
 
-    .sr-feedback {
-      font-size: 12px;
-      color: rgba(19,17,16,0.55);
-      line-height: 1.65;
-      display: none;
+    .sr-improve {
+      font-family: 'Geist', system-ui, -apple-system, sans-serif;
+      font-size: 11.5px; line-height: 1.65;
+      color: rgba(19,17,16,0.70); background: var(--cream-2);
+      padding: 12px 16px;
+      border-left: 2.5px solid var(--mustard);
     }
 
-    .sr-feedback.open { display: block; }
-
-    .sr-expand {
-      font-family: 'Geist Mono', monospace;
-      font-size: 8.5px; font-weight: 700;
-      letter-spacing: 0.10em; text-transform: uppercase;
-      color: rgba(19,17,16,0.30);
-      cursor: pointer;
-      background: none; border: none; padding: 0;
-      transition: color 0.12s;
+    .sr-improve-label {
+      font-size: 7.5px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(19,17,16,0.38); margin-bottom: 5px; display: block;
     }
 
-    .sr-expand:hover { color: var(--ink); }
+    /* ─── SECTION 5: WHAT AGENT DID RIGHT ─── */
+    .did-right { margin-bottom: 40px; }
 
-    /* ─── SECTION 4: FAILURE PATTERNS ─── */
+    .dr-block {
+      border-left: 3px solid var(--sage);
+      background: rgba(143,175,148,0.05);
+      padding: 20px 20px;
+      margin-bottom: 12px;
+      opacity: 0; transform: translateX(-8px);
+      transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .dr-block.visible { opacity: 1; transform: translateX(0); }
+
+    .dr-num {
+      font-size: 8px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--sage-dark); margin-bottom: 6px;
+    }
+
+    .dr-title {
+      font-size: 13px; font-weight: 700; color: var(--ink);
+      letter-spacing: -0.01em; margin-bottom: 6px;
+    }
+
+    .dr-text {
+      font-size: 12.5px; color: rgba(19,17,16,0.65); line-height: 1.65;
+    }
+
+    /* ─── SECTION 6: FAILURE PATTERNS ─── */
     .failure-patterns { margin-bottom: 40px; }
 
     .pattern-block {
       border-left: 3px solid var(--terracotta);
       background: rgba(224,92,52,0.04);
-      padding: 20px 20px 20px 20px;
-      margin-bottom: 16px;
-      opacity: 0;
-      transform: translateX(-8px);
+      padding: 20px; margin-bottom: 16px;
+      opacity: 0; transform: translateX(-8px);
       transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1);
     }
 
     .pattern-block.visible { opacity: 1; transform: translateX(0); }
 
     .pb-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;
     }
 
-    .pb-title {
-      font-size: 13px; font-weight: 700;
-      color: var(--ink); letter-spacing: -0.01em;
-    }
+    .pb-title { font-size: 13px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; }
 
     .pb-timestamp {
-      font-family: 'Geist Mono', monospace;
-      font-size: 9px; font-weight: 700;
-      letter-spacing: 0.08em;
-      background: rgba(224,92,52,0.15);
-      color: var(--terracotta);
-      padding: 3px 8px;
+      font-size: 9px; font-weight: 700; letter-spacing: 0.05em;
+      background: rgba(224,92,52,0.15); color: var(--terracotta); padding: 3px 8px;
     }
 
     .pb-cols {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-bottom: 14px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;
     }
 
     .pb-col-label {
-      font-family: 'Geist Mono', monospace;
-      font-size: 8px; font-weight: 700;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: rgba(19,17,16,0.35);
-      margin-bottom: 5px;
+      font-size: 8px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: rgba(19,17,16,0.35); margin-bottom: 5px;
     }
 
-    .pb-col-text {
-      font-size: 12px;
-      color: rgba(19,17,16,0.65);
-      line-height: 1.6;
-    }
+    .pb-col-text { font-size: 12px; color: rgba(19,17,16,0.65); line-height: 1.6; }
 
-    /* Exact language block — ink bg + mono */
     .exact-language {
-      background: var(--ink);
-      color: var(--dark-text);
-      font-family: 'Geist Mono', monospace;
-      font-size: 11px;
-      line-height: 1.65;
-      padding: 14px 16px;
-      margin-bottom: 10px;
+      background: var(--cream-2); border-left: 3px solid var(--ink);
+      font-family: 'Geist', system-ui, -apple-system, sans-serif;
+      font-size: 12px; line-height: 1.72; padding: 16px 20px; margin-bottom: 10px;
     }
 
     .el-label {
-      font-size: 7.5px; font-weight: 700;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--mustard);
-      margin-bottom: 8px;
-      display: block;
+      font-family: 'Geist Mono', monospace;
+      font-size: 7.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--sage-dark); margin-bottom: 8px; display: block;
     }
 
-    .el-text { color: rgba(250,245,236,0.80); }
+    .el-text { color: rgba(19,17,16,0.82); }
 
     .pb-link {
-      font-size: 10px; font-weight: 700;
-      color: var(--terracotta);
-      text-decoration: none;
-      letter-spacing: 0.02em;
-      border-bottom: 1px solid rgba(224,92,52,0.35);
-      padding-bottom: 1px;
-      transition: border-color 0.12s;
+      font-size: 10px; font-weight: 700; color: var(--terracotta); text-decoration: none;
+      letter-spacing: 0.02em; border-bottom: 1px solid rgba(224,92,52,0.35);
+      padding-bottom: 1px; transition: border-color 0.12s;
     }
 
     .pb-link:hover { border-bottom-color: var(--terracotta); }
 
-    /* ─── SECTION 5: CLIENT GOLD AUDIT ─── */
+    /* ─── SECTION 7: MATH BREAKDOWN ─── */
+    .math-breakdown { margin-bottom: 40px; }
+
+    .math-table {
+      width: 100%; border-collapse: collapse;
+      opacity: 0; transform: translateY(8px);
+      transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .math-table.visible { opacity: 1; transform: translateY(0); }
+
+    .math-table th {
+      font-size: 8px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: rgba(19,17,16,0.40); padding: 8px 12px;
+      background: var(--cream-2); border-bottom: var(--rule);
+      text-align: left;
+    }
+
+    .math-table td {
+      padding: 10px 12px; font-size: 12px; border-bottom: 1px solid rgba(19,17,16,0.08);
+      vertical-align: top;
+    }
+
+    .math-table td:first-child { font-weight: 600; color: rgba(19,17,16,0.65); }
+    .math-table td:not(:first-child) { color: var(--ink); }
+
+    .math-table tr.sage-row { background: rgba(143,175,148,0.08); }
+
+    .math-verdict {
+      margin-top: 14px; padding: 14px 18px;
+      background: var(--terracotta); color: #fff;
+      font-family: 'Geist', system-ui, -apple-system, sans-serif;
+      font-size: 12px; font-weight: 700; letter-spacing: -0.01em;
+    }
+
+    /* ─── SECTION 8: CLIENT GOLD AUDIT ─── */
     .client-gold { margin-bottom: 40px; }
 
-    .cg-moment {
-      display: grid;
-      grid-template-columns: 80px 1fr 120px;
-      gap: 16px;
-      align-items: start;
-      padding: 14px 0;
-      border-bottom: 1px solid rgba(19,17,16,0.08);
-      opacity: 0;
-      transform: translateY(6px);
+    .cg-table {
+      width: 100%; border-collapse: collapse;
+      opacity: 0; transform: translateY(8px);
+      transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .cg-table.visible { opacity: 1; transform: translateY(0); }
+
+    .cg-table th {
+      font-size: 8px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: rgba(19,17,16,0.40); padding: 8px 10px;
+      background: var(--cream-2); border-bottom: var(--rule); text-align: left;
+    }
+
+    .cg-table td {
+      padding: 10px 10px; font-size: 12px; border-bottom: 1px solid rgba(19,17,16,0.08);
+      vertical-align: top;
+    }
+
+    .cg-ts {
+      font-size: 11px; font-weight: 700; color: rgba(19,17,16,0.40); white-space: nowrap;
+    }
+
+    .cg-quote-cell {
+      font-family: 'Playfair Display', serif; font-style: italic;
+      font-size: 14px; color: rgba(19,17,16,0.82); line-height: 1.55;
+    }
+
+    .cg-badge {
+      font-family: 'Geist Mono', monospace;
+      font-size: 8px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 3px 7px; display: inline-block; white-space: nowrap;
+    }
+
+    .cg-badge.missed   { background: var(--terracotta); color: #fff; }
+    .cg-badge.deployed { background: var(--sage); color: var(--ink); }
+    .cg-badge.partial  { background: var(--mustard); color: var(--tc-text); }
+
+    .cg-note { font-size: 11.5px; color: rgba(19,17,16,0.55); line-height: 1.55; }
+
+    /* ─── SECTION 9: OBJECTION HANDLING LOG ─── */
+    .objection-log { margin-bottom: 40px; }
+
+    .objection-block {
+      padding: 18px; margin-bottom: 14px;
+      border: var(--rule-lt); background: #fff;
+      opacity: 0; transform: translateY(8px);
       transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1);
     }
 
-    .cg-moment.visible { opacity: 1; transform: translateY(0); }
+    .objection-block.visible { opacity: 1; transform: translateY(0); }
 
-    .cg-ts {
-      font-family: 'Geist Mono', monospace;
-      font-size: 11px; font-weight: 700;
-      color: rgba(19,17,16,0.40);
-      letter-spacing: 0.04em;
-      padding-top: 2px;
+    .ob-signal-row {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
     }
 
-    .cg-quote {
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      font-size: 13px;
-      color: rgba(19,17,16,0.70);
-      line-height: 1.55;
+    .ob-quote {
+      font-family: 'Playfair Display', serif; font-style: italic;
+      font-size: 14px; color: var(--ink); line-height: 1.5; flex: 1;
     }
 
-    .cg-status {
-      font-family: 'Geist Mono', monospace;
-      font-size: 8px; font-weight: 800;
-      letter-spacing: 0.10em; text-transform: uppercase;
-      padding: 4px 9px;
-      text-align: center;
-      align-self: center;
+    .ob-ts {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.05em;
+      background: rgba(19,17,16,0.08); color: rgba(19,17,16,0.55); padding: 3px 8px;
+      white-space: nowrap;
     }
 
-    .cg-status.weaponized { background: var(--sage); color: var(--ink); }
-    .cg-status.missed     { background: var(--terracotta); color: #fff; }
-    .cg-status.partial    { background: var(--mustard); color: var(--tc-text); }
+    .ob-meta {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;
+    }
 
-    /* ─── ANNOTATED TRANSCRIPT ─── */
+    .ob-meta-label {
+      font-size: 8px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: rgba(19,17,16,0.35); margin-bottom: 4px;
+    }
+
+    .ob-meta-text { font-size: 12px; color: rgba(19,17,16,0.65); line-height: 1.55; }
+
+    .ob-assessment {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+      font-size: 9px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+    }
+
+    .ob-assessment.fail { color: var(--terracotta); }
+    .ob-assessment.pass { color: var(--sage-dark); }
+
+    /* ─── SECTION 10: CLOSE CONFIRMATION AUDIT ─── */
+    .close-audit { margin-bottom: 40px; }
+
+    .ca-block {
+      padding: 18px; margin-bottom: 12px;
+      border: var(--rule-lt); background: #fff;
+      opacity: 0; transform: translateY(8px);
+      transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .ca-block.visible { opacity: 1; transform: translateY(0); }
+
+    .ca-question {
+      font-size: 8.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: rgba(19,17,16,0.55); margin-bottom: 8px;
+    }
+
+    .ca-answer {
+      font-size: 14px; font-weight: 700; color: var(--terracotta); margin-bottom: 8px;
+    }
+
+    .ca-answer.positive { color: var(--sage-dark); }
+
+    .ca-detail { font-size: 12.5px; color: rgba(19,17,16,0.65); line-height: 1.65; }
+
+    .ca-window {
+      background: var(--cream-2); border-left: 3px solid var(--mustard);
+      padding: 16px 20px; margin-top: 12px;
+    }
+
+    .ca-window-label {
+      font-size: 7.5px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+      color: var(--sage-dark); margin-bottom: 8px; display: block;
+    }
+
+    .ca-window-text {
+      font-family: 'Geist', system-ui, -apple-system, sans-serif;
+      font-size: 12.5px; color: rgba(19,17,16,0.80); line-height: 1.72;
+    }
+
+    /* ─── SECTION 11: ANNOTATED TRANSCRIPT ─── */
     .transcript-section { margin-bottom: 60px; }
 
     .transcript-toggle {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: transparent;
-      border: var(--rule-lt);
+      display: flex; align-items: center; gap: 8px;
+      background: transparent; border: var(--rule-lt);
       padding: 10px 18px;
-      font-family: 'Geist Mono', monospace;
-      font-size: 9.5px; font-weight: 700;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: rgba(19,17,16,0.50);
-      cursor: pointer;
+      font-size: 9.5px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+      color: rgba(19,17,16,0.50); cursor: pointer;
       transition: background 0.12s, color 0.12s;
     }
 
     .transcript-toggle:hover { background: var(--cream-2); color: var(--ink); border-color: var(--ink); }
 
-    .transcript-content {
-      margin-top: 20px;
-      border: var(--rule-lt);
-      padding: 24px;
-      background: #fff;
-      line-height: 1.8;
-      font-size: 13px;
-      color: rgba(19,17,16,0.70);
+    .transcript-table-wrap {
+      margin-top: 20px; border: var(--rule-lt); background: #fff; overflow-x: auto;
     }
 
-    /* Inline annotation tags */
+    .transcript-table {
+      width: 100%; border-collapse: collapse; font-size: 12px;
+    }
+
+    .transcript-table th {
+      font-size: 7.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: rgba(19,17,16,0.40); padding: 8px 12px;
+      background: var(--cream-2); border-bottom: var(--rule); text-align: left;
+    }
+
+    .transcript-table td {
+      padding: 9px 12px; border-bottom: 1px solid rgba(19,17,16,0.07);
+      vertical-align: top; line-height: 1.55; color: rgba(19,17,16,0.70);
+    }
+
+    .tt-time {
+      font-family: 'Geist Mono', monospace;
+      font-size: 10px; font-weight: 700; color: rgba(19,17,16,0.38);
+      white-space: nowrap;
+    }
+
+    .tt-speaker {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .tt-speaker.agent   { color: var(--sage-dark); }
+    .tt-speaker.prospect { color: rgba(19,17,16,0.55); }
+
+    .tt-text { min-width: 220px; }
+
     .tag {
       font-family: 'Geist Mono', monospace;
-      font-size: 8.5px; font-weight: 800;
-      letter-spacing: 0.08em;
-      padding: 1px 6px;
-      display: inline;
-      position: relative;
-      top: -1px;
-      vertical-align: middle;
+      font-size: 8px; font-weight: 800; letter-spacing: 0.08em;
+      padding: 1px 5px; display: inline;
+      position: relative; top: -1px; vertical-align: middle;
     }
 
     .tag-pattern { background: var(--terracotta); color: #fff; }
     .tag-gold    { background: var(--mustard); color: var(--tc-text); }
     .tag-signal  { background: var(--sage); color: var(--ink); }
 
-    .transcript-speaker {
+    .tt-signal { white-space: nowrap; }
+
+    .signal-pill-sm {
       font-family: 'Geist Mono', monospace;
-      font-size: 9px; font-weight: 700;
-      letter-spacing: 0.10em; text-transform: uppercase;
-      color: rgba(19,17,16,0.40);
-      display: block;
-      margin: 14px 0 4px;
+      font-size: 8px; font-weight: 800; letter-spacing: 0.08em;
+      padding: 2px 6px; display: inline-block;
     }
 
-    .transcript-speaker:first-child { margin-top: 0; }
+    .signal-pill-sm.green  { background: var(--sage); color: var(--ink); }
+    .signal-pill-sm.yellow { background: var(--mustard); color: var(--tc-text); }
+    .signal-pill-sm.red    { background: var(--terracotta); color: #fff; }
+    .signal-pill-sm.gold   { background: var(--mustard); color: var(--tc-text); }
+
+    .tt-note { font-size: 11px; color: rgba(19,17,16,0.50); min-width: 180px; }
+    .tt-note.flag { color: var(--terracotta); }
+    .tt-note.good { color: var(--sage-dark); }
+
+    /* Highlight rows */
+    .transcript-table tr.gold-row { background: rgba(233,184,64,0.05); }
+    .transcript-table tr.flag-row { background: rgba(224,92,52,0.04); }
 
     /* ═══════════════════════════════════════════
        RESPONSIVE
@@ -594,9 +657,25 @@
       .nav-label { display: none; }
       .report-content { padding: 24px 20px 60px; }
       .pb-cols { grid-template-columns: 1fr; }
-      .cg-moment { grid-template-columns: 60px 1fr; }
-      .cg-status { grid-column: 1 / -1; }
+      .ob-meta { grid-template-columns: 1fr; }
+      .pb-cols { grid-template-columns: 1fr; }
     }
+
+    /* ─── HELP OVERLAY ─── */
+    .help-btn { width: 28px; height: 28px; border-radius: 50%; background: rgba(19,17,16,0.15); border: 1.5px solid rgba(19,17,16,0.22); color: rgba(19,17,16,0.55); font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.12s, color 0.12s; }
+    .help-btn:hover { background: rgba(19,17,16,0.28); color: var(--ink); }
+    .help-overlay { position: fixed; inset: 0; background: rgba(19,17,16,0.48); z-index: 100; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
+    .help-overlay.open { opacity: 1; pointer-events: all; }
+    .help-modal { background: var(--cream); border: var(--rule); max-width: 480px; width: calc(100% - 40px); max-height: 80vh; overflow-y: auto; padding: 28px 32px 32px; transform: translateY(12px); transition: transform 0.25s cubic-bezier(0.16,1,0.3,1); }
+    .help-overlay.open .help-modal { transform: translateY(0); }
+    .hm-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; gap: 16px; }
+    .hm-title { font-size: 15px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; line-height: 1.2; }
+    .hm-close { width: 28px; height: 28px; background: transparent; border: var(--rule-lt); font-size: 16px; color: rgba(19,17,16,0.45); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.12s; }
+    .hm-close:hover { background: var(--cream-2); color: var(--ink); }
+    .hm-section { margin-bottom: 16px; }
+    .hm-section:last-child { margin-bottom: 0; }
+    .hm-section-title { font-family: 'Geist Mono', monospace; font-size: 8px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(19,17,16,0.38); margin-bottom: 5px; }
+    .hm-section-text { font-size: 12.5px; color: rgba(19,17,16,0.68); line-height: 1.65; }
   </style>
 </head>
 
@@ -607,7 +686,7 @@
          COL 1: SAGE ICON NAV
     ────────────────────────────────────────── -->
     <aside class="col-nav">
-      <div class="nav-logo">CS</div>
+      <a class="nav-logo" href="manager-dashboard.html" title="Manager view">CS</a>
       <nav class="nav-links">
         <a class="nav-item" href="agent-dashboard.html">
           <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
@@ -622,7 +701,6 @@
           </svg>
           <span class="nav-label">Hub</span>
         </a>
-        <!-- My Calls — active -->
         <a class="nav-item active" href="#">
           <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
             <path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.39 19a19.45 19.45 0 0 1-6-6A19.79 19.79 0 0 1 3.1 4.18 2 2 0 0 1 5.07 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L9.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
@@ -637,7 +715,8 @@
         </a>
       </nav>
       <div class="nav-foot">
-        <div class="nav-avatar">AJ</div>
+        <button class="help-btn" id="helpBtn" title="How to use this page">?</button>
+        <div class="nav-avatar">RP</div>
       </div>
     </aside>
 
@@ -645,49 +724,66 @@
          COL 2: INK PANEL — REPORT NAVIGATOR
     ────────────────────────────────────────── -->
     <div class="col-panel">
-      <!-- Report header stub -->
       <div class="report-stub">
-        <div class="rs-meta">Oct 24 Call</div>
+        <div class="rs-meta">Pegler · Oct 24 Call</div>
         <div class="rs-badges">
-          <span class="rs-badge-enrolled">Enrolled</span>
+          <span class="rs-badge-missed">Missed Opportunity</span>
         </div>
-        <div class="rs-score">88</div>
+        <div class="rs-score">28</div>
         <div class="rs-score-denom">/ 100</div>
       </div>
 
-      <!-- Section jump navigation -->
       <nav class="report-nav">
         <a class="rn-item active" href="#section-edge">
           <div class="rn-dot"></div>
           <span class="rn-label">The Closer's Edge</span>
+        </a>
+        <a class="rn-item" href="#section-snapshot">
+          <div class="rn-dot"></div>
+          <span class="rn-label">Call Snapshot</span>
         </a>
         <a class="rn-item" href="#section-summary">
           <div class="rn-dot"></div>
           <span class="rn-label">Executive Summary</span>
         </a>
         <a class="rn-item" href="#section-scores">
-          <div class="rn-dot"></div>
+          <div class="rn-dot alert"></div>
           <span class="rn-label">Score Breakdown</span>
+        </a>
+        <a class="rn-item" href="#section-right">
+          <div class="rn-dot positive"></div>
+          <span class="rn-label">What Agent Did Right</span>
         </a>
         <a class="rn-item" href="#section-patterns">
           <div class="rn-dot alert"></div>
           <span class="rn-label">Failure Patterns</span>
         </a>
-        <a class="rn-item" href="#section-gold">
+        <a class="rn-item" href="#section-math">
           <div class="rn-dot"></div>
-          <span class="rn-label">Signal Audit</span>
+          <span class="rn-label">Math Breakdown</span>
+        </a>
+        <a class="rn-item" href="#section-gold">
+          <div class="rn-dot alert"></div>
+          <span class="rn-label">Client Gold Audit</span>
+        </a>
+        <a class="rn-item" href="#section-objections">
+          <div class="rn-dot alert"></div>
+          <span class="rn-label">Objection Handling</span>
+        </a>
+        <a class="rn-item" href="#section-close">
+          <div class="rn-dot alert"></div>
+          <span class="rn-label">Close Confirmation</span>
         </a>
         <a class="rn-item" href="#section-transcript">
           <div class="rn-dot"></div>
-          <span class="rn-label">Transcript</span>
+          <span class="rn-label">Full Transcript</span>
         </a>
       </nav>
 
-      <!-- Agent at bottom -->
       <div class="rn-agent">
         <div class="rna-label">Agent</div>
-        <div class="rna-name">Alex J.</div>
-        <div class="rna-level">Lvl 4 · The Reframer</div>
+        <div class="rna-name">Robert Pegler</div>
+        <div class="rna-level">Lvl 2 · Listener</div>
       </div>
     </div>
 
@@ -705,107 +801,149 @@
           <div class="closers-edge-card" id="edgeCard">
             <div class="ce-header">The One Move That Changes This Call</div>
             <p class="ce-quote">
-              "You heard the fear. You didn't name it. The prospect gave you everything you needed at <mark>8:14</mark> — and you responded with a quote."
+              "At <mark>7:06</mark>, Mrs. Massey handed Robert the close. She told him what mattered — the light bill, the water bill, the phone bill. Every other minute of the call was setup for a Math Breakdown that should have ended with those words."
             </p>
             <div class="ce-recovery">
-              <div class="ce-recovery-label">Here's what your next call looks like when this changes</div>
-              <p class="ce-recovery-text">
-                When a prospect says "I just don't want to lose what I already have" — that's not an objection. That's an invitation. Your next call starts with: "I understand. Let's make sure that doesn't happen. Can I show you exactly what you'd be keeping?"
-              </p>
+              <div class="ce-recovery-label">The exact move at 13:18 — 30 seconds that could have changed the outcome</div>
+              <div class="ce-recovery-text">"Mrs. Massey — you told me the light bill and the water bill are real pressure. What is Humana putting toward those right now?"<br><br>(Wait.)<br><br>"So we're comparing zero toward those bills to $120 a year on this Aetna card. I know it's not the $1,900 you saw advertised. But $120 more than zero, going toward exactly what you told me is the real pressure — that's real money for James. That's the actual choice right now. Let's at least get that working for him."</div>
             </div>
           </div>
         </section>
 
         <!-- ════════════════════════════════════
-             SECTION 2: EXECUTIVE SUMMARY
+             SECTION 2: CALL SNAPSHOT
+        ════════════════════════════════════ -->
+        <section id="section-snapshot" class="section-gap">
+          <div class="section-eyebrow">Call Snapshot</div>
+          <table class="snapshot-table" id="snapshotTable">
+            <tr><td>Agent</td><td>Robert Pegler</td></tr>
+            <tr><td>Client</td><td>Mrs. Massey <span style="color:rgba(19,17,16,0.45); font-weight:400;">(calling on behalf of James Massey)</span></td></tr>
+            <tr><td>Classification</td><td><span class="snapshot-badge missed">Missed Opportunity</span></td></tr>
+            <tr><td>Primary Call Type</td><td>Money Caller</td></tr>
+            <tr><td>Secondary Call Type</td><td>Third Party Controlled</td></tr>
+            <tr><td>Duration</td><td>~14 minutes</td></tr>
+            <tr><td>Enrollment Result</td><td style="color:var(--terracotta); font-weight:700;">Not enrolled</td></tr>
+            <tr><td>Current Plan</td><td>Humana Gold Plus HMO</td></tr>
+            <tr><td>Best Available Option</td><td>Aetna — $30 quarterly OTC ($120/yr)</td></tr>
+            <tr><td>Certainty Score</td><td><span class="snapshot-score">28 / 100</span></td></tr>
+          </table>
+        </section>
+
+        <!-- ════════════════════════════════════
+             SECTION 3: EXECUTIVE SUMMARY
         ════════════════════════════════════ -->
         <section id="section-summary" class="section-gap">
           <div class="section-eyebrow">Executive Summary</div>
           <div class="exec-summary" id="execSummary">
             <p class="exec-para">
-              This was a strong call overall — you enrolled a Money Caller who had genuine intent from the first minute. Your Math Breakdown landed cleanly at 11:32 and directly influenced the close. The one missed opportunity was at 8:14, when the prospect surfaced a fear of switching ("I just don't want to lose what I already have") and you responded with pricing instead of validation. This is a repeating pattern — Value Drop — appearing in 3 of your last 5 calls. It didn't cost you this enrollment, but it's costing you margin on others.
+              This call is a Missed Opportunity with a Certainty Score of 28/100. Mrs. Massey called as a textbook Money Caller with a specific, stated financial need: a spending card covering utilities — the light bill, water bill, phone bill. She said it at 7:06 with zero ambiguity. She was GREEN for the entire call. There was no resistance, no fear, no stalling. She came ready to enroll into the right plan and Robert never found a way to make what was available feel like a win.
+            </p>
+            <p class="exec-para" style="margin-top:12px;">
+              The call collapsed at 13:18 when Robert confirmed the best available plan was a $30 quarterly OTC card — less than she expected — and accepted that outcome without a single pivot. He never annualized the $30 to $120/year. He never connected it to the bills she specifically mentioned. He never reframed the $30 against the $0 she was currently getting. He surrendered with "best of luck to you" — and she was polite enough not to argue. A completed Three-Step Math Breakdown using Mrs. Massey's own words would have given this call a legitimate chance. It was never attempted.
             </p>
           </div>
         </section>
 
         <!-- ════════════════════════════════════
-             SECTION 3: SCORE BREAKDOWN
+             SECTION 4: SCORE BREAKDOWN
         ════════════════════════════════════ -->
         <section id="section-scores" class="section-gap">
-          <div class="section-eyebrow">Score Breakdown</div>
+          <div class="section-eyebrow">Certainty Score Breakdown</div>
           <div class="score-breakdown">
 
             <div class="score-row" id="sr0">
               <div class="sr-top">
-                <span class="sr-cat">Signal Reading</span>
-                <span class="sr-pts">91 / 100</span>
+                <span class="sr-cat">Lead / Authority Frame</span>
+                <span class="sr-pts">8 / 20</span>
               </div>
-              <div class="score-bar-track"><div class="score-bar-fill good" data-w="91%"></div></div>
-              <div class="sr-verdict">"Strong detection. One unweaponized moment at 8:14."</div>
-              <button class="sr-expand" onclick="toggleFeedback(this)">Expand feedback ↓</button>
-              <div class="sr-feedback">You correctly identified the Green Signal at 11:32 and used it to introduce the Math Breakdown. The 8:14 moment was a Yellow signal that crossed into Red — fear language ("I don't want to lose") that went unacknowledged. Two signals detected, one fully weaponized, one partially used.</div>
+              <div class="score-bar-track"><div class="score-bar-fill low" data-w="40%"></div></div>
+              <p class="sr-narrative">Robert held an adequate authority frame during the compliance and discovery sections — his open was clean, his frame was assumptive at 1:53. The score collapses in the second half. At 13:18, Robert stopped being a consultant and became an information referral. "You can always contact Medicare directly" is not a recovery — it is an exit ramp. At 13:53 he said "best of luck to you." That is not a close. That is a concession.</p>
+              <div class="sr-improve"><span class="sr-improve-label">Improve this:</span>When the product doesn't match the expectation, the agent's job is not to confirm the gap and exit — it is to reframe the gap using what the client already said. Robert had the material at 7:06. He never used it.</div>
             </div>
 
             <div class="score-row" id="sr1">
               <div class="sr-top">
-                <span class="sr-cat">Objection Handling</span>
-                <span class="sr-pts">88 / 100</span>
+                <span class="sr-cat">Signal Reading</span>
+                <span class="sr-pts">9 / 20</span>
               </div>
-              <div class="score-bar-track"><div class="score-bar-fill good" data-w="88%"></div></div>
-              <div class="sr-verdict">"Recovered well from early resistance."</div>
-              <button class="sr-expand" onclick="toggleFeedback(this)">Expand feedback ↓</button>
-              <div class="sr-feedback">When the prospect raised the "timing isn't right" objection at 9:45, you used the delay-cost calculation effectively. The recovery to a close was smooth. Deducted points for the initial logic-based response at 8:14 before the emotional concern was validated.</div>
+              <div class="score-bar-track"><div class="score-bar-fill low" data-w="45%"></div></div>
+              <p class="sr-narrative">Mrs. Massey was GREEN for the entire call. She never went RED. Robert read the call type correctly — oriented around OTC and Part B giveback immediately. Where the score drops is at the two Client Gold moments. At 7:06, Mrs. Massey disclosed financial pressure — utilities as a specific burden. Robert moved to the next discovery question. At 8:45, she disclosed frustration with Humana — a wide-open trust reframe opportunity. Robert said "let me take a look" and moved on. Both moments were GREEN signals with emotional weight. Both were heard and not deployed.</p>
+              <div class="sr-improve"><span class="sr-improve-label">Improve this:</span>GREEN signals with emotional content are not just buying signals — they are close material. When the client names something real (the light bill, the water bill), that is what the Math Breakdown gets connected to in Step 3. Noting it and moving on means the close has no anchor when you need one later.</div>
             </div>
 
             <div class="score-row" id="sr2">
               <div class="sr-top">
                 <span class="sr-cat">Math Breakdown</span>
-                <span class="sr-pts">77 / 100</span>
+                <span class="sr-pts">1 / 20</span>
               </div>
-              <div class="score-bar-track"><div class="score-bar-fill mid" data-w="77%"></div></div>
-              <div class="sr-verdict">"Numbers presented but not personalized to their situation."</div>
-              <button class="sr-expand" onclick="toggleFeedback(this)">Expand feedback ↓</button>
-              <div class="sr-feedback">You delivered the Math Breakdown but used generic monthly savings figures rather than calculating the specific gap for this prospect's current plan. Personalized math ("You're currently paying $X, this plan saves you $Y per month, which is $Z per year") closes faster than category averages.</div>
+              <div class="score-bar-track"><div class="score-bar-fill low" data-w="5%"></div></div>
+              <p class="sr-narrative">Step 1 (comparison stated) — Absent. Step 2 (annualized) — Absent. $30 quarterly was mentioned at 13:00; $120/year was never said. Step 3 (humanized) — Absent. Mrs. Massey named her specific financial pressures at 7:06. That is the Step 3 anchor. It was never connected to the available dollar amount. One partial point awarded for mentioning $30 quarterly — the raw number was stated, even if nothing was built around it.</p>
+              <div class="sr-improve"><span class="sr-improve-label">Improve this:</span>Step 3 is the close. It requires listening during discovery and holding what the client gives you. The Math Breakdown should have ended with: "That's $120 a year going toward the light bill and the water bill — compared to the zero Humana is putting there right now."</div>
             </div>
 
             <div class="score-row" id="sr3">
               <div class="sr-top">
-                <span class="sr-cat">Call Outcome</span>
-                <span class="sr-pts">92 / 100</span>
+                <span class="sr-cat">Objection Handling</span>
+                <span class="sr-pts">6 / 15</span>
               </div>
-              <div class="score-bar-track"><div class="score-bar-fill good" data-w="92%"></div></div>
-              <div class="sr-verdict">"Enrolled with full plan commitment."</div>
-              <button class="sr-expand" onclick="toggleFeedback(this)">Expand feedback ↓</button>
-              <div class="sr-feedback">Verbal close secured at 18:24 before paperwork initiation. Prospect expressed enthusiasm about the savings. Post-close validation was brief but present. Strong outcome execution.</div>
+              <div class="score-bar-track"><div class="score-bar-fill low" data-w="40%"></div></div>
+              <p class="sr-narrative">Mrs. Massey raised one substantive signal requiring a response — at 13:18: "I already got the 30 dollars over... Humana sometimes." This was a YELLOW signal transitioning toward RED — value not landing, momentum dying. Robert's response was to confirm the gap, reference Medicare.gov, and close the call. That is a complete failure to attempt. No tool from the system was deployed. The call was given away.</p>
+              <div class="sr-improve"><span class="sr-improve-label">Improve this:</span>At 13:18, the correct tool is The Shift — go back to what she told you and reframe $30 quarterly against $0 rather than against $1,900. That is the one recovery move. One preparation — knowing how to respond when the product doesn't meet expectations — would have changed this entirely.</div>
             </div>
 
             <div class="score-row" id="sr4">
               <div class="sr-top">
-                <span class="sr-cat">Lead Quality</span>
-                <span class="sr-pts">85 / 100</span>
+                <span class="sr-cat">Call Outcome Quality</span>
+                <span class="sr-pts">2 / 10</span>
               </div>
-              <div class="score-bar-track"><div class="score-bar-fill good" data-w="85%"></div></div>
-              <div class="sr-verdict">"Clear buying intent from the first minute."</div>
-              <button class="sr-expand" onclick="toggleFeedback(this)">Expand feedback ↓</button>
-              <div class="sr-feedback">Prospect came in motivated — called about a specific benefit they'd seen in a mailer. Intent was established within the first 90 seconds. Money Caller classification was accurate. Points deducted for a brief moment of third-party mention (daughter) that wasn't fully resolved.</div>
+              <div class="score-bar-track"><div class="score-bar-fill low" data-w="20%"></div></div>
+              <p class="sr-narrative">$30 quarterly was mentioned without structure, annualization, or humanization — partial credit only. At 13:18 — the exact moment the call turned — Robert confirmed the client's objection, offered an exit, and said goodbye. No reframe. No push. No recovery. One partial point for mentioning dental briefly, which could have been a secondary angle.</p>
+              <div class="sr-improve"><span class="sr-improve-label">Improve this:</span>Every Missed Opportunity call has a losing moment — the timestamp where the call could still have been saved. On this call it was 13:18. Robert had less than 60 seconds to deploy the Math Breakdown using Mrs. Massey's own words. He needed one sentence to open it and two to close it.</div>
             </div>
 
             <div class="score-row" id="sr5">
               <div class="sr-top">
-                <span class="sr-cat">Compliance</span>
-                <span class="sr-pts">90 / 100</span>
+                <span class="sr-cat">Compliance &amp; Professionalism</span>
+                <span class="sr-pts">12 / 15</span>
               </div>
-              <div class="score-bar-track"><div class="score-bar-fill good" data-w="90%"></div></div>
-              <div class="sr-verdict">"All required disclosures completed accurately."</div>
-              <button class="sr-expand" onclick="toggleFeedback(this)">Expand feedback ↓</button>
-              <div class="sr-feedback">Star and DSNP disclosures delivered at appropriate times. TPMO attribution statement included. Minor deduction: the benefits confirmation sequence ran slightly fast at 16:10 — consider slowing pace for clarity.</div>
+              <div class="score-bar-track"><div class="score-bar-fill mid" data-w="80%"></div></div>
+              <p class="sr-narrative">Robert's compliance block was clean and efficient — all required elements completed within 2:15, no compliance language killed sales momentum. Three points deducted for Pattern 5 (System Navigation Paralysis at 8:19–10:43, ~2 min 24 sec of agent-initiated dead air with no narration).</p>
+              <div class="sr-improve"><span class="sr-improve-label">Improve this:</span>Narrate system navigation out loud. Eight seconds of "while I'm pulling these up for his zip code, let me run a side-by-side against Humana" keeps the client in the frame, signals competence, and kills dead air before it costs you momentum.</div>
             </div>
 
           </div>
         </section>
 
         <!-- ════════════════════════════════════
-             SECTION 4: FAILURE PATTERNS
+             SECTION 5: WHAT AGENT DID RIGHT
+        ════════════════════════════════════ -->
+        <section id="section-right" class="section-gap">
+          <div class="section-eyebrow">What Agent Did Right</div>
+          <div class="did-right">
+
+            <div class="dr-block" id="dr0">
+              <div class="dr-num">01</div>
+              <div class="dr-title">Clean, efficient compliance block (0:04–2:15)</div>
+              <p class="dr-text">All required elements — TPMO disclaimer, SOA confirmation, non-obligation disclosure, callback permission, call recording notice — delivered within 2:15 with no robotic pacing that killed momentum. That is above average for compliance execution.</p>
+            </div>
+
+            <div class="dr-block" id="dr1">
+              <div class="dr-num">02</div>
+              <div class="dr-title">Call type identified quickly (0:09–1:53)</div>
+              <p class="dr-text">Robert correctly oriented the call around OTC and Part B giveback within the first two minutes. His framing at 1:53 — "we'll let you know if there's a better situation" — was assumptive and professional. Money Caller classification was accurate and fast.</p>
+            </div>
+
+            <div class="dr-block" id="dr2">
+              <div class="dr-num">03</div>
+              <div class="dr-title">Decision authority confirmed early (3:03)</div>
+              <p class="dr-text">Robert correctly identified Mrs. Massey as the decision-maker early. The Third Party dynamic (calling on behalf of James) was flagged even if it wasn't fully leveraged. Confirming who makes the decision is the right instinct — and he did it in the first three minutes.</p>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ════════════════════════════════════
+             SECTION 6: FAILURE PATTERNS
         ════════════════════════════════════ -->
         <section id="section-patterns" class="section-gap">
           <div class="section-eyebrow">Failure Patterns</div>
@@ -813,125 +951,365 @@
 
             <div class="pattern-block" id="pb0">
               <div class="pb-header">
-                <span class="pb-title">Pattern 3: Logic Response to Emotional Objection</span>
-                <span class="pb-timestamp">14:02</span>
+                <span class="pb-title">Pattern 2 — Incomplete Math Breakdown</span>
+                <span class="pb-timestamp">Never executed — closest: 13:00</span>
               </div>
-
               <div class="pb-cols">
                 <div>
                   <div class="pb-col-label">What happened</div>
-                  <div class="pb-col-text">
-                    Prospect expressed fear of loss ("I just don't want to lose what I already have"). You responded with plan details and pricing instead of validating the emotion first. This triggered a brief defensive response that added 3+ minutes of recovery time.
-                  </div>
+                  <div class="pb-col-text">Mrs. Massey told Robert the number in her head: "$1,900 for paying the light bills." Robert responded by explaining that the Part B giveback wasn't available and the best OTC was $30 quarterly. He never annualized $30 to $120/year. He never reframed against the $0 Humana was providing. He never connected either number to the light bill, water bill, or phone bill she named at 7:06.</div>
                 </div>
                 <div>
                   <div class="pb-col-label">What should have happened</div>
-                  <div class="pb-col-text">
-                    Acknowledge the fear explicitly, name it, confirm you heard it. Then and only then introduce the evidence. The prospect needed to feel understood before they could hear information.
-                  </div>
+                  <div class="pb-col-text">State the comparison ($0 vs. $30 quarterly), annualize it ($120/year), humanize it (connect to the bills she named at 7:06). Three steps. Robert executed none of them. Step 3 is the close — and the close material was sitting on the table from minute seven.</div>
                 </div>
               </div>
-
               <div class="exact-language">
-                <span class="el-label">Exact language to use next time</span>
-                <div class="el-text">
-                  "I hear that. Keeping what's working for you is exactly the right instinct — and honestly, that's what I want too. Can I show you side by side what you have now versus what this would look like? That way you can see exactly what stays the same and what gets better."
+                <span class="el-label">What the Math Breakdown should have sounded like at 13:00</span>
+                <div class="el-text">"Mrs. Massey, I hear you — $30 a quarter isn't the $1,900 you saw advertised. Here's what I want to make sure is clear before we decide anything: right now, Humana is putting zero dollars toward those bills. Zero. The Aetna plan puts $120 a year back toward James — that goes toward exactly what you told me matters: the light bill, the water bill. It's not everything you were hoping for. But it's $120 more than what he's getting today. Do we want to at least get that working for him?"</div>
+              </div>
+              <a href="knowledge-hub.html" class="pb-link">Study Math Breakdown in Knowledge Hub →</a>
+            </div>
+
+            <div class="pattern-block" id="pb1">
+              <div class="pb-header">
+                <span class="pb-title">Pattern 1 — Client Gold Ignored (2 instances)</span>
+                <span class="pb-timestamp">7:06 &amp; 8:45</span>
+              </div>
+              <div class="pb-cols">
+                <div>
+                  <div class="pb-col-label">Instance 1 — 7:06</div>
+                  <div class="pb-col-text">"Not just over the counter — the one that helps with the light bill, water bill, something, the phone bill." Financial pressure stated explicitly. Robert moved to the next discovery question with no acknowledgment. He logged the need. He never reflected it back or held it for the close.</div>
+                </div>
+                <div>
+                  <div class="pb-col-label">Instance 2 — 8:45</div>
+                  <div class="pb-col-text">"They act like they didn't want to talk to me that much about getting other benefits." Frustration with Humana — stated out loud, on the table. Robert said "let me take a look" and moved into system navigation. The emotional open went unused entirely.</div>
                 </div>
               </div>
+              <div class="exact-language">
+                <span class="el-label">What to say when a client names their real pressure</span>
+                <div class="el-text">"I hear you — and I want you to know that's exactly why you called. The fact that those bills are a real pressure is exactly what we're going to try to solve for James today. Let me find the best option in his area."</div>
+              </div>
+              <a href="knowledge-hub.html" class="pb-link">Study Client Gold in Knowledge Hub →</a>
+            </div>
 
-              <a href="knowledge-hub.html" class="pb-link">Study this pattern →</a>
+            <div class="pattern-block" id="pb2">
+              <div class="pb-header">
+                <span class="pb-title">Pattern 5 — System Navigation Paralysis</span>
+                <span class="pb-timestamp">8:19 — 10:43 (~2 min 24 sec)</span>
+              </div>
+              <div class="pb-cols">
+                <div>
+                  <div class="pb-col-label">What happened</div>
+                  <div class="pb-col-text">After confirming James's information, Robert went largely silent during plan search. No narration. No bridge language. No value reinforcement. Two and a half minutes of dead air on a call where the client was already motivated.</div>
+                </div>
+                <div>
+                  <div class="pb-col-label">What should have happened</div>
+                  <div class="pb-col-text">Narrate system navigation out loud. Eight seconds of bridge language — "While I'm pulling these up for his zip code, I want to do a proper side-by-side against Humana" — keeps the client in the frame and signals competence.</div>
+                </div>
+              </div>
+              <div class="exact-language">
+                <span class="el-label">Eight-second narration that kills dead air</span>
+                <div class="el-text">"While I'm pulling these up for his zip code — I want to make sure we're doing a proper side-by-side against what Humana has him on now. The Gold Plus HMO is a solid plan but let me see what's beating it in this area right now."</div>
+              </div>
             </div>
 
           </div>
         </section>
 
         <!-- ════════════════════════════════════
-             SECTION 5: CLIENT GOLD AUDIT
+             SECTION 7: MATH BREAKDOWN
+        ════════════════════════════════════ -->
+        <section id="section-math" class="section-gap">
+          <div class="section-eyebrow">Math Breakdown — Not Attempted</div>
+          <div class="math-breakdown">
+            <table class="math-table" id="mathTable">
+              <thead>
+                <tr>
+                  <th>Feature</th>
+                  <th>Humana Gold Plus (Current)</th>
+                  <th>Aetna (Available)</th>
+                  <th>Difference</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>OTC / Spending Card (quarterly)</td>
+                  <td>$0 confirmed</td>
+                  <td>$30 / quarter</td>
+                  <td>+$30/quarter — Mrs. Massey named exact use: utilities</td>
+                </tr>
+                <tr class="sage-row">
+                  <td>OTC / Spending Card (annual)</td>
+                  <td>$0 / year</td>
+                  <td>$120 / year ($30 × 4)</td>
+                  <td>+$120/year — the real number Robert never said</td>
+                </tr>
+                <tr>
+                  <td>Part B Giveback (annual)</td>
+                  <td>$0</td>
+                  <td>$0</td>
+                  <td>Not available in this zip code</td>
+                </tr>
+                <tr>
+                  <td>Dental Coverage</td>
+                  <td>Not quantified</td>
+                  <td>Available</td>
+                  <td>Secondary angle — not pursued</td>
+                </tr>
+                <tr>
+                  <td style="font-weight:700; color:var(--ink);">Annual Net Impact</td>
+                  <td style="font-weight:700;">$0 toward the bills</td>
+                  <td style="font-weight:700; color:var(--sage-dark);">$120 / year toward the bills</td>
+                  <td style="font-weight:700;">$120 vs. $0 — the real choice Robert never named</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="math-verdict">Math Breakdown Verdict: Not Attempted — Step 1, Step 2, and Step 3 all absent. What Mrs. Massey never heard: that $120/year was available toward the exact bills she named, compared to the $0 James was currently getting.</div>
+          </div>
+        </section>
+
+        <!-- ════════════════════════════════════
+             SECTION 8: CLIENT GOLD AUDIT
         ════════════════════════════════════ -->
         <section id="section-gold" class="section-gap">
-          <div class="section-eyebrow">Client Signal Audit — 3 Moments</div>
+          <div class="section-eyebrow">Client Gold Audit</div>
           <div class="client-gold">
+            <table class="cg-table" id="goldTable">
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>What Mrs. Massey Said</th>
+                  <th>Recognized?</th>
+                  <th>Deployed?</th>
+                  <th>What Should Have Happened</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="cg-ts">7:06</span></td>
+                  <td class="cg-quote-cell">"The light bill, water bill, something, the phone bill."</td>
+                  <td><span class="cg-badge partial">Noted</span></td>
+                  <td><span class="cg-badge missed">Never used</span></td>
+                  <td class="cg-note">Step 3 anchor for the Math Breakdown — "That $120/yr goes toward exactly what you just told me matters."</td>
+                </tr>
+                <tr>
+                  <td><span class="cg-ts">7:29</span></td>
+                  <td class="cg-quote-cell">"Yes, he needs dental work done."</td>
+                  <td><span class="cg-badge partial">Noted</span></td>
+                  <td><span class="cg-badge missed">Never used</span></td>
+                  <td class="cg-note">Secondary Pivot anchor — if the utility card wasn't enough, dental need could have been a second angle at 13:18.</td>
+                </tr>
+                <tr>
+                  <td><span class="cg-ts">8:45</span></td>
+                  <td class="cg-quote-cell">"They act like they didn't want to talk to me about other benefits."</td>
+                  <td><span class="cg-badge missed">Missed</span></td>
+                  <td><span class="cg-badge missed">Never used</span></td>
+                  <td class="cg-note">Trust reframe — "That's exactly the difference between calling us and calling them. They have one plan. I have options."</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
 
-            <!-- Moment 1: MISSED -->
-            <div class="cg-moment" id="cg0">
-              <div class="cg-ts">8:14</div>
-              <div class="cg-quote">"I just don't want to lose what I already have."</div>
-              <div class="cg-status missed">Missed</div>
-            </div>
+        <!-- ════════════════════════════════════
+             SECTION 9: OBJECTION HANDLING LOG
+        ════════════════════════════════════ -->
+        <section id="section-objections" class="section-gap">
+          <div class="section-eyebrow">Objection Handling Log</div>
+          <div class="objection-log">
 
-            <!-- Moment 2: WEAPONIZED -->
-            <div class="cg-moment" id="cg1">
-              <div class="cg-ts">11:32</div>
-              <div class="cg-quote">"How much would this actually save me every month?"</div>
-              <div class="cg-status weaponized">Weaponized</div>
-            </div>
-
-            <!-- Moment 3: PARTIALLY USED -->
-            <div class="cg-moment" id="cg2">
-              <div class="cg-ts">16:45</div>
-              <div class="cg-quote">"My daughter said I should just keep what I have."</div>
-              <div class="cg-status partial">Partial</div>
+            <div class="objection-block" id="ob0">
+              <div class="ob-signal-row">
+                <div class="ob-quote">"I already got the 30 dollars over... Humana sometimes."</div>
+                <span class="ob-ts">13:18</span>
+              </div>
+              <div class="ob-meta">
+                <div>
+                  <div class="ob-meta-label">Signal</div>
+                  <div class="ob-meta-text">🟡 → 🔴 — Value not landing, momentum dying. Exit signal beginning.</div>
+                </div>
+                <div>
+                  <div class="ob-meta-label">Agent's Response</div>
+                  <div class="ob-meta-text">Confirmed the gap. Referenced Medicare.gov. Said goodbye. No tool deployed.</div>
+                </div>
+              </div>
+              <div class="ob-assessment fail">❌ Incorrect — Complete failure to attempt. Zero tools deployed.</div>
+              <div class="exact-language">
+                <span class="el-label">Correct response at 13:18</span>
+                <div class="el-text">"Mrs. Massey — I hear you. And I don't want to put James somewhere that doesn't feel worth it. Here's the one thing I want to make sure we're looking at clearly: you told me earlier the light bill and the water bill are real pressure. What is Humana putting toward those bills right now?"<br><br>(wait)<br><br>"So we're comparing zero to $120 a year toward exactly what you told me matters. I know it's not the $1,900. But it's $120 more than what he has working for him today. That's the real choice. Let's at least get that working for him."</div>
+              </div>
             </div>
 
           </div>
         </section>
 
         <!-- ════════════════════════════════════
-             ANNOTATED TRANSCRIPT (collapsible)
+             SECTION 10: CLOSE CONFIRMATION AUDIT
+        ════════════════════════════════════ -->
+        <section id="section-close" class="section-gap">
+          <div class="section-eyebrow">Close Confirmation Audit</div>
+          <div class="close-audit">
+
+            <div class="ca-block" id="ca0">
+              <div class="ca-question">Was a close attempted?</div>
+              <div class="ca-answer">No</div>
+              <p class="ca-detail">Robert never moved toward enrollment. At 13:00 he presented the $30 card without a push. At 13:33 he referenced Medicare.gov. At 13:53 he said goodbye. The close was not attempted at any point in the call.</p>
+            </div>
+
+            <div class="ca-block" id="ca1">
+              <div class="ca-question">Last viable recovery window</div>
+              <div class="ca-window">
+                <span class="ca-window-label">The Losing Moment — 13:18</span>
+                <div class="ca-window-text">When Mrs. Massey said she already had the $30 through Humana, that was the moment. The Math Breakdown using her own words from 7:06 was the one recovery move available. It required one question ("What is Humana putting toward those bills right now?") and two sentences of reframe. It was not deployed. The enrollment was lost in the 60 seconds that followed.</div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ════════════════════════════════════
+             SECTION 11: FULL ANNOTATED TRANSCRIPT
         ════════════════════════════════════ -->
         <section id="section-transcript" class="transcript-section">
-          <div class="section-eyebrow">Full Transcript</div>
+          <div class="section-eyebrow">Full Annotated Transcript</div>
           <button class="transcript-toggle" id="transcriptToggle">
-            Full Transcript ↓
+            Show Full Transcript ↓
           </button>
 
-          <div class="transcript-content" id="transcriptContent" hidden>
-
-            <span class="transcript-speaker">Agent (0:00)</span>
-            Hi there! This is Alex with Certainty Health — am I speaking with Margaret?
-
-            <span class="transcript-speaker">Prospect (0:09)</span>
-            Yes, this is Margaret.
-
-            <span class="transcript-speaker">Agent (0:12)</span>
-            Margaret, wonderful. I'm calling because I noticed you'd been looking at some of our Medicare Advantage options, and I wanted to make sure you had someone who could walk you through everything clearly. Is now a good time?
-
-            <span class="transcript-speaker">Prospect (0:28)</span>
-            Sure, yes. I did see something in the mail about the dental coverage. That's what caught my eye. <span class="tag tag-signal">[GREEN SIGNAL]</span>
-
-            <span class="transcript-speaker">Agent (0:40)</span>
-            Perfect — that's actually one of the strongest benefits in this plan. Let me pull up your ZIP code so I can show you exactly what's available for you specifically...
-
-            <span class="transcript-speaker">Prospect (8:14)</span>
-            I mean it sounds good, but I just don't want to lose what I already have, you know? <span class="tag tag-gold">[CLIENT GOLD]</span>
-
-            <span class="transcript-speaker">Agent (8:22)</span>
-            <span class="tag tag-pattern">[PATTERN 3]</span> Totally understandable — so this plan actually includes all of your current benefits plus the dental and vision. The premium is $0 and you'd be saving about $180 a month on average...
-
-            <span class="transcript-speaker">Prospect (8:48)</span>
-            Wait, there's no cost?
-
-            <span class="transcript-speaker">Agent (11:32)</span>
-            Zero dollar premium, yes. So Margaret — how much would this actually save you each month if you switched? <span class="tag tag-gold">[CLIENT GOLD]</span>
-
-            <span class="transcript-speaker">Prospect (11:40)</span>
-            Oh, I'm currently paying... about $165 I think? Yeah, around there. <span class="tag tag-signal">[GREEN SIGNAL]</span>
-
-            <span class="transcript-speaker">Agent (11:52)</span>
-            So on a $0 plan, you'd save that $165 every month — that's $1,980 a year — plus gain dental, vision, and the hearing benefit. Let me show you the math...
-
-            <span class="transcript-speaker">Prospect (16:45)</span>
-            I'll be honest with you — my daughter told me I should just keep what I have. <span class="tag tag-gold">[CLIENT GOLD]</span>
-
-            <span class="transcript-speaker">Agent (16:52)</span>
-            That's good advice from her — she wants to protect you. What I'd suggest is, let's get everything written down so you can show her exactly what this looks like. She'll see the same numbers you're seeing right now...
-
-            <span class="transcript-speaker">Prospect (18:10)</span>
-            You know what? That makes sense. Let's do it.
-
-            <span class="transcript-speaker">Agent (18:24)</span>
-            Wonderful, Margaret. I'm so glad we could help you today. Let me get started on your enrollment...
-
+          <div class="transcript-table-wrap" id="transcriptContent" style="display:none;">
+            <table class="transcript-table">
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Speaker</th>
+                  <th>Text</th>
+                  <th>Signal</th>
+                  <th>Coaching Note</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="tt-time">0:02</td>
+                  <td><span class="tt-speaker agent">Robert</span></td>
+                  <td class="tt-text">"Hi there, this is Robert Pegler. I'm a licensed insurance agent with Pure Senior Care on a recorded line. How can I help you?"</td>
+                  <td class="tt-signal">—</td>
+                  <td class="tt-note good">✅ Clean professional open</td>
+                </tr>
+                <tr class="gold-row">
+                  <td class="tt-time">0:09</td>
+                  <td><span class="tt-speaker prospect">Mrs. Massey</span></td>
+                  <td class="tt-text">"Yes, I'm trying to get some benefits, a little of everything."</td>
+                  <td class="tt-signal"><span class="signal-pill-sm green">🟢 Green</span></td>
+                  <td class="tt-note good">Money Caller confirmed — motivated, broad intent</td>
+                </tr>
+                <tr>
+                  <td class="tt-time">0:58</td>
+                  <td><span class="tt-speaker agent">Robert</span></td>
+                  <td class="tt-text">TPMO Disclaimer delivered</td>
+                  <td class="tt-signal">—</td>
+                  <td class="tt-note good">✅ CMS-required — clean delivery</td>
+                </tr>
+                <tr>
+                  <td class="tt-time">1:24</td>
+                  <td><span class="tt-speaker agent">Robert</span></td>
+                  <td class="tt-text">SOA Confirmation obtained</td>
+                  <td class="tt-signal">—</td>
+                  <td class="tt-note good">✅ CMS-required</td>
+                </tr>
+                <tr class="gold-row">
+                  <td class="tt-time">1:38</td>
+                  <td><span class="tt-speaker prospect">Mrs. Massey</span></td>
+                  <td class="tt-text">"Is you're offering anything else better than that?"</td>
+                  <td class="tt-signal"><span class="signal-pill-sm green">🟢 Green</span></td>
+                  <td class="tt-note good">She is asking to be sold. She came ready.</td>
+                </tr>
+                <tr>
+                  <td class="tt-time">1:53</td>
+                  <td><span class="tt-speaker agent">Robert</span></td>
+                  <td class="tt-text">"Let's take a look, definitely we'll let you know if there's a better situation I can put you in."</td>
+                  <td class="tt-signal">—</td>
+                  <td class="tt-note good">✅ Assumptive frame — good</td>
+                </tr>
+                <tr>
+                  <td class="tt-time">3:03</td>
+                  <td><span class="tt-speaker agent">Robert</span></td>
+                  <td class="tt-text">"Do you help James out with his healthcare decisions then?"</td>
+                  <td class="tt-signal">—</td>
+                  <td class="tt-note good">✅ Decision authority confirmed</td>
+                </tr>
+                <tr class="gold-row">
+                  <td class="tt-time">7:06</td>
+                  <td><span class="tt-speaker prospect">Mrs. Massey</span></td>
+                  <td class="tt-text">"Not just over the counter — the one that helps with the light bill, water bill, something, the phone bill." <span class="tag tag-gold">[CLIENT GOLD]</span></td>
+                  <td class="tt-signal"><span class="signal-pill-sm gold">💰 Gold</span></td>
+                  <td class="tt-note flag">Financial pressure named explicitly. Pattern 1 begins. No acknowledgment from Robert.</td>
+                </tr>
+                <tr class="gold-row">
+                  <td class="tt-time">7:29</td>
+                  <td><span class="tt-speaker prospect">Mrs. Massey</span></td>
+                  <td class="tt-text">"Yes, he needs dental work done."</td>
+                  <td class="tt-signal"><span class="signal-pill-sm green">🟢 Green</span></td>
+                  <td class="tt-note flag">Secondary Client Gold — dental need. Not used later.</td>
+                </tr>
+                <tr class="flag-row">
+                  <td class="tt-time">8:19</td>
+                  <td><span class="tt-speaker agent">Robert</span></td>
+                  <td class="tt-text">"Just bear with me while I get everything saved here..."</td>
+                  <td class="tt-signal">—</td>
+                  <td class="tt-note flag">❌ Pattern 5 begins — ~2 min 24 sec of navigation with no narration</td>
+                </tr>
+                <tr class="gold-row">
+                  <td class="tt-time">8:45</td>
+                  <td><span class="tt-speaker prospect">Mrs. Massey</span></td>
+                  <td class="tt-text">"They act like they didn't want to talk to me that much about getting other benefits." <span class="tag tag-gold">[CLIENT GOLD]</span></td>
+                  <td class="tt-signal"><span class="signal-pill-sm gold">💰 Gold</span></td>
+                  <td class="tt-note flag">Frustration with Humana stated out loud. Trust reframe opportunity. No reframe from Robert.</td>
+                </tr>
+                <tr>
+                  <td class="tt-time">10:43</td>
+                  <td><span class="tt-speaker agent">Robert</span></td>
+                  <td class="tt-text">Navigation complete</td>
+                  <td class="tt-signal">—</td>
+                  <td class="tt-note flag">Pattern 5 ends — 2 min 24 sec of dead air</td>
+                </tr>
+                <tr class="gold-row">
+                  <td class="tt-time">11:50</td>
+                  <td><span class="tt-speaker prospect">Mrs. Massey</span></td>
+                  <td class="tt-text">"So for the OTC card, is that the one with the $1,900 for paying the light bills?"</td>
+                  <td class="tt-signal"><span class="signal-pill-sm green">🟢 Green</span></td>
+                  <td class="tt-note good">Still GREEN. Still wants to buy. Math Breakdown window is open.</td>
+                </tr>
+                <tr class="flag-row">
+                  <td class="tt-time">13:00</td>
+                  <td><span class="tt-speaker agent">Robert</span></td>
+                  <td class="tt-text">"The OTC card it's a $30 quarterly benefit every few months..." <span class="tag tag-pattern">[PATTERN 2]</span></td>
+                  <td class="tt-signal">—</td>
+                  <td class="tt-note flag">❌ $30 presented without structure. Not annualized. Not connected to the bills she named.</td>
+                </tr>
+                <tr class="flag-row">
+                  <td class="tt-time">13:18</td>
+                  <td><span class="tt-speaker prospect">Mrs. Massey</span></td>
+                  <td class="tt-text">"I already got the 30 dollars over... Humana sometimes."</td>
+                  <td class="tt-signal"><span class="signal-pill-sm yellow">🟡→🔴</span></td>
+                  <td class="tt-note flag">THE LOSING MOMENT — Math Breakdown using her own words is the one recovery move. Robert had no move.</td>
+                </tr>
+                <tr class="flag-row">
+                  <td class="tt-time">13:33</td>
+                  <td><span class="tt-speaker agent">Robert</span></td>
+                  <td class="tt-text">"You can always contact Medicare directly to go over all the options."</td>
+                  <td class="tt-signal">—</td>
+                  <td class="tt-note flag">❌ Authority ceded. Exit handed to client.</td>
+                </tr>
+                <tr class="flag-row">
+                  <td class="tt-time">13:53</td>
+                  <td><span class="tt-speaker agent">Robert</span></td>
+                  <td class="tt-text">"Yeah, no problem, best of luck to you."</td>
+                  <td class="tt-signal">—</td>
+                  <td class="tt-note flag">❌ Concession close. Call ended. Enrollment lost.</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </section>
 
@@ -944,40 +1322,29 @@
     // ─── Transcript toggle ───────────────────────────────────────────────
     document.getElementById('transcriptToggle').addEventListener('click', function() {
       const content = document.getElementById('transcriptContent');
-      const isHidden = content.hidden;
-      content.hidden = !isHidden;
-      this.textContent = isHidden ? 'Hide Transcript ↑' : 'Full Transcript ↓';
+      const isHidden = content.style.display === 'none';
+      content.style.display = isHidden ? 'block' : 'none';
+      this.textContent = isHidden ? 'Hide Transcript ↑' : 'Show Full Transcript ↓';
     });
-
-    // ─── Score row expand/collapse ───────────────────────────────────────
-    function toggleFeedback(btn) {
-      const feedback = btn.nextElementSibling;
-      const isOpen = feedback.classList.toggle('open');
-      btn.textContent = isOpen ? 'Collapse ↑' : 'Expand feedback ↓';
-    }
 
     // ─── Report nav: update active section on scroll ─────────────────────
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.rn-item[href^="#"]');
-
     const scrollEl = document.getElementById('reportScroll');
 
     scrollEl.addEventListener('scroll', () => {
       let current = '';
       const scrollTop = scrollEl.scrollTop;
-
       sections.forEach(sec => {
-        if (sec.offsetTop - 80 <= scrollTop) {
+        if (sec.offsetTop - 100 <= scrollTop) {
           current = '#' + sec.id;
         }
       });
-
       navLinks.forEach(link => {
         link.classList.toggle('active', link.getAttribute('href') === current);
       });
     });
 
-    // Smooth scroll for nav links
     navLinks.forEach(link => {
       link.addEventListener('click', (e) => {
         e.preventDefault();
@@ -994,8 +1361,17 @@
         // Closer's Edge card
         document.getElementById('edgeCard').classList.add('visible');
 
+        // Snapshot table
+        setTimeout(() => {
+          const st = document.getElementById('snapshotTable');
+          if (st) st.classList.add('visible');
+        }, 80);
+
         // Executive Summary
-        setTimeout(() => document.getElementById('execSummary').classList.add('visible'), 150);
+        setTimeout(() => {
+          const es = document.getElementById('execSummary');
+          if (es) es.classList.add('visible');
+        }, 150);
 
         // Score rows
         ['sr0','sr1','sr2','sr3','sr4','sr5'].forEach((id, i) => {
@@ -1003,30 +1379,629 @@
             const el = document.getElementById(id);
             if (el) {
               el.classList.add('visible');
-              // Animate the bar fill
               const fill = el.querySelector('.score-bar-fill');
               if (fill) fill.style.width = fill.dataset.w;
             }
           }, 300 + i * 80);
         });
 
+        // Did right blocks
+        setTimeout(() => {
+          ['dr0','dr1','dr2'].forEach((id, i) => {
+            setTimeout(() => {
+              const el = document.getElementById(id);
+              if (el) el.classList.add('visible');
+            }, i * 80);
+          });
+        }, 500);
+
         // Pattern blocks
         setTimeout(() => {
-          document.querySelectorAll('.pattern-block').forEach((el, i) => {
-            setTimeout(() => el.classList.add('visible'), i * 100);
+          ['pb0','pb1','pb2'].forEach((id, i) => {
+            setTimeout(() => {
+              const el = document.getElementById(id);
+              if (el) el.classList.add('visible');
+            }, i * 100);
           });
-        }, 400);
+        }, 600);
 
-        // Client gold moments
-        ['cg0','cg1','cg2'].forEach((id, i) => {
-          setTimeout(() => {
-            const el = document.getElementById(id);
-            if (el) el.classList.add('visible');
-          }, 500 + i * 80);
-        });
+        // Math table
+        setTimeout(() => {
+          const mt = document.getElementById('mathTable');
+          if (mt) mt.classList.add('visible');
+        }, 700);
+
+        // Gold table
+        setTimeout(() => {
+          const gt = document.getElementById('goldTable');
+          if (gt) gt.classList.add('visible');
+        }, 750);
+
+        // Objection blocks
+        setTimeout(() => {
+          const ob = document.getElementById('ob0');
+          if (ob) ob.classList.add('visible');
+        }, 800);
+
+        // Close audit blocks
+        setTimeout(() => {
+          ['ca0','ca1'].forEach((id, i) => {
+            setTimeout(() => {
+              const el = document.getElementById(id);
+              if (el) el.classList.add('visible');
+            }, i * 80);
+          });
+        }, 850);
 
       }, 100);
     });
+
+    // ─── Help overlay ─────────────────────────────────────────────────────
+    document.getElementById('helpBtn').addEventListener('click', () => document.getElementById('helpOverlay').classList.add('open'));
+    document.getElementById('helpClose').addEventListener('click', () => document.getElementById('helpOverlay').classList.remove('open'));
+    document.getElementById('helpOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) e.currentTarget.classList.remove('open'); });
   </script>
+
+  <div class="help-overlay" id="helpOverlay">
+    <div class="help-modal">
+      <div class="hm-header">
+        <div class="hm-title">Call Analysis Report</div>
+        <button class="hm-close" id="helpClose">×</button>
+      </div>
+      <div class="hm-section">
+        <div class="hm-section-title">The Closer's Edge</div>
+        <div class="hm-section-text">Always first. The single most actionable coaching insight from this specific call — the one move that could have changed the outcome. Read this before diving into the rest of the report.</div>
+      </div>
+      <div class="hm-section">
+        <div class="hm-section-title">Navigating the report</div>
+        <div class="hm-section-text">Use the left panel to jump to any of the 11 sections. The dot next to each section indicates tone — sage for positive findings, terracotta for failure patterns, no dot for neutral sections.</div>
+      </div>
+      <div class="hm-section">
+        <div class="hm-section-title">Score Breakdown</div>
+        <div class="hm-section-text">Six categories scored individually: Lead/Authority Frame, Signal Reading, Math Breakdown, Objection Handling, Call Outcome, and Communication. Each includes a narrative and an improvement note with the specific fix.</div>
+      </div>
+      <div class="hm-section">
+        <div class="hm-section-title">Study links</div>
+        <div class="hm-section-text">"Study X in the Knowledge Hub" links throughout the report connect directly to the relevant topic — so you can go deeper on any concept flagged in this specific call.</div>
+      </div>
+      <div class="hm-section">
+        <div class="hm-section-title">Full Transcript</div>
+        <div class="hm-section-text">The annotated transcript at the bottom shows the full call with signal labels, coaching notes, and highlighted rows (gold = Client Gold moment, red = failure pattern moment).</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ──────────────────────────────────────
+       CALL REPORT RENDERER
+       Reads sessionStorage('certainty_analysis') → populates DOM from JSON
+       Falls back to mock content if no data present
+  ────────────────────────────────────────── -->
+  <script>
+  (function () {
+    var raw = sessionStorage.getItem('certainty_analysis');
+    if (!raw) return; // no data — keep existing mock content
+
+    var d;
+    try { d = JSON.parse(raw); } catch (e) { return; }
+
+    renderCallReport(d);
+
+    // ═════════════════════════════════════════════════════════════
+    // MAIN RENDER
+    // ═════════════════════════════════════════════════════════════
+    function renderCallReport(d) {
+      var m     = d.call_metadata   || {};
+      var p     = d.pillar_scores   || {};
+      var score = (p.total != null) ? p.total : ((d.display_score != null) ? d.display_score : 0);
+
+      // ── Page title ──────────────────────────────────────────────
+      document.title = 'Certainty — Call Report: ' + (m.agent_name || 'Agent') + ' · ' + score;
+
+      // ── Sidebar: agent info + score ─────────────────────────────
+      setText('.rna-name',  m.agent_name);
+      setText('.rna-level', agentLevelLabel(d));
+      setText('.rs-meta',   (m.agent_name || 'Agent') + ' · Call Report');
+      setText('.rs-score',  score);
+
+      var badge = document.querySelector('.rs-badge-missed');
+      if (badge) {
+        badge.textContent = classLabel(m.call_classification);
+        if (m.call_classification === 'enrolled') {
+          badge.style.background = 'var(--sage)';
+          badge.style.color      = 'var(--ink)';
+        }
+      }
+
+      // ── Closer's Edge ───────────────────────────────────────────
+      if (d.closers_edge) setText('.ce-quote', d.closers_edge);
+      if (d.recovery_line) {
+        setText('.ce-recovery-text', d.recovery_line);
+        var recLabel = document.querySelector('.ce-recovery-label');
+        if (recLabel && d.recovery_label) recLabel.textContent = d.recovery_label;
+      } else {
+        var recSection = document.querySelector('.ce-recovery');
+        if (recSection) recSection.style.display = 'none';
+      }
+
+      // ── Call Snapshot table ─────────────────────────────────────
+      var snapTbl = document.getElementById('snapshotTable');
+      if (snapTbl) {
+        var badgeHTML = '<span class="snapshot-badge ' + classCSS(m.call_classification) + '">'
+          + classLabel(m.call_classification) + '</span>';
+        var rows = [
+          ['Agent',              esc(m.agent_name || '—')],
+          ['Client',             esc(m.client_name || '—')],
+          ['Classification',     badgeHTML],
+          ['Primary Call Type',  esc(m.primary_call_type  || '—')],
+          ['Secondary Call Type',esc(m.secondary_call_type || '—')],
+          ['Duration',           esc(m.call_duration_estimated || '—')],
+          ['Enrollment Result',  enrollmentResultHTML(m)],
+          ['Certainty Score',    '<span class="snapshot-score">' + score + ' / 100</span>']
+        ];
+        snapTbl.innerHTML = rows.map(function (r) {
+          return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>';
+        }).join('');
+      }
+
+      // ── Executive Summary ───────────────────────────────────────
+      var execDiv = document.getElementById('execSummary');
+      if (execDiv && d.executive_summary) {
+        execDiv.innerHTML = '<p class="exec-para">' + esc(d.executive_summary) + '</p>';
+      }
+
+      // ── Score Breakdown ─────────────────────────────────────────
+      renderScoreBars(d, p);
+
+      // ── What Agent Did Right ────────────────────────────────────
+      renderStrengths(d.strengths || []);
+
+      // ── Failure Patterns ────────────────────────────────────────
+      renderPatterns(d.failure_patterns || []);
+
+      // ── Math Breakdown ──────────────────────────────────────────
+      renderMathBreakdown(d.mathematical_pivot);
+
+      // ── Client Gold Audit ───────────────────────────────────────
+      renderClientGold(d.client_gold_audit || []);
+
+      // ── Objection Handling ──────────────────────────────────────
+      renderObjections(d.objection_handling || []);
+
+      // ── Close Confirmation Audit ────────────────────────────────
+      renderCloseAudit(d.close_confirmation_audit);
+
+      // ── Annotated Transcript ────────────────────────────────────
+      renderTranscript(d.transcript_annotated || []);
+
+      // ── Animations (after load fires) ───────────────────────────
+      window.addEventListener('load', function () {
+        setTimeout(function () { doAnimations(score); }, 120);
+      });
+    }
+
+    // ═════════════════════════════════════════════════════════════
+    // SECTION RENDERERS
+    // ═════════════════════════════════════════════════════════════
+
+    function renderScoreBars(d, p) {
+      var container = document.querySelector('.score-breakdown');
+      if (!container) return;
+      var cats = d.categories || pillarsToCategories(p);
+      if (!cats || !cats.length) return;
+
+      container.innerHTML = cats.map(function (cat, i) {
+        var max      = cat.max || cat.max_score || 20;
+        var pct      = Math.round(((cat.score || 0) / max) * 100);
+        var barClass = pct >= 70 ? 'good' : pct >= 40 ? 'mid' : 'low';
+        return (
+          '<div class="score-row" id="sr' + i + '">' +
+            '<div class="sr-top">' +
+              '<span class="sr-cat">' + esc(cat.name || cat.category || '') + '</span>' +
+              '<span class="sr-pts">' + (cat.score || 0) + ' / ' + max + '</span>' +
+            '</div>' +
+            '<div class="score-bar-track">' +
+              '<div class="score-bar-fill ' + barClass + '" data-w="' + pct + '%"></div>' +
+            '</div>' +
+            (cat.narrative || cat.description
+              ? '<p class="sr-narrative">' + esc(cat.narrative || cat.description) + '</p>'
+              : '') +
+            (cat.improve || cat.improvement_note
+              ? '<div class="sr-improve"><span class="sr-improve-label">Improve this:</span>' +
+                esc(cat.improve || cat.improvement_note) + '</div>'
+              : '') +
+          '</div>'
+        );
+      }).join('');
+    }
+
+    function pillarsToCategories(p) {
+      if (!p) return [];
+      return [
+        { name: 'Lead / Authority Frame',       score: p.lead_authority      || 0, max: 20 },
+        { name: 'Signal Reading',               score: p.signal_reading      || 0, max: 20 },
+        { name: 'Math Breakdown',               score: p.math_breakdown      || 0, max: 20 },
+        { name: 'Objection Handling',           score: p.objection_handling  || 0, max: 15 },
+        { name: 'Call Outcome Quality',         score: p.call_outcome        || 0, max: 10 },
+        { name: 'Compliance & Professionalism', score: p.compliance          || 0, max: 15 }
+      ].filter(function (c) { return c.score != null; });
+    }
+
+    function renderStrengths(strengths) {
+      var container = document.querySelector('.did-right');
+      if (!container || !strengths.length) return;
+      container.innerHTML = strengths.map(function (s, i) {
+        return (
+          '<div class="dr-block" id="dr' + i + '">' +
+            '<div class="dr-num">' + String(i + 1).padStart(2, '0') + '</div>' +
+            '<div class="dr-title">' + esc(s.title || s.name || '') + '</div>' +
+            '<p class="dr-text">' + esc(s.detail || s.description || s.text || '') + '</p>' +
+          '</div>'
+        );
+      }).join('');
+    }
+
+    function renderPatterns(patterns) {
+      var container = document.querySelector('.failure-patterns');
+      if (!container || !patterns.length) return;
+      container.innerHTML = patterns.map(function (pat, i) {
+        var hasCols = pat.what_happened || pat.what_should_have_happened;
+        return (
+          '<div class="pattern-block" id="pb' + i + '">' +
+            '<div class="pb-header">' +
+              '<span class="pb-title">' + esc(pat.name || pat.pattern_name || pat.title || '') + '</span>' +
+              (pat.timestamp
+                ? '<span class="pb-timestamp">' + esc(pat.timestamp) + '</span>'
+                : '') +
+            '</div>' +
+            (hasCols
+              ? '<div class="pb-cols">' +
+                  '<div>' +
+                    '<div class="pb-col-label">What happened</div>' +
+                    '<div class="pb-col-text">' + esc(pat.what_happened || '') + '</div>' +
+                  '</div>' +
+                  '<div>' +
+                    '<div class="pb-col-label">What should have happened</div>' +
+                    '<div class="pb-col-text">' + esc(pat.what_should_have_happened || '') + '</div>' +
+                  '</div>' +
+                '</div>'
+              : '') +
+            (pat.exact_language
+              ? '<div class="exact-language">' +
+                  '<span class="el-label">' + esc(pat.exact_language_label || 'Exact language') + '</span>' +
+                  '<div class="el-text">' + esc(pat.exact_language) + '</div>' +
+                '</div>'
+              : '') +
+          '</div>'
+        );
+      }).join('');
+    }
+
+    function renderMathBreakdown(mp) {
+      if (!mp) return;
+      var tbl = document.getElementById('mathTable');
+      if (!tbl) return;
+
+      // Update section eyebrow
+      var section = document.getElementById('section-math');
+      if (section && mp.title) {
+        var eyebrow = section.querySelector('.section-eyebrow');
+        if (eyebrow) eyebrow.textContent = mp.title;
+      }
+
+      // Rebuild table from rows array
+      if (mp.rows && mp.rows.length) {
+        var dataRows   = mp.rows;
+        var headerRow  = null;
+        if (mp.rows[0].header) {
+          headerRow = mp.rows[0];
+          dataRows  = mp.rows.slice(1);
+        }
+        if (headerRow) {
+          var thead = tbl.querySelector('thead');
+          if (thead) {
+            thead.innerHTML = '<tr>' + (headerRow.cells || []).map(function (c) {
+              return '<th>' + esc(c) + '</th>';
+            }).join('') + '</tr>';
+          }
+        }
+        var tbody = tbl.querySelector('tbody');
+        if (tbody) {
+          tbody.innerHTML = dataRows.map(function (row) {
+            return '<tr' + (row.highlight ? ' class="sage-row"' : '') + '>' +
+              (row.cells || []).map(function (c) { return '<td>' + esc(c) + '</td>'; }).join('') +
+            '</tr>';
+          }).join('');
+        }
+      }
+
+      // Update verdict banner
+      if (mp.verdict) {
+        var verdict = tbl.nextElementSibling;
+        if (verdict && verdict.classList.contains('math-verdict')) {
+          verdict.textContent = mp.verdict;
+        }
+      }
+    }
+
+    function renderClientGold(audit) {
+      var tbl = document.getElementById('goldTable');
+      if (!tbl || !audit.length) return;
+      var tbody = tbl.querySelector('tbody');
+      if (!tbody) return;
+      tbody.innerHTML = audit.map(function (item) {
+        return (
+          '<tr>' +
+            '<td><span class="cg-ts">' + esc(item.timestamp || '') + '</span></td>' +
+            '<td class="cg-quote-cell">' + esc(item.quote || '') + '</td>' +
+            '<td><span class="cg-badge ' + cgBadgeClass(item.recognized) + '">' + esc(item.recognized || '—') + '</span></td>' +
+            '<td><span class="cg-badge ' + cgBadgeClass(item.deployed) + '">' + esc(item.deployed || '—') + '</span></td>' +
+            '<td class="cg-note">' + esc(item.should_have_happened || item.note || '') + '</td>' +
+          '</tr>'
+        );
+      }).join('');
+    }
+
+    function renderObjections(objections) {
+      var container = document.querySelector('.objection-log');
+      if (!container || !objections.length) return;
+      container.innerHTML = objections.map(function (obj, i) {
+        var isPass = obj.assessment_pass ||
+          (typeof obj.assessment === 'string' && obj.assessment.toLowerCase().startsWith('✅'));
+        return (
+          '<div class="objection-block" id="ob' + i + '">' +
+            '<div class="ob-signal-row">' +
+              '<div class="ob-quote">' + esc(obj.quote || obj.objection || '') + '</div>' +
+              (obj.timestamp ? '<span class="ob-ts">' + esc(obj.timestamp) + '</span>' : '') +
+            '</div>' +
+            '<div class="ob-meta">' +
+              '<div>' +
+                '<div class="ob-meta-label">Signal</div>' +
+                '<div class="ob-meta-text">' + esc(obj.signal || '') + '</div>' +
+              '</div>' +
+              '<div>' +
+                '<div class="ob-meta-label">Agent\'s Response</div>' +
+                '<div class="ob-meta-text">' + esc(obj.agent_response || '') + '</div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="ob-assessment ' + (isPass ? 'pass' : 'fail') + '">' + esc(obj.assessment || '') + '</div>' +
+            (obj.correct_response
+              ? '<div class="exact-language">' +
+                  '<span class="el-label">' + esc(obj.correct_response_label || 'Correct response') + '</span>' +
+                  '<div class="el-text">' + esc(obj.correct_response) + '</div>' +
+                '</div>'
+              : '') +
+          '</div>'
+        );
+      }).join('');
+    }
+
+    function renderCloseAudit(audit) {
+      var container = document.querySelector('.close-audit');
+      if (!container || !audit) return;
+
+      if (Array.isArray(audit)) {
+        // Array format
+        container.innerHTML = audit.map(function (item, i) {
+          return closeAuditBlockHTML(item, i);
+        }).join('');
+      } else {
+        // Object format — extract standard fields
+        container.innerHTML = '';
+        var idx = 0;
+        if (audit.close_attempted !== undefined || audit.close_detail) {
+          var b1 = document.createElement('div');
+          b1.className = 'ca-block';
+          b1.id        = 'ca' + idx++;
+          b1.innerHTML =
+            '<div class="ca-question">Was a close attempted?</div>' +
+            '<div class="ca-answer' + (audit.close_attempted ? ' positive' : '') + '">' +
+              (audit.close_attempted ? 'Yes' : 'No') + '</div>' +
+            (audit.close_detail ? '<p class="ca-detail">' + esc(audit.close_detail) + '</p>' : '');
+          container.appendChild(b1);
+        }
+        if (audit.recovery_window) {
+          var b2 = document.createElement('div');
+          b2.className = 'ca-block';
+          b2.id        = 'ca' + idx;
+          b2.innerHTML =
+            '<div class="ca-question">Last viable recovery window</div>' +
+            '<div class="ca-window">' +
+              '<span class="ca-window-label">' + esc(audit.recovery_label || 'The Losing Moment') + '</span>' +
+              '<div class="ca-window-text">' + esc(audit.recovery_window) + '</div>' +
+            '</div>';
+          container.appendChild(b2);
+        }
+      }
+    }
+
+    function closeAuditBlockHTML(item, i) {
+      var isPos = item.positive || item.answer === 'Yes';
+      return (
+        '<div class="ca-block" id="ca' + i + '">' +
+          '<div class="ca-question">' + esc(item.question || '') + '</div>' +
+          (item.answer
+            ? '<div class="ca-answer' + (isPos ? ' positive' : '') + '">' + esc(item.answer) + '</div>'
+            : '') +
+          (item.detail ? '<p class="ca-detail">' + esc(item.detail) + '</p>' : '') +
+          (item.recovery_window
+            ? '<div class="ca-window">' +
+                '<span class="ca-window-label">' + esc(item.recovery_label || 'Recovery Window') + '</span>' +
+                '<div class="ca-window-text">' + esc(item.recovery_window) + '</div>' +
+              '</div>'
+            : '') +
+        '</div>'
+      );
+    }
+
+    function renderTranscript(rows) {
+      var tbody = document.querySelector('.transcript-table tbody');
+      if (!tbody || !rows.length) return;
+      tbody.innerHTML = rows.map(function (row) {
+        var spk         = String(row.speaker || '').toLowerCase();
+        var isAgent     = spk === 'agent' || spk.includes('agent') || spk.includes('robert');
+        var speakerCls  = isAgent ? 'agent' : 'prospect';
+        var sigType     = String(row.signal_type || '');
+        var rowClass    = sigType === 'gold' ? 'gold-row' : (sigType === 'flag' || sigType === 'red') ? 'flag-row' : '';
+        var noteCls     = row.note_class || (sigType === 'good' || sigType === 'positive' ? 'good' : sigType === 'flag' ? 'flag' : '');
+        var sigHTML     = row.signal
+          ? '<span class="signal-pill-sm ' + signalClass(row.signal) + '">' + esc(row.signal) + '</span>'
+          : '—';
+        return (
+          '<tr' + (rowClass ? ' class="' + rowClass + '"' : '') + '>' +
+            '<td class="tt-time">' + esc(row.timestamp || '') + '</td>' +
+            '<td><span class="tt-speaker ' + speakerCls + '">' + esc(row.speaker || '') + '</span></td>' +
+            '<td class="tt-text">' + esc(row.text || '') + '</td>' +
+            '<td class="tt-signal">' + sigHTML + '</td>' +
+            '<td class="tt-note ' + noteCls + '">' + esc(row.coaching_note || row.note || '') + '</td>' +
+          '</tr>'
+        );
+      }).join('');
+    }
+
+    // ═════════════════════════════════════════════════════════════
+    // ANIMATIONS (replaces hardcoded ID approach for dynamic content)
+    // ═════════════════════════════════════════════════════════════
+    function doAnimations(score) {
+      // Closer's Edge card
+      var edgeCard = document.getElementById('edgeCard');
+      if (edgeCard) edgeCard.classList.add('visible');
+
+      setTimeout(function () {
+        var el = document.getElementById('snapshotTable');
+        if (el) el.classList.add('visible');
+      }, 80);
+
+      setTimeout(function () {
+        var el = document.getElementById('execSummary');
+        if (el) el.classList.add('visible');
+      }, 150);
+
+      // Score bars — query all (works regardless of count)
+      document.querySelectorAll('.score-row').forEach(function (el, i) {
+        setTimeout(function () {
+          el.classList.add('visible');
+          var fill = el.querySelector('.score-bar-fill');
+          if (fill) fill.style.width = fill.dataset.w;
+        }, 300 + i * 80);
+      });
+
+      setTimeout(function () {
+        document.querySelectorAll('.dr-block').forEach(function (el, i) {
+          setTimeout(function () { el.classList.add('visible'); }, i * 80);
+        });
+      }, 500);
+
+      setTimeout(function () {
+        document.querySelectorAll('.pattern-block').forEach(function (el, i) {
+          setTimeout(function () { el.classList.add('visible'); }, i * 100);
+        });
+      }, 600);
+
+      setTimeout(function () {
+        var el = document.getElementById('mathTable');
+        if (el) el.classList.add('visible');
+      }, 700);
+
+      setTimeout(function () {
+        var el = document.getElementById('goldTable');
+        if (el) el.classList.add('visible');
+      }, 750);
+
+      setTimeout(function () {
+        document.querySelectorAll('.objection-block').forEach(function (el, i) {
+          setTimeout(function () { el.classList.add('visible'); }, i * 80);
+        });
+      }, 800);
+
+      setTimeout(function () {
+        document.querySelectorAll('.ca-block').forEach(function (el, i) {
+          setTimeout(function () { el.classList.add('visible'); }, i * 80);
+        });
+      }, 850);
+
+      // Score counter animation on the panel number
+      animateCounter(document.querySelector('.rs-score'), score, 900);
+    }
+
+    function animateCounter(el, target, duration) {
+      if (!el) return;
+      var start = null;
+      function step(ts) {
+        if (!start) start = ts;
+        var p    = Math.min((ts - start) / duration, 1);
+        var ease = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * ease);
+        if (p < 1) requestAnimationFrame(step);
+        else el.textContent = target;
+      }
+      requestAnimationFrame(step);
+    }
+
+    // ═════════════════════════════════════════════════════════════
+    // HELPERS
+    // ═════════════════════════════════════════════════════════════
+
+    function setText(sel, val) {
+      var el = document.querySelector(sel);
+      if (el != null && val != null) el.textContent = val;
+    }
+
+    function esc(str) {
+      if (str == null) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function classLabel(cls) {
+      var map = {
+        enrolled:          'Enrolled',
+        missed_opportunity:'Missed Opportunity',
+        unclosable:        'Unclosable',
+        correct_no_sale:   'Correct No Sale'
+      };
+      return (cls && map[cls]) ? map[cls] : (cls || '—');
+    }
+
+    function classCSS(cls) {
+      return cls === 'enrolled' ? 'enrolled' : 'missed';
+    }
+
+    function agentLevelLabel(d) {
+      if (d.call_metadata && d.call_metadata.agent_level) return d.call_metadata.agent_level;
+      if (d.agent_level) return d.agent_level;
+      return null; // keep existing mock text
+    }
+
+    function enrollmentResultHTML(m) {
+      var color = m.call_classification === 'enrolled' ? 'var(--sage-dark)' : 'var(--terracotta)';
+      var text  = m.enrollment_result ||
+        (m.call_classification === 'enrolled' ? 'Enrolled' : 'Not enrolled');
+      return '<span style="color:' + color + '; font-weight:700;">' + esc(text) + '</span>';
+    }
+
+    function cgBadgeClass(val) {
+      if (!val) return '';
+      var v = String(val).toLowerCase();
+      if (v.includes('never') || v.includes('miss') || v === 'no') return 'missed';
+      if (v.includes('deploy') || v.includes('yes') || (v.includes('used') && !v.includes('never'))) return 'deployed';
+      return 'partial';
+    }
+
+    function signalClass(sig) {
+      if (!sig) return '';
+      var s = String(sig).toLowerCase();
+      if (s.includes('green')  || s.includes('🟢')) return 'green';
+      if (s.includes('red')    || s.includes('🔴')) return 'red';
+      if (s.includes('gold')   || s.includes('💰')) return 'gold';
+      if (s.includes('yellow') || s.includes('🟡')) return 'yellow';
+      return '';
+    }
+
+  })();
+  </script>
+
 </body>
 </html>

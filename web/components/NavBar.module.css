@@ -1,0 +1,138 @@
+/* ═══════════════════════════════════════════
+   COL 1 — SAGE ICON NAV
+═══════════════════════════════════════════ */
+
+.colNav {
+  grid-column: 1;
+  grid-row: 1 / -1;
+  background: var(--sage);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+  position: relative;
+  z-index: 2;
+}
+
+/* ─── Logo ─── */
+
+.navLogo {
+  width: 38px;
+  height: 38px;
+  background: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--dark-text);
+  margin-bottom: 32px;
+  flex-shrink: 0;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.navLogo:hover {
+  background: #2a2724;
+}
+
+/* ─── Link list ─── */
+
+.navLinks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  flex: 1;
+}
+
+.navItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 8px;
+  width: 100%;
+  cursor: pointer;
+  text-decoration: none;
+  color: rgba(19, 17, 16, 0.5);
+  transition: color 0.15s, background 0.15s;
+  border-left: 2.5px solid transparent;
+}
+
+.navItem:hover {
+  color: var(--ink);
+  background: rgba(19, 17, 16, 0.08);
+}
+
+.navItem.active {
+  color: var(--ink);
+  border-left-color: var(--ink);
+  background: rgba(19, 17, 16, 0.1);
+}
+
+.navItem svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.navLabel {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+@media (max-width: 768px) {
+  .navLabel {
+    display: none;
+  }
+}
+
+/* ─── Footer (help + avatar) ─── */
+
+.navFoot {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.helpBtn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(19, 17, 16, 0.15);
+  border: 1.5px solid rgba(19, 17, 16, 0.22);
+  color: rgba(19, 17, 16, 0.55);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s, color 0.12s;
+}
+
+.helpBtn:hover {
+  background: rgba(19, 17, 16, 0.28);
+  color: var(--ink);
+}
+
+.navAvatar {
+  width: 34px;
+  height: 34px;
+  background: var(--ink);
+  color: var(--dark-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}

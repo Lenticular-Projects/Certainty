@@ -69,7 +69,10 @@
       font-size: 11px; font-weight: 800;
       letter-spacing: 0.02em; color: var(--dark-text);
       margin-bottom: 32px; flex-shrink: 0;
+      text-decoration: none;
+      transition: background 0.15s;
     }
+    a.nav-logo:hover { background: #2a2724; }
 
     .nav-links { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 100%; flex: 1; }
 
@@ -114,10 +117,9 @@
     }
 
     .panel-eyebrow {
-      font-family: 'Geist Mono', monospace;
       font-size: 8.5px; font-weight: 600;
-      letter-spacing: 0.15em; text-transform: uppercase;
-      color: rgba(250,245,236,0.30);
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: rgba(250,245,236,0.55);
       padding: 0 20px 12px;
       border-bottom: 1px solid rgba(250,245,236,0.07);
       margin-bottom: 4px;
@@ -148,10 +150,9 @@
     }
 
     .stat-sub {
-      font-family: 'Geist Mono', monospace;
       font-size: 8px;
-      color: rgba(250,245,236,0.28);
-      letter-spacing: 0.04em;
+      color: rgba(250,245,236,0.48);
+      letter-spacing: 0.03em;
       margin-top: 1px;
       text-align: right;
     }
@@ -163,6 +164,49 @@
       background: rgba(250,245,236,0.07);
       margin: 8px 0;
     }
+
+    /* Radar subtitle */
+    .radar-subtitle {
+      font-size: 9px; font-weight: 500;
+      letter-spacing: 0.04em;
+      color: rgba(250,245,236,0.48);
+      padding: 0 20px 8px;
+      line-height: 1.4;
+    }
+
+    /* Status legend */
+    .status-legend {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 8px 28px 10px;
+      border-bottom: 1px solid rgba(19,17,16,0.08);
+      flex-wrap: wrap;
+    }
+
+    .sl-label {
+      font-size: 7.5px; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: rgba(19,17,16,0.30);
+    }
+
+    .sl-item {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 8px; font-weight: 600;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      color: rgba(19,17,16,0.40);
+    }
+
+    .sl-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .sl-dot.active  { background: var(--sage); }
+    .sl-dot.warning { background: var(--terracotta); }
+    .sl-dot.dormant { background: rgba(19,17,16,0.22); }
+    .sl-dot.new     { background: transparent; border: 1.5px solid rgba(19,17,16,0.30); }
 
     /* Pattern Radar */
     .radar-list { padding: 4px 0 8px; }
@@ -183,9 +227,8 @@
     }
 
     .radar-count {
-      font-family: 'Geist Mono', monospace;
       font-size: 8px;
-      color: rgba(250,245,236,0.28);
+      color: rgba(250,245,236,0.50);
     }
 
     .radar-track {
@@ -231,10 +274,9 @@
 
     /* Panel footer */
     .panel-footer {
-      font-family: 'Geist Mono', monospace;
       font-size: 8px;
-      color: rgba(250,245,236,0.22);
-      letter-spacing: 0.06em;
+      color: rgba(250,245,236,0.42);
+      letter-spacing: 0.04em;
       padding: 12px 20px;
       border-top: 1px solid rgba(250,245,236,0.07);
       margin-top: auto;
@@ -262,14 +304,13 @@
     }
 
     .mh-title {
-      font-size: 13px; font-weight: 700;
-      color: var(--tc-text); letter-spacing: -0.01em;
+      font-size: 19px; font-weight: 800;
+      color: var(--tc-text); letter-spacing: -0.02em;
     }
 
     .mh-date {
-      font-family: 'Geist Mono', monospace;
       font-size: 9px; font-weight: 600;
-      letter-spacing: 0.12em; text-transform: uppercase;
+      letter-spacing: 0.06em; text-transform: uppercase;
       color: rgba(26,13,8,0.45);
     }
 
@@ -305,14 +346,13 @@
     }
 
     .sc-label {
-      font-family: 'Geist Mono', monospace;
-      font-size: 8.5px; font-weight: 600;
-      letter-spacing: 0.13em; text-transform: uppercase;
-      color: rgba(26,13,8,0.45);
+      font-size: 9px; font-weight: 600;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      color: rgba(26,13,8,0.70);
       margin-bottom: 8px;
     }
 
-    .stat-card.warning-card .sc-label { color: rgba(19,17,16,0.45); }
+    .stat-card.warning-card .sc-label { color: rgba(19,17,16,0.65); }
 
     .sc-val {
       font-size: clamp(48px, 7vw, 80px);
@@ -325,14 +365,13 @@
     .stat-card.warning-card .sc-val { color: var(--ink); }
 
     .sc-denom {
-      font-family: 'Geist Mono', monospace;
       font-size: 12px;
-      color: rgba(26,13,8,0.40);
+      color: rgba(26,13,8,0.65);
       letter-spacing: 0.02em;
       margin-top: 4px;
     }
 
-    .stat-card.warning-card .sc-denom { color: rgba(19,17,16,0.40); }
+    .stat-card.warning-card .sc-denom { color: rgba(19,17,16,0.60); }
 
     /* ═══════════════════════════════════════════
        ROW 2 — CREAM TEAM TABLE
@@ -358,9 +397,8 @@
     }
 
     .table-meta {
-      font-family: 'Geist Mono', monospace;
       font-size: 9px; font-weight: 600;
-      letter-spacing: 0.10em; text-transform: uppercase;
+      letter-spacing: 0.06em; text-transform: uppercase;
       color: rgba(19,17,16,0.35);
     }
 
@@ -374,9 +412,8 @@
     }
 
     .col-head {
-      font-family: 'Geist Mono', monospace;
       font-size: 8px; font-weight: 700;
-      letter-spacing: 0.12em; text-transform: uppercase;
+      letter-spacing: 0.06em; text-transform: uppercase;
       color: rgba(19,17,16,0.40);
     }
 
@@ -460,9 +497,8 @@
     .row-call { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 4px; }
 
     .call-date {
-      font-family: 'Geist Mono', monospace;
       font-size: 9px; font-weight: 600;
-      letter-spacing: 0.08em; text-transform: uppercase;
+      letter-spacing: 0.05em; text-transform: uppercase;
       color: rgba(19,17,16,0.50);
     }
 
@@ -480,7 +516,6 @@
 
     .row-pattern {
       text-align: center;
-      font-family: 'Geist Mono', monospace;
       font-size: 10px;
       color: rgba(19,17,16,0.50);
       letter-spacing: 0.01em;
@@ -490,7 +525,6 @@
 
     .row-calls {
       text-align: center;
-      font-family: 'Geist Mono', monospace;
       font-size: 11px; font-weight: 700;
       color: rgba(19,17,16,0.55);
     }
@@ -541,9 +575,8 @@
     }
 
     .activity-title {
-      font-family: 'Geist Mono', monospace;
       font-size: 9px; font-weight: 700;
-      letter-spacing: 0.13em; text-transform: uppercase;
+      letter-spacing: 0.07em; text-transform: uppercase;
       color: rgba(19,17,16,0.38);
     }
 
@@ -579,9 +612,8 @@
     .activity-card:hover { border: var(--rule); box-shadow: 2px 2px 0 rgba(19,17,16,0.10); }
 
     .ac-type {
-      font-family: 'Geist Mono', monospace;
       font-size: 8px; font-weight: 800;
-      letter-spacing: 0.12em; text-transform: uppercase;
+      letter-spacing: 0.07em; text-transform: uppercase;
       margin-bottom: 6px;
     }
 
@@ -600,10 +632,9 @@
     }
 
     .ac-meta {
-      font-family: 'Geist Mono', monospace;
       font-size: 8px;
       color: rgba(19,17,16,0.35);
-      letter-spacing: 0.04em;
+      letter-spacing: 0.03em;
     }
 
     /* ═══════════════════════════════════════════
@@ -632,9 +663,8 @@
       align-items: center;
       gap: 6px;
       padding: 0 32px;
-      font-family: 'Geist Mono', monospace;
       font-size: 9.5px; font-weight: 700;
-      letter-spacing: 0.12em; text-transform: uppercase;
+      letter-spacing: 0.08em; text-transform: uppercase;
       color: var(--tc-text);
     }
 
@@ -709,9 +739,8 @@
 
     .form-label {
       display: block;
-      font-family: 'Geist Mono', monospace;
       font-size: 8.5px; font-weight: 700;
-      letter-spacing: 0.12em; text-transform: uppercase;
+      letter-spacing: 0.06em; text-transform: uppercase;
       color: rgba(19,17,16,0.45);
       margin-bottom: 7px;
     }
@@ -758,10 +787,9 @@
     }
 
     .uz-meta {
-      font-family: 'Geist Mono', monospace;
       font-size: 8px;
       color: rgba(19,17,16,0.30);
-      letter-spacing: 0.06em;
+      letter-spacing: 0.04em;
       margin-top: 8px;
     }
 
@@ -795,7 +823,27 @@
       .slideover { width: 100%; }
       .col-heads, .team-row { grid-template-columns: 1fr auto auto; }
     }
+
+    /* ─── HELP OVERLAY ─── */
+    .help-btn { width: 28px; height: 28px; border-radius: 50%; background: rgba(19,17,16,0.15); border: 1.5px solid rgba(19,17,16,0.22); color: rgba(19,17,16,0.55); font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.12s, color 0.12s; }
+    .help-btn:hover { background: rgba(19,17,16,0.28); color: var(--ink); }
+    .help-overlay { position: fixed; inset: 0; background: rgba(19,17,16,0.48); z-index: 100; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
+    .help-overlay.open { opacity: 1; pointer-events: all; }
+    .help-modal { background: var(--cream); border: var(--rule); max-width: 480px; width: calc(100% - 40px); max-height: 80vh; overflow-y: auto; padding: 28px 32px 32px; transform: translateY(12px); transition: transform 0.25s cubic-bezier(0.16,1,0.3,1); }
+    .help-overlay.open .help-modal { transform: translateY(0); }
+    .hm-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; gap: 16px; }
+    .hm-title { font-size: 15px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; line-height: 1.2; }
+    .hm-close { width: 28px; height: 28px; background: transparent; border: var(--rule-lt); font-size: 16px; color: rgba(19,17,16,0.45); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.12s; }
+    .hm-close:hover { background: var(--cream-2); color: var(--ink); }
+    .hm-section { margin-bottom: 16px; }
+    .hm-section:last-child { margin-bottom: 0; }
+    .hm-section-title { font-family: 'Geist Mono', monospace; font-size: 8px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(19,17,16,0.38); margin-bottom: 5px; }
+    .hm-section-text { font-size: 12.5px; color: rgba(19,17,16,0.68); line-height: 1.65; }
   </style>
+
+  <!-- PDF.js — extracts text from dropped analysis PDFs client-side -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
 </head>
 
 <body>
@@ -805,7 +853,7 @@
          COL 1: SAGE ICON NAV (manager)
     ────────────────────────────────────────── -->
     <aside class="col-nav">
-      <div class="nav-logo">CS</div>
+      <a class="nav-logo" href="agent-dashboard.html" title="Agent view">CS</a>
       <nav class="nav-links">
         <!-- Dashboard — active -->
         <a class="nav-item active" href="#">
@@ -816,7 +864,7 @@
           <span class="nav-label">Dash</span>
         </a>
         <!-- Team -->
-        <a class="nav-item" href="#">
+        <a class="nav-item" href="agent-dashboard.html">
           <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
             <circle cx="9" cy="7" r="4"/>
@@ -851,6 +899,7 @@
         </a>
       </nav>
       <div class="nav-foot">
+        <button class="help-btn" id="helpBtn" title="How to use this page">?</button>
         <div class="nav-avatar">MR</div>
       </div>
     </aside>
@@ -886,7 +935,8 @@
 
       <div class="panel-sep"></div>
 
-      <p class="panel-eyebrow" style="border-bottom:none; margin-bottom: 0; padding-bottom: 8px;">Pattern Radar</p>
+      <p class="panel-eyebrow" style="border-bottom:none; margin-bottom: 0; padding-bottom: 4px;">Pattern Radar</p>
+      <p class="radar-subtitle">Frequency of failure patterns across team this month</p>
 
       <!-- Pattern Radar -->
       <div class="radar-list">
@@ -974,6 +1024,15 @@
         <span class="table-meta">Week of Oct 21 – 27</span>
       </div>
 
+      <!-- Status legend -->
+      <div class="status-legend">
+        <span class="sl-label">Row status:</span>
+        <span class="sl-item"><span class="sl-dot active"></span>Active</span>
+        <span class="sl-item"><span class="sl-dot warning"></span>Needs attention</span>
+        <span class="sl-item"><span class="sl-dot dormant"></span>Dormant</span>
+        <span class="sl-item"><span class="sl-dot new"></span>New agent</span>
+      </div>
+
       <!-- Column headers -->
       <div class="col-heads">
         <div class="col-head">Agent</div>
@@ -988,7 +1047,7 @@
       <div class="team-row" id="row0">
         <div class="row-agent">
           <div class="agent-name">Alex J.</div>
-          <div class="level-pill">L4 · Reframer</div>
+          <div class="level-pill">L4 · Builder</div>
         </div>
         <div class="row-score">88 <span class="trend up">↑</span></div>
         <div class="row-call">
@@ -1065,7 +1124,7 @@
       <div class="team-row" id="row4">
         <div class="row-agent">
           <div class="agent-name">Jordan M.</div>
-          <div class="level-pill">L4 · Reframer</div>
+          <div class="level-pill">L4 · Builder</div>
         </div>
         <div class="row-score">79 <span class="trend up">↑</span></div>
         <div class="row-call">
@@ -1100,7 +1159,7 @@
         <div class="activity-card">
           <div class="ac-type level">Level Up</div>
           <div class="ac-desc">Jordan M. reached Level 4</div>
-          <div class="ac-meta">The Reframer · Yesterday</div>
+          <div class="ac-meta">The Builder · Yesterday</div>
         </div>
         <div class="activity-card">
           <div class="ac-type badge">Badge Earned</div>
@@ -1252,6 +1311,150 @@
 
       }, 100);
     });
+
+    // ─── Help overlay ─────────────────────────────────────────────────────
+    document.getElementById('helpBtn').addEventListener('click', () => document.getElementById('helpOverlay').classList.add('open'));
+    document.getElementById('helpClose').addEventListener('click', () => document.getElementById('helpOverlay').classList.remove('open'));
+    document.getElementById('helpOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) e.currentTarget.classList.remove('open'); });
   </script>
+
+  <div class="help-overlay" id="helpOverlay">
+    <div class="help-modal">
+      <div class="hm-header">
+        <div class="hm-title">Team Performance View</div>
+        <button class="hm-close" id="helpClose">×</button>
+      </div>
+      <div class="hm-section">
+        <div class="hm-section-title">Pattern Radar</div>
+        <div class="hm-section-text">Frequency of the nine failure patterns across your team this month. Longer bars mean the pattern is appearing more often in analyzed calls. Use this to spot team-wide training needs before they compound.</div>
+      </div>
+      <div class="hm-section">
+        <div class="hm-section-title">Agent Status</div>
+        <div class="hm-section-text">Green = Active (recent calls, healthy scores). Amber = Needs attention (score drop or inactivity flag). Grey = Dormant (no recent activity). Outline = New agent (onboarding period).</div>
+      </div>
+      <div class="hm-section">
+        <div class="hm-section-title">Team Table</div>
+        <div class="hm-section-text">Per-agent view showing level, enrollment rate, average Certainty Score, and trending failure patterns. Scores are rolling averages from the last 30 days of analyzed calls.</div>
+      </div>
+      <div class="hm-section">
+        <div class="hm-section-title">Upload a Call</div>
+        <div class="hm-section-text">Submit a recording for AI analysis. The system generates a full Certainty Report: score breakdown by category, failure patterns with timestamps, Client Gold audit, and the Closer's Edge coaching note.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ──────────────────────────────────────
+       PDF UPLOAD HANDLER
+       Drop or browse a Certainty JSON-output PDF → parse → sessionStorage → redirect
+  ────────────────────────────────────────── -->
+  <script>
+  (function () {
+    var zone = document.getElementById('dropZone');
+    var btn  = document.querySelector('.btn-analyze');
+    var _file = null;
+
+    if (!zone || !btn) return; // safety guard
+
+    // ── Click zone → open native file picker ──────────────────────
+    zone.addEventListener('click', function () {
+      var inp = document.createElement('input');
+      inp.type = 'file';
+      inp.accept = '.pdf,application/pdf';
+      inp.onchange = function (e) {
+        if (e.target.files[0]) setFile(e.target.files[0]);
+      };
+      inp.click();
+    });
+
+    // ── Drag and drop ─────────────────────────────────────────────
+    zone.addEventListener('dragover', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      zone.style.borderColor = 'var(--ink)';
+      zone.style.background  = 'var(--cream-2)';
+    });
+
+    zone.addEventListener('dragleave', function () {
+      zone.style.borderColor = '';
+      zone.style.background  = '';
+    });
+
+    zone.addEventListener('drop', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      zone.style.borderColor = '';
+      zone.style.background  = '';
+      var f = e.dataTransfer.files[0];
+      if (f) setFile(f);
+    });
+
+    // ── Set selected file ─────────────────────────────────────────
+    function setFile(f) {
+      _file = f;
+      var name = f.name.length > 42 ? f.name.slice(0, 39) + '…' : f.name;
+      zone.querySelector('.uz-main').innerHTML =
+        '<strong>' + name + '</strong><br>' +
+        '<span style="color:var(--sage-dark);font-size:11px;font-weight:600;">Ready to analyze →</span>';
+      zone.style.borderColor = 'var(--ink)';
+    }
+
+    // ── Analyze button: extract PDF → parse JSON → store → redirect ──
+    btn.addEventListener('click', async function () {
+      if (!_file) return;
+      btn.textContent = 'Reading PDF…';
+      btn.disabled    = true;
+      btn.style.opacity = '0.7';
+
+      try {
+        var text = await extractPdfText(_file);
+        var json = cleanAndParse(text);
+        sessionStorage.setItem('certainty_analysis', JSON.stringify(json));
+        window.location.href = 'call-report.html';
+      } catch (err) {
+        btn.textContent   = 'Analyze Call';
+        btn.disabled      = false;
+        btn.style.opacity = '';
+        alert(
+          'Could not read PDF:\n\n' + err.message +
+          '\n\nMake sure the PDF contains the raw JSON analysis output from Certainty.'
+        );
+      }
+    });
+
+    // ── Extract all text from PDF via PDF.js ──────────────────────
+    async function extractPdfText(file) {
+      var buffer  = await file.arrayBuffer();
+      var pdf     = await pdfjsLib.getDocument({ data: buffer }).promise;
+      var text    = '';
+      for (var i = 1; i <= pdf.numPages; i++) {
+        var page    = await pdf.getPage(i);
+        var content = await page.getTextContent();
+        text += content.items.map(function (s) { return s.str; }).join(' ');
+      }
+      return text;
+    }
+
+    // ── Locate + parse JSON from extracted text ───────────────────
+    function cleanAndParse(text) {
+      var start = text.indexOf('{');
+      var end   = text.lastIndexOf('}');
+      if (start === -1 || end === -1) {
+        throw new Error('No JSON object found. Is this a Certainty analysis PDF?');
+      }
+      var slice = text.slice(start, end + 1);
+
+      // Try parsing as-is first (clean PDFs)
+      try { return JSON.parse(slice); } catch (e) { /* fall through */ }
+
+      // Collapse whitespace artifacts introduced by PDF text extraction
+      slice = slice
+        .replace(/\s+/g, ' ')
+        .replace(/,\s*\}/g, '}')
+        .replace(/,\s*\]/g, ']');
+      return JSON.parse(slice);
+    }
+  })();
+  </script>
+
 </body>
 </html>

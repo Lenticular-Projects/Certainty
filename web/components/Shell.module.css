@@ -1,0 +1,31 @@
+/* ═══════════════════════════════════════════
+   SHELL — 3-column grid layout
+   Col 1: 72px sage icon nav
+   Col 2: 210px ink context panel
+   Col 3: 1fr main content
+═══════════════════════════════════════════ */
+
+.shell {
+  display: grid;
+  grid-template-columns: 72px 210px 1fr;
+  grid-template-rows: 1fr auto auto auto;
+  min-height: 100vh;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+
+@media (max-width: 1100px) {
+  .shell {
+    grid-template-columns: 72px 0 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .shell {
+    grid-template-columns: 48px 0 1fr;
+  }
+}

@@ -1,0 +1,53 @@
+/* ═══════════════════════════════════════════
+   MUSTARD MARQUEE BAR
+   Used on: agent-dashboard, manager-dashboard
+═══════════════════════════════════════════ */
+
+.colMarquee {
+  grid-column: 1 / -1;
+  background: var(--mustard);
+  border-top: var(--rule);
+  height: 38px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.marqueeTrack {
+  display: flex;
+  gap: 0;
+  white-space: nowrap;
+  animation: marquee 24s linear infinite;
+  will-change: transform;
+}
+
+.marqueeItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 32px;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--tc-text);
+}
+
+.marqueeDot {
+  width: 5px;
+  height: 5px;
+  background: var(--ink);
+  border-radius: 50%;
+  opacity: 0.35;
+  flex-shrink: 0;
+}
+
+.marqueeDot.alert {
+  background: var(--terracotta);
+  opacity: 1;
+}
+
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}

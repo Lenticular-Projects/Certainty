@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Certainty System | Agent Dashboard (Color Block)</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-sans/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-mono/style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Geist', 'sans-serif'],
+                        mono: ['Geist Mono', 'monospace'],
+                        editorial: ['"Playfair Display"', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            cream: '#FDFBF7',
+                            ink: '#0F0F0F',
+                            sage: '#A5BCA7',
+                            terracotta: '#F07D5A',
+                            mustard: '#EAB308'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Geist', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            background-color: #0F0F0F;
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .delay-1 {
+            animation-delay: 0.1s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.3s;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Custom Scrollbar for the main area if needed */
+        ::-webkit-scrollbar {
+            width: 0px;
+        }
+    </style>
+</head>
+
+<body class="h-screen w-full flex text-brand-ink overflow-hidden border-2 border-brand-ink">
+
+    <!-- LEFT NAV: Sage Green -->
+    <aside class="w-24 md:w-32 bg-brand-sage flex flex-col items-center py-8 z-20 shrink-0 border-r-2 border-brand-ink">
+        <div
+            class="h-12 w-12 bg-brand-ink text-brand-cream flex items-center justify-center font-black mb-16 shadow-[4px_4px_0_0_#FDFBF7]">
+            CS</div>
+
+        <nav class="flex flex-col gap-10 w-full px-4">
+            <a href="#" class="flex flex-col items-center gap-2 group text-brand-ink">
+                <i data-lucide="layout-dashboard" class="w-6 h-6 group-hover:-translate-y-1 transition-transform"></i>
+                <span
+                    class="text-[10px] font-bold uppercase tracking-widest border-b-2 border-brand-ink pb-1">Dash</span>
+            </a>
+            <a href="#"
+                class="flex flex-col items-center gap-2 text-brand-ink opacity-50 hover:opacity-100 transition-opacity">
+                <i data-lucide="phone" class="w-6 h-6"></i>
+                <span class="text-[10px] font-bold uppercase tracking-widest">Calls</span>
+            </a>
+            <a href="#"
+                class="flex flex-col items-center gap-2 text-brand-ink opacity-50 hover:opacity-100 transition-opacity">
+                <i data-lucide="book-open" class="w-6 h-6"></i>
+                <span class="text-[10px] font-bold uppercase tracking-widest">Hub</span>
+            </a>
+        </nav>
+
+        <div class="mt-auto">
+            <div
+                class="h-10 w-10 bg-brand-cream border-2 border-brand-ink flex items-center justify-center font-bold text-xs uppercase shadow-[4px_4px_0_0_#0F0F0F]">
+                AJ</div>
+        </div>
+    </aside>
+
+    <!-- MIDDLE PANEL: Ink -->
+    <div
+        class="hidden lg:flex w-[320px] bg-brand-ink text-brand-cream flex-col pt-12 pb-8 px-10 z-10 border-r-2 border-brand-ink shrink-0 overflow-y-auto">
+        <h3 class="font-mono text-[10px] uppercase tracking-widest opacity-50 mb-8 border-b border-white/20 pb-4">Agent
+            Focus</h3>
+
+        <ul class="space-y-6 font-medium text-sm mb-12">
+            <li class="flex items-start gap-4">
+                <div class="w-3 h-3 mt-1 shrink-0 rounded-full bg-brand-terracotta"></div>
+                <div>
+                    <span class="block font-bold uppercase tracking-tight mb-1">Signal Reading</span>
+                    <span class="font-mono text-[10px] opacity-60">Failing to identify Fear vs Logistics in prospect
+                        tone.</span>
+                </div>
+            </li>
+            <li class="flex items-start gap-4 group cursor-pointer">
+                <div
+                    class="w-3 h-3 mt-1 shrink-0 rounded-full border border-brand-cream group-hover:bg-brand-cream transition-colors">
+                </div>
+                <div>
+                    <span
+                        class="block font-bold uppercase tracking-tight mb-1 opacity-60 group-hover:opacity-100 transition-opacity">Math
+                        Breakdown</span>
+                    <span class="font-mono text-[10px] opacity-40 group-hover:opacity-60 transition-opacity">Skipped
+                        cost-of-waiting calculation twice today.</span>
+                </div>
+            </li>
+        </ul>
+
+        <!-- Upload CTA -->
+        <button
+            class="w-full bg-brand-mustard text-brand-ink border-2 border-brand-ink font-mono font-bold text-[10px] uppercase tracking-widest py-4 flex items-center justify-center gap-2 hover:bg-brand-cream hover:-translate-y-1 transition-all shadow-[4px_4px_0_0_#FDFBF7] mb-12">
+            <i data-lucide="upload-cloud" class="w-4 h-4"></i> Upload Call
+        </button>
+
+        <div class="mt-auto border-t border-white/20 pt-8">
+            <div class="flex justify-between items-end mb-4">
+                <p class="font-mono text-[10px] uppercase tracking-widest opacity-50">Level Progress</p>
+                <p class="font-mono text-[10px] font-bold text-brand-mustard">210 XP to go</p>
+            </div>
+
+            <p class="text-sm uppercase font-bold mb-3 tracking-tight">Lvl 4: The Reframer</p>
+            <div class="w-full h-1.5 bg-white/20 overflow-hidden">
+                <div class="w-2/3 h-full bg-brand-mustard"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT: Terracotta with Cream cards -->
+    <main class="flex-1 bg-brand-terracotta flex flex-col relative overflow-y-auto">
+
+        <!-- Top Nav Strip -->
+        <header
+            class="h-20 px-10 md:px-16 flex items-center justify-between border-b-2 border-brand-ink bg-brand-terracotta sticky top-0 z-20">
+            <h2 class="font-mono text-[10px] uppercase tracking-widest font-bold">Performance Engine</h2>
+            <div
+                class="font-mono font-bold text-[10px] uppercase tracking-widest px-3 py-1 border-2 border-brand-ink bg-brand-ink text-brand-cream">
+                Reporting: Today
+            </div>
+        </header>
+
+        <div class="flex-1 flex flex-col p-10 md:p-16 gap-16">
+
+            <!-- THE BIG SCORE -->
+            <div class="flex flex-col lg:flex-row gap-12 items-center">
+                <!-- Score Text -->
+                <div class="flex-1 fade-in-up relative z-10 w-full">
+                    <p
+                        class="font-mono text-xs uppercase tracking-widest mb-6 opacity-80 decoration-brand-ink border-b-2 border-brand-ink inline-block pb-1">
+                        Your Edge</p>
+                    <div class="flex items-baseline">
+                        <span
+                            class="text-[8rem] xl:text-[14rem] font-black tracking-tighter leading-none select-none text-brand-ink">88</span>
+                        <span class="text-3xl font-mono font-bold text-brand-ink ml-2">/100</span>
+                    </div>
+                </div>
+
+                <!-- Editorial Quote Box (The Closer's Edge) -->
+                <div
+                    class="flex-1 fade-in-up delay-1 bg-brand-cream text-brand-ink p-10 md:p-12 border-2 border-brand-ink shadow-[12px_12px_0_0_#0F0F0F] relative w-full lg:max-w-xl z-20 lg:-ml-20">
+                    <div
+                        class="absolute -top-4 -left-4 w-8 h-8 bg-brand-mustard border-2 border-brand-ink rounded-full">
+                    </div>
+                    <p class="font-mono text-[10px] uppercase tracking-widest text-brand-ink/50 font-bold mb-6">The
+                        Closer's Edge</p>
+                    <h3 class="font-editorial italic text-2xl md:text-3xl leading-snug mb-6 text-brand-ink pr-6">
+                        "You consistently close high-margin deals. But you missed a <span
+                            class="bg-brand-mustard text-brand-ink px-2 inline-block -rotate-1 font-sans font-bold not-italic border border-brand-ink shadow-[2px_2px_0_0_#0F0F0F]">buying
+                            signal</span> at 14:02 today."
+                    </h3>
+                    <div class="flex items-center gap-4 border-t-2 border-brand-ink pt-6">
+                        <button
+                            class="font-bold uppercase tracking-tight text-xs bg-brand-ink text-brand-cream px-4 py-3 hover:-translate-y-1 transition-transform inline-flex items-center gap-2">
+                            <i data-lucide="play" class="w-3 h-3"></i> Review Moment
+                        </button>
+                        <a href="#"
+                            class="font-mono text-[10px] uppercase font-bold tracking-widest hover:underline hover:text-brand-terracotta transition-colors">View
+                            Hub Lesson</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- WATERMARK NUMBER (Background) -->
+            <div
+                class="absolute top-0 right-0 pointer-events-none opacity-5 overflow-hidden w-1/2 h-1/2 flex items-start justify-end pr-20 pt-20">
+                <span class="text-[30rem] font-black leading-none text-brand-ink">88</span>
+            </div>
+
+            <!-- SPACIOUS RECENT CALLS GRID -->
+            <div class="fade-in-up delay-2 w-full mt-8">
+                <div class="flex justify-between items-end mb-8 border-b-2 border-brand-ink pb-4">
+                    <h2 class="text-2xl font-black uppercase tracking-tighter text-brand-ink">Recent Processing</h2>
+                    <a href="#"
+                        class="font-mono text-[9px] uppercase font-bold tracking-widest flex items-center gap-1 hover:underline">View
+                        All <i data-lucide="arrow-right" class="w-3 h-3"></i></a>
+                </div>
+
+                <!-- Big Cards Layout instead of cramped table rows -->
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+
+                    <!-- Call Card 1 (Warning) -->
+                    <div
+                        class="bg-brand-cream border-2 border-brand-ink flex flex-col md:flex-row shadow-[6px_6px_0_0_#0F0F0F] hover:shadow-[10px_10px_0_0_#0F0F0F] hover:-translate-y-1 transition-all cursor-pointer">
+                        <div
+                            class="md:w-32 bg-brand-ink flex flex-col items-center justify-center p-6 text-brand-cream border-r-2 border-brand-ink shrink-0">
+                            <span class="text-4xl font-black tracking-tighter text-brand-terracotta">74</span>
+                            <span class="font-mono text-[9px] uppercase tracking-widest opacity-60 mt-1">Score</span>
+                        </div>
+                        <div class="p-6 md:p-8 flex-1 flex flex-col justify-center">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="font-bold text-lg uppercase tracking-tight text-brand-ink">Shanna Smith</h4>
+                                <span
+                                    class="font-mono text-[9px] font-bold uppercase tracking-widest bg-brand-terracotta text-brand-cream px-2 py-1 border border-brand-ink">Missed
+                                    Signal</span>
+                            </div>
+                            <p class="font-mono text-[10px] opacity-60 mb-4 uppercase tracking-widest">Today, 2:14 PM
+                                &bull; 14m 02s</p>
+                            <p class="text-sm font-medium leading-relaxed">Failed to challenge 'Let me talk to my
+                                daughter' objection. Validated stalling tactic instead of isolating the concern.</p>
+                        </div>
+                    </div>
+
+                    <!-- Call Card 2 (Success) -->
+                    <div
+                        class="bg-brand-cream border-2 border-brand-ink flex flex-col md:flex-row shadow-[6px_6px_0_0_#0F0F0F] hover:shadow-[10px_10px_0_0_#0F0F0F] hover:-translate-y-1 transition-all cursor-pointer">
+                        <div
+                            class="md:w-32 bg-brand-ink flex flex-col items-center justify-center p-6 text-brand-cream border-r-2 border-brand-ink shrink-0">
+                            <span class="text-4xl font-black tracking-tighter text-brand-sage">92</span>
+                            <span class="font-mono text-[9px] uppercase tracking-widest opacity-60 mt-1">Score</span>
+                        </div>
+                        <div class="p-6 md:p-8 flex-1 flex flex-col justify-center">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="font-bold text-lg uppercase tracking-tight text-brand-ink">Robert Chen</h4>
+                                <span
+                                    class="font-mono text-[9px] font-bold uppercase tracking-widest bg-brand-sage text-brand-ink px-2 py-1 border border-brand-ink">Enrolled</span>
+                            </div>
+                            <p class="font-mono text-[10px] opacity-60 mb-4 uppercase tracking-widest">Today, 10:45 AM
+                                &bull; 31m 15s</p>
+                            <p class="text-sm font-medium leading-relaxed">Excellent execution of the Math Breakdown.
+                                Quantified the exact cost-of-waiting, creating immediate urgency to act.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Marquee Footer Strip -->
+        <div
+            class="mt-auto h-12 bg-brand-mustard border-t-2 border-brand-ink flex items-center w-full marquee-container shrink-0 z-20">
+            <div
+                class="marquee-content font-mono text-xs uppercase tracking-widest font-bold flex gap-12 text-brand-ink">
+                <span><span class="text-brand-terracotta px-2">&bull;</span> PATTERN ALERT: VALUE DROP FLAGGED</span>
+                <span>LEVEL UP IMMINENT: 210 XP TO GO</span>
+                <span>NEW COURSE ADDED: NAVIGATING THE SCARED SWITCHER</span>
+                <span><span class="text-brand-terracotta px-2">&bull;</span> TIMING OBJECTION MISSED AT 14:02</span>
+                <!-- Loop -->
+                <span><span class="text-brand-terracotta px-2">&bull;</span> PATTERN ALERT: VALUE DROP FLAGGED</span>
+                <span>LEVEL UP IMMINENT: 210 XP TO GO</span>
+                <span>NEW COURSE ADDED: NAVIGATING THE SCARED SWITCHER</span>
+                <span><span class="text-brand-terracotta px-2">&bull;</span> TIMING OBJECTION MISSED AT 14:02</span>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

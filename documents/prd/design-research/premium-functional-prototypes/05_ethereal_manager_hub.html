@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Certainty System | Ethereal Manager Hub</title>
+
+    <!-- Typography -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-sans/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-mono/style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons & Styling -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Geist', 'sans-serif'],
+                        mono: ['Geist Mono', 'monospace'],
+                        editorial: ['"Playfair Display"', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            cream: '#FDFBF7',
+                            ink: '#0F0F0F',
+                            terracotta: '#E6513A',
+                            mustard: '#EDB844',
+                            sage: '#8AA68A',
+                            glass: 'rgba(253, 251, 247, 0.85)',
+                            glassDark: 'rgba(15, 15, 15, 0.85)'
+                        }
+                    },
+                    animation: {
+                        'gradient-xy': 'gradient-xy 15s ease infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'reveal': 'reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        'gradient-xy': {
+                            '0%, 100%': { backgroundPosition: 'left center' },
+                            '50%': { backgroundPosition: 'right center' }
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-8px)' },
+                        },
+                        'reveal': {
+                            'from': { opacity: '0', transform: 'translateY(20px) scale(0.99)' },
+                            'to': { opacity: '1', transform: 'translateY(0) scale(1)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Geist', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* The Intelligent Background - Ambient Macro Health */
+        .ambient-gradient {
+            background: linear-gradient(-45deg, #E6513A, #EDB844, #FDFBF7, #8AA68A);
+            background-size: 300% 300%;
+            /* Starting in a "Warning" state to match the Editorial Hero */
+            background-position: 10% 80%;
+            transition: background-position 2s ease-in-out;
+        }
+
+        /* Shifting to a healthy state */
+        .ambient-gradient.state-success {
+            background-position: 90% 20%;
+        }
+
+        /* Glassmorphism Classes */
+        .glass-pane {
+            background: var(--tw-color-brand-glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-pane-dark {
+            background: var(--tw-color-brand-glassDark);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #FDFBF7;
+        }
+
+        /* Frosted Glass Matrix Rows for Lists */
+        .frosted-row {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .frosted-row:hover {
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* The Heroic Watermark for the Team Avg Score */
+        .massive-watermark {
+            font-size: clamp(15rem, 40vw, 30rem);
+            font-weight: 900;
+            line-height: 0.75;
+            letter-spacing: -0.05em;
+            position: fixed;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: rgba(255, 255, 255, 0.15);
+            mix-blend-mode: overlay;
+            z-index: 0;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        /* Delay utilities for the reveal animation */
+        .delay-100 {
+            animation-delay: 100ms;
+        }
+
+        .delay-200 {
+            animation-delay: 200ms;
+        }
+
+        .delay-300 {
+            animation-delay: 300ms;
+        }
+
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+    </style>
+</head>
+
+<body
+    class="min-h-screen ambient-gradient text-brand-ink relative overflow-x-hidden flex flex-col items-center pb-24 md:pb-0 md:pl-28 transition-all duration-1000"
+    id="main-bg">
+
+    <!-- THE QUANTITATIVE: Team Average Watermark -->
+    <div class="massive-watermark">72</div>
+
+    <!-- THE COMMAND PILL (Manager Variant) -->
+    <nav
+        class="fixed bottom-6 left-1/2 -translate-x-1/2 md:translate-x-0 md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:left-6 z-50 glass-pane flex md:flex-col items-center gap-2 p-2 rounded-full shadow-2xl animate-float">
+        <div
+            class="w-10 h-10 bg-brand-ink text-brand-cream rounded-full flex items-center justify-center font-black text-sm shrink-0 md:mb-4 cursor-pointer hover:bg-brand-mustard hover:text-brand-ink transition-colors">
+            MH</div>
+
+        <a href="#"
+            class="p-3 bg-white/50 text-brand-ink rounded-full hover:bg-white transition-colors cursor-pointer group relative">
+            <i data-lucide="users" class="w-5 h-5"></i>
+            <span
+                class="absolute left-full ml-4 md:ml-6 px-2 py-1 bg-brand-ink text-brand-cream text-[10px] font-mono tracking-widest rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap">Floor
+                View</span>
+        </a>
+        <a href="#"
+            class="p-3 text-brand-ink/60 hover:text-brand-ink hover:bg-white/50 rounded-full transition-colors cursor-pointer group relative">
+            <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+            <span
+                class="absolute left-full ml-4 md:ml-6 px-2 py-1 bg-brand-ink text-brand-cream text-[10px] font-mono tracking-widest rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap">Reporting</span>
+        </a>
+        <a href="#"
+            class="p-3 text-brand-ink/60 hover:text-brand-ink hover:bg-white/50 rounded-full transition-colors cursor-pointer group relative">
+            <i data-lucide="settings" class="w-5 h-5"></i>
+        </a>
+
+        <div class="w-px h-6 md:w-6 md:h-px bg-brand-ink/20 mx-1 md:my-2"></div>
+
+        <button
+            class="p-3 text-brand-ink/60 hover:text-brand-ink hover:bg-white/50 rounded-full transition-colors cursor-pointer md:mt-auto">
+            <i data-lucide="search" class="w-5 h-5"></i>
+        </button>
+    </nav>
+
+    <!-- MAIN DASHBOARD CONTENT -->
+    <main class="w-full max-w-7xl z-10 flex flex-col px-6 pt-12 lg:pt-16 gap-8">
+
+        <!-- Top Status Bar -->
+        <header
+            class="flex justify-between items-center text-white mix-blend-overlay font-bold uppercase tracking-widest text-xs animate-reveal w-full">
+            <div class="flex items-center gap-4">
+                <span>Manager_Hub_v4</span>
+                <span class="opacity-50">/</span>
+                <span>Team Alpha</span>
+            </div>
+            <div class="flex items-center gap-6">
+                <span class="opacity-80 hidden sm:inline">Macro Health: Degraded</span>
+                <button onclick="toggleGradientState()"
+                    class="bg-white/20 hover:bg-white/40 text-white px-3 py-1 rounded-full text-[10px] transition-colors flex items-center gap-2 cursor-pointer backdrop-blur-md">
+                    <i data-lucide="zap" class="w-3 h-3"></i> Test Resolution
+                </button>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mt-4">
+
+            <!-- LEFT COLUMN: The Editorial Hero & Top Level Metrics -->
+            <div class="lg:col-span-8 flex flex-col gap-8 w-full">
+
+                <!-- THE QUALITATIVE: Macro Health Intelligence -->
+                <article
+                    class="glass-pane rounded-[2rem] p-10 md:p-14 animate-reveal delay-100 flex flex-col relative overflow-hidden group">
+                    <div
+                        class="absolute -left-10 -bottom-10 w-64 h-64 bg-brand-mustard/20 rounded-full blur-3xl group-hover:bg-brand-terracotta/20 transition-colors duration-1000">
+                    </div>
+
+                    <div class="flex justify-between items-start mb-12 relative z-10">
+                        <div class="flex items-center gap-3">
+                            <span class="relative flex h-3 w-3">
+                                <span
+                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-terracotta opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-3 w-3 bg-brand-terracotta"></span>
+                            </span>
+                            <p class="font-mono text-[10px] uppercase tracking-widest font-bold text-brand-terracotta">
+                                Floor Intelligence Briefing</p>
+                        </div>
+                        <span
+                            class="font-mono text-[10px] uppercase tracking-widest opacity-50 font-bold bg-black/5 border border-brand-ink/10 px-3 py-1.5 rounded-full">Reporting:
+                            Last 24 Hours</span>
+                    </div>
+
+                    <h2
+                        class="font-editorial italic text-4xl md:text-5xl lg:text-5xl leading-[1.1] mb-8 text-brand-ink relative z-10">
+                        "70% of your agents missed the <span
+                            class="bg-brand-terracotta/80 text-brand-cream font-sans not-italic font-bold px-2 py-0.5 rounded shadow-sm">Timing
+                            Objection</span> this morning."
+                    </h2>
+
+                    <p class="text-lg opacity-80 max-w-2xl font-sans leading-relaxed mb-10 relative z-10 font-medium">
+                        The market is tightening. Prospects are aggressively using stalling tactics ("Call me back in
+                        Q3"). Your agents are validating these stalls instead of deploying <strong
+                            class="font-bold text-brand-ink border-b border-brand-ink pb-0.5">The Soft
+                            Challenge</strong>. This is costing an estimated $42k in pipeline leakage today alone.
+                    </p>
+
+                    <div
+                        class="mt-auto pt-6 border-t border-brand-ink/10 relative z-10 flex flex-wrap items-center gap-4">
+                        <button
+                            class="flex items-center gap-2 font-bold uppercase tracking-widest text-[10px] bg-brand-ink text-brand-cream px-6 py-4 rounded-full hover:shadow-[0_8px_20px_rgba(0,0,0,0.2)] hover:-translate-y-1 transition-all">
+                            <i data-lucide="megaphone" class="w-4 h-4 text-brand-terracotta"></i> Push Floor Alert &
+                            Training
+                        </button>
+                    </div>
+                </article>
+
+                <!-- High-Level Metrics (Floating Glass Metrics) -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 animate-reveal delay-200">
+
+                    <div class="glass-pane rounded-[1.5rem] p-6 flex flex-col justify-center">
+                        <p class="font-mono text-[9px] uppercase tracking-widest font-bold opacity-50 mb-4">Team Average
+                            Score</p>
+                        <div class="flex items-baseline gap-2 mb-2">
+                            <span class="text-4xl font-black tracking-tighter">72</span><span
+                                class="text-base font-mono opacity-40">/100</span>
+                        </div>
+                        <div
+                            class="text-[10px] font-bold uppercase font-mono tracking-widest text-brand-terracotta flex items-center gap-1">
+                            <i data-lucide="trending-down" class="w-3 h-3"></i> -4 pts this week
+                        </div>
+                    </div>
+
+                    <div class="glass-pane rounded-[1.5rem] p-6 flex flex-col justify-center">
+                        <p class="font-mono text-[9px] uppercase tracking-widest font-bold opacity-50 mb-4">Pipeline
+                            Leakage</p>
+                        <div class="flex items-baseline gap-1 mb-2">
+                            <span class="text-4xl font-black tracking-tighter">$42k</span>
+                        </div>
+                        <div
+                            class="text-[10px] font-bold uppercase font-mono tracking-widest text-brand-ink/50 flex items-center gap-1">
+                            Due to missed timing signals
+                        </div>
+                    </div>
+
+                    <div
+                        class="glass-pane rounded-[1.5rem] p-6 flex flex-col justify-center relative overflow-hidden group hover:bg-white/40 cursor-pointer transition-colors">
+                        <div
+                            class="absolute right-0 top-0 w-24 h-24 bg-brand-mustard/20 rounded-full blur-2xl -mr-10 -mt-10">
+                        </div>
+                        <p
+                            class="font-mono text-[9px] uppercase tracking-widest font-bold opacity-50 mb-4 relative z-10">
+                            Requires Review</p>
+                        <div class="flex items-baseline gap-1 mb-2 relative z-10">
+                            <span class="text-4xl font-black tracking-tighter">14</span>
+                            <span
+                                class="text-[10px] font-mono mt-auto uppercase tracking-widest opacity-60">Calls</span>
+                        </div>
+                        <div
+                            class="text-[10px] font-bold uppercase font-mono tracking-widest text-brand-ink/80 flex items-center gap-1 relative z-10">
+                            Critical pattern failures
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN: Frosted Glass Matrix (Agent Leaderboard) -->
+            <div class="lg:col-span-4 flex flex-col gap-6 w-full h-full">
+
+                <div
+                    class="glass-pane-dark rounded-[2rem] p-8 md:p-10 animate-reveal delay-300 flex-1 flex flex-col max-h-[800px]">
+                    <div class="flex justify-between items-end mb-8 border-b border-white/10 pb-4">
+                        <div>
+                            <h3 class="font-mono text-xs uppercase tracking-widest font-bold text-white mb-1">Agent
+                                Matrix</h3>
+                            <p class="font-mono text-[9px] uppercase tracking-widest opacity-50">Sorted by Severity</p>
+                        </div>
+                        <button
+                            class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors">
+                            <i data-lucide="sliders-horizontal" class="w-3 h-3"></i>
+                        </button>
+                    </div>
+
+                    <!-- The Frosted Matrix List -->
+                    <div class="flex flex-col gap-3 overflow-y-auto pr-2 pb-4">
+
+                        <!-- Agent Row 1 (Critical) -->
+                        <div class="frosted-row rounded-xl p-4 cursor-pointer relative overflow-hidden group">
+                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-brand-terracotta"></div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="w-10 h-10 rounded-full border-2 border-brand-terracotta bg-brand-ink flex items-center justify-center text-brand-cream text-xs font-black shadow-lg shadow-black/20">
+                                        64
+                                    </div>
+                                    <div>
+                                        <h4
+                                            class="font-bold text-sm tracking-tight text-white group-hover:text-brand-mustard transition-colors">
+                                            David Foster</h4>
+                                        <p
+                                            class="font-mono text-[9px] opacity-60 uppercase tracking-widest text-white mt-0.5">
+                                            Missed 4 Timing Objections</p>
+                                    </div>
+                                </div>
+                                <i data-lucide="chevron-right"
+                                    class="w-4 h-4 text-white opacity-40 group-hover:opacity-100 transition-opacity group-hover:translate-x-1 duration-300"></i>
+                            </div>
+                        </div>
+
+                        <!-- Agent Row 2 (Warning) -->
+                        <div class="frosted-row rounded-xl p-4 cursor-pointer relative overflow-hidden group">
+                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-brand-mustard"></div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="w-10 h-10 rounded-full border-2 border-brand-mustard bg-brand-ink flex items-center justify-center text-brand-cream text-xs font-black shadow-lg shadow-black/20">
+                                        71
+                                    </div>
+                                    <div>
+                                        <h4
+                                            class="font-bold text-sm tracking-tight text-white group-hover:text-brand-mustard transition-colors">
+                                            Sarah Jenkins</h4>
+                                        <p
+                                            class="font-mono text-[9px] opacity-60 uppercase tracking-widest text-white mt-0.5">
+                                            Struggling with Framing</p>
+                                    </div>
+                                </div>
+                                <i data-lucide="chevron-right"
+                                    class="w-4 h-4 text-white opacity-40 group-hover:opacity-100 transition-opacity group-hover:translate-x-1 duration-300"></i>
+                            </div>
+                        </div>
+
+                        <!-- Agent Row 3 (Neutral/Good) -->
+                        <div
+                            class="frosted-row rounded-xl p-4 cursor-pointer relative overflow-hidden group opacity-80 hover:opacity-100">
+                            <div class="flex items-center justify-between pl-1">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="w-10 h-10 rounded-full border border-white/20 bg-brand-ink flex items-center justify-center text-brand-cream text-xs font-black shadow-lg shadow-black/20">
+                                        82
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-sm tracking-tight text-white">Michael Chen</h4>
+                                        <p
+                                            class="font-mono text-[9px] opacity-60 uppercase tracking-widest text-white mt-0.5">
+                                            Consistent Performer</p>
+                                    </div>
+                                </div>
+                                <i data-lucide="chevron-right"
+                                    class="w-4 h-4 text-white opacity-40 group-hover:opacity-100 transition-opacity"></i>
+                            </div>
+                        </div>
+
+                        <!-- Agent Row 4 (Excellence) -->
+                        <div
+                            class="frosted-row rounded-xl p-4 cursor-pointer relative overflow-hidden group opacity-80 hover:opacity-100">
+                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-brand-sage"></div>
+                            <div class="flex items-center justify-between pl-1">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="w-10 h-10 rounded-full border-2 border-brand-sage bg-brand-ink flex items-center justify-center text-brand-cream text-xs font-black shadow-lg shadow-black/20">
+                                        94
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-sm tracking-tight text-white">Elena Rodriguez</h4>
+                                        <p
+                                            class="font-mono text-[9px] text-brand-sage uppercase font-bold tracking-widest mt-0.5 shadow-sm">
+                                            Top Performance</p>
+                                    </div>
+                                </div>
+                                <i data-lucide="chevron-right"
+                                    class="w-4 h-4 text-white opacity-40 group-hover:opacity-100 transition-opacity"></i>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <button
+                        class="w-full mt-auto pt-6 font-mono text-[9px] uppercase tracking-widest font-bold text-white opacity-50 hover:opacity-100 hover:text-brand-mustard transition-colors text-center border-t border-white/5">
+                        View Full Roster
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Init Lucide Icons
+        lucide.createIcons();
+
+        // Interactive Background Gradient Logic for Macro Health Testing
+        let isSuccessState = false;
+        function toggleGradientState() {
+            const bg = document.getElementById('main-bg');
+            isSuccessState = !isSuccessState;
+
+            if (isSuccessState) {
+                // Shifts to calm healthy state
+                bg.classList.add('state-success');
+                // Could also programmatically update the text/scores here for full effect in a real app
+                document.querySelector('.massive-watermark').textContent = "91";
+            } else {
+                // Shifts back to warning state
+                bg.classList.remove('state-success');
+                document.querySelector('.massive-watermark').textContent = "72";
+            }
+        }
+    </script>
+</body>
+
+</html>

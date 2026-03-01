@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Certainty System | Manager Dashboard</title>
+
+    <!-- Web Fonts -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-sans/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.0.3/dist/fonts/geist-mono/style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Geist', 'sans-serif'],
+                        mono: ['Geist Mono', 'monospace'],
+                        editorial: ['"Playfair Display"', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            cream: '#FDFBF7',
+                            ink: '#0F0F0F',
+                            sage: '#A5BCA7',
+                            terracotta: '#E23528',
+                            mustard: '#FDE047',
+                            gray: '#EDEDE4',
+                            darkgray: '#8F8F8A'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: var(--color-brand-cream);
+            color: var(--color-brand-ink);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .shell {
+            display: grid;
+            grid-template-columns: 80px 300px 1fr;
+            min-height: 100vh;
+            width: 100%;
+            border-right: 1.5px solid var(--color-brand-ink);
+        }
+
+        .border-ink {
+            border-color: var(--color-brand-ink);
+        }
+
+        .border-b-ink {
+            border-bottom: 1.5px solid var(--color-brand-ink);
+        }
+
+        .border-r-ink {
+            border-right: 1.5px solid var(--color-brand-ink);
+        }
+
+        .border-t-ink {
+            border-top: 1.5px solid var(--color-brand-ink);
+        }
+
+        .border-l-ink {
+            border-left: 1.5px solid var(--color-brand-ink);
+        }
+
+        .col-nav {
+            background-color: var(--color-brand-ink);
+            color: var(--color-brand-cream);
+        }
+
+        .col-panel {
+            background-color: var(--color-brand-cream);
+        }
+
+        .col-main {
+            background-color: var(--color-brand-cream);
+            overflow-x: hidden;
+        }
+
+        /* Nav Interaction */
+        .nav-item {
+            transition: all 0.2s;
+            opacity: 0.6;
+        }
+
+        .nav-item:hover {
+            opacity: 1;
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active {
+            opacity: 1;
+            border-left: 4px solid var(--color-brand-mustard);
+            padding-left: 12px;
+        }
+
+        /* Button */
+        .btn-upload {
+            background: var(--color-brand-mustard);
+            color: var(--color-brand-ink);
+            border: 1.5px solid var(--color-brand-ink);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.2s;
+            box-shadow: 4px 4px 0 0 var(--color-brand-ink);
+            cursor: pointer;
+        }
+
+        .btn-upload:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 0 var(--color-brand-ink);
+        }
+
+        .btn-upload:active {
+            transform: translate(2px, 2px);
+            box-shadow: 0 0 0 0 var(--color-brand-ink);
+        }
+
+        /* Manager Table */
+        .manager-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .manager-table th {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-brand-darkgray);
+            border-bottom: 1.5px solid var(--color-brand-ink);
+            padding: 12px 16px;
+            text-align: left;
+            background: var(--color-brand-gray);
+        }
+
+        .manager-table td {
+            border-bottom: 1.5px solid var(--color-brand-ink);
+            padding: 16px;
+            font-size: 14px;
+            transition: background-color 0.15s;
+        }
+
+        .manager-table tr.hover-row:hover td {
+            background-color: var(--color-brand-gray);
+            cursor: pointer;
+        }
+
+        /* Marquee */
+        .marquee-container {
+            background-color: var(--color-brand-terracotta);
+            border-top: 1.5px solid var(--color-brand-ink);
+            border-bottom: 1.5px solid var(--color-brand-ink);
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 10px 0;
+        }
+
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-brand-cream);
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Hero Cards */
+        .metric-card {
+            border: 1.5px solid var(--color-brand-ink);
+            padding: 24px;
+            position: relative;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            opacity: 0;
+            animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .delay-1 {
+            animation-delay: 0.1s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.2s;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(15, 15, 15, 0.2);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(15, 15, 15, 0.4);
+        }
+
+        @media (max-width: 1024px) {
+            .shell {
+                grid-template-columns: 80px 1fr;
+            }
+
+            .col-panel {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="shell">
+
+        <!-- COLUMN 1: ICON NAV (Manager) -->
+        <nav class="col-nav border-r-ink flex flex-col items-center py-8 z-20 sticky top-0 h-screen">
+            <div
+                class="w-12 h-12 bg-brand-cream text-brand-ink flex items-center justify-center font-black text-lg mb-12 shadow-[4px_4px_0_0_#A5BCA7]">
+                CS</div>
+
+            <div class="nav-links flex flex-col w-full gap-8 px-4 flex-grow">
+                <a href="#" class="nav-item active flex flex-col items-center gap-1">
+                    <i data-lucide="layout-dashboard" class="w-6 h-6"></i>
+                    <span class="text-[9px] font-bold uppercase tracking-widest mt-1">Team</span>
+                </a>
+                <a href="#"
+                    class="nav-item flex flex-col items-center gap-1 text-brand-terracotta opacity-100 hover:text-brand-mustard">
+                    <i data-lucide="upload-cloud" class="w-6 h-6"></i>
+                    <span class="text-[9px] font-bold uppercase tracking-widest mt-1">Upload</span>
+                </a>
+                <a href="#" class="nav-item flex flex-col items-center gap-1">
+                    <i data-lucide="users" class="w-6 h-6"></i>
+                    <span class="text-[9px] font-bold uppercase tracking-widest mt-1">Roster</span>
+                </a>
+                <a href="#" class="nav-item flex flex-col items-center gap-1">
+                    <i data-lucide="settings" class="w-6 h-6"></i>
+                    <span class="text-[9px] font-bold uppercase tracking-widest mt-1">Setup</span>
+                </a>
+            </div>
+
+            <div class="mt-auto">
+                <div
+                    class="w-10 h-10 border-2 border-brand-cream flex items-center justify-center font-bold text-xs uppercase bg-brand-mustard text-brand-ink">
+                    JM</div>
+            </div>
+        </nav>
+
+        <!-- COLUMN 2: TEAM STATS & RADAR -->
+        <aside class="col-panel border-r-ink flex flex-col z-10 sticky top-0 h-screen overflow-y-auto">
+
+            <!-- Upload CTA -->
+            <div class="p-6 border-b-ink bg-brand-gray">
+                <button class="btn-upload w-full py-4 flex items-center justify-center gap-2">
+                    <i data-lucide="upload" class="w-4 h-4"></i> Process Audio
+                </button>
+            </div>
+
+            <!-- Team Stats -->
+            <div class="p-6 border-b-ink">
+                <h3 class="font-mono text-[10px] uppercase tracking-widest font-bold text-brand-darkgray mb-6">Team
+                    Pulse</h3>
+
+                <div class="flex justify-between items-end mb-6">
+                    <p class="font-bold text-sm uppercase text-brand-ink">Avg Score</p>
+                    <div class="text-right">
+                        <p class="text-3xl font-black tracking-tighter text-brand-ink leading-none">83</p>
+                        <p class="font-mono text-[9px] font-bold opacity-50">+2 pts this week</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-end mb-6">
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 rounded-full bg-brand-terracotta border border-brand-ink"></div>
+                        <p class="font-bold text-sm uppercase text-brand-ink">Signals Missed</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-3xl font-black tracking-tighter text-brand-terracotta leading-none">14</p>
+                        <p class="font-mono text-[9px] font-bold opacity-50">Across 12 calls</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-end">
+                    <p class="font-bold text-sm uppercase text-brand-ink opacity-70">Coaching Due</p>
+                    <div class="text-right">
+                        <p class="text-3xl font-black tracking-tighter text-brand-ink opacity-70 leading-none">3</p>
+                        <p class="font-mono text-[9px] font-bold opacity-50">Agents flagged</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pattern Radar -->
+            <div class="flex-grow p-6">
+                <h3 class="font-mono text-[10px] uppercase tracking-widest font-bold text-brand-darkgray mb-6">Pattern
+                    Radar</h3>
+
+                <!-- Radar Item -->
+                <div class="mb-5">
+                    <div class="flex justify-between items-baseline mb-2">
+                        <span class="text-xs font-bold uppercase tracking-tight">Logic to Emotion</span>
+                        <span class="font-mono text-[9px] text-brand-terracotta font-bold">12x</span>
+                    </div>
+                    <div class="w-full h-1.5 border border-brand-ink bg-brand-gray">
+                        <div class="h-full bg-brand-terracotta border-r border-brand-ink" style="width: 85%;"></div>
+                    </div>
+                </div>
+
+                <!-- Radar Item -->
+                <div class="mb-5">
+                    <div class="flex justify-between items-baseline mb-2">
+                        <span class="text-xs font-bold uppercase tracking-tight">Timing Objector</span>
+                        <span class="font-mono text-[9px] text-brand-mustard font-bold">8x</span>
+                    </div>
+                    <div class="w-full h-1.5 border border-brand-ink bg-brand-gray">
+                        <div class="h-full bg-brand-mustard border-r border-brand-ink" style="width: 55%;"></div>
+                    </div>
+                </div>
+
+                <!-- Radar Item -->
+                <div class="mb-5">
+                    <div class="flex justify-between items-baseline mb-2">
+                        <span class="text-xs font-bold uppercase tracking-tight">Math Drop</span>
+                        <span class="font-mono text-[9px] text-brand-ink opacity-60 font-bold">4x</span>
+                    </div>
+                    <div class="w-full h-1.5 border border-brand-ink bg-brand-gray">
+                        <div class="h-full bg-brand-ink border-r border-brand-ink" style="width: 25%;"></div>
+                    </div>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- COLUMN 3: MAIN DASHBOARD -->
+        <main class="col-main flex flex-col">
+
+            <!-- Top Header -->
+            <header
+                class="h-24 px-8 border-b-ink flex justify-between items-end pb-6 z-10 bg-brand-cream sticky top-0 shadow-sm">
+                <div>
+                    <p class="font-mono text-[9px] uppercase tracking-widest text-brand-darkgray font-bold mb-1">Squad
+                        Alpha</p>
+                    <h1 class="text-3xl font-black uppercase tracking-tighter leading-none">Manager Dashboard</h1>
+                </div>
+                <div
+                    class="font-mono text-[10px] font-bold uppercase tracking-widest border border-brand-ink px-3 py-1 bg-brand-ink text-brand-cream">
+                    Reporting: This Week
+                </div>
+            </header>
+
+            <!-- Hero Metrics (Gemini Color Blocks) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border-b-ink">
+                <div
+                    class="metric-card bg-brand-mustard border-r-0 lg:border-r-1.5 border-b-1.5 lg:border-b-0 fade-in-up">
+                    <p class="font-mono text-[10px] font-bold uppercase tracking-widest text-brand-ink mb-6">Enrolled
+                        Calls</p>
+                    <div class="flex items-baseline gap-1">
+                        <span class="text-6xl font-black tracking-tighter">42</span>
+                        <span class="font-mono text-sm font-bold opacity-60">/ 115</span>
+                    </div>
+                </div>
+                <div
+                    class="metric-card bg-brand-sage border-r-0 md:border-r-1.5 border-b-1.5 lg:border-b-0 fade-in-up delay-1">
+                    <p class="font-mono text-[10px] font-bold uppercase tracking-widest text-brand-ink mb-6">Signal
+                        Catch Rate</p>
+                    <div class="flex items-baseline gap-1">
+                        <span class="text-6xl font-black tracking-tighter">88</span>
+                        <span class="font-mono text-xl font-bold">%</span>
+                    </div>
+                </div>
+                <div
+                    class="metric-card bg-brand-cream border-r-0 lg:border-r-1.5 border-b-1.5 lg:border-b-0 fade-in-up delay-1">
+                    <p class="font-mono text-[10px] font-bold uppercase tracking-widest text-brand-ink mb-6">Avg Call
+                        Auth</p>
+                    <div class="flex items-baseline gap-1">
+                        <span class="text-6xl font-black tracking-tighter">9.2</span>
+                        <span class="font-mono text-xs font-bold opacity-60">/10 pts</span>
+                    </div>
+                </div>
+                <div
+                    class="metric-card bg-brand-terracotta text-brand-cream fade-in-up delay-2 shadow-[inset_0px_6px_0px_#E23528]">
+                    <p class="font-mono text-[10px] font-bold uppercase tracking-widest mb-6 mix-blend-overlay">Top
+                        Failure</p>
+                    <h3 class="text-3xl font-black uppercase tracking-tighter leading-none w-min">Logic To <br>Emotion
+                    </h3>
+                </div>
+            </div>
+
+            <!-- Data Table -->
+            <div class="p-8 pb-12 flex-grow fade-in-up delay-2">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="font-bold text-xl uppercase tracking-tighter border-l-4 border-brand-mustard pl-3">Agent
+                        Performance</h2>
+                    <a href="#"
+                        class="font-mono text-[10px] uppercase font-bold tracking-widest hover:text-brand-mustard hover:underline underline-offset-4">View
+                        Full Matrix</a>
+                </div>
+
+                <table class="manager-table">
+                    <thead>
+                        <tr>
+                            <th class="w-1/3">Agent</th>
+                            <th class="text-center">Avg Score</th>
+                            <th class="text-center">Trend</th>
+                            <th>Top Pattern</th>
+                            <th class="text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Row 1 (Warning) -->
+                        <tr class="hover-row group"
+                            style="background-color: rgba(226, 53, 40, 0.05); border-left: 4px solid var(--color-brand-terracotta);">
+                            <td>
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="font-bold uppercase tracking-tight text-brand-terracotta relative -left-4">
+                                        !</div>
+                                    <span class="font-bold tracking-tight uppercase">Sarah Jenks</span>
+                                    <span
+                                        class="font-mono text-[8px] border border-brand-ink px-1 rounded-sm tracking-widest uppercase">Lvl
+                                        2</span>
+                                </div>
+                            </td>
+                            <td class="text-center font-black text-xl">74</td>
+                            <td class="text-center font-mono font-bold text-brand-terracotta text-xs">-4 pts</td>
+                            <td
+                                class="font-mono text-[10px] uppercase font-bold tracking-tight text-brand-ink opacity-70">
+                                Value Drop</td>
+                            <td class="text-right">
+                                <button
+                                    class="font-mono text-[9px] uppercase font-bold text-brand-terracotta tracking-widest border border-brand-terracotta px-2 py-1 hover:bg-brand-terracotta hover:text-brand-cream transition-colors">Coach</button>
+                            </td>
+                        </tr>
+
+                        <!-- Row 2 -->
+                        <tr class="hover-row">
+                            <td>
+                                <div class="flex items-center gap-3 ml-3">
+                                    <span class="font-bold tracking-tight uppercase">Alex Johansen</span>
+                                    <span
+                                        class="font-mono text-[8px] border border-brand-ink px-1 rounded-sm tracking-widest uppercase bg-brand-ink text-brand-cream">Lvl
+                                        4</span>
+                                </div>
+                            </td>
+                            <td class="text-center font-black text-xl">88</td>
+                            <td class="text-center font-mono font-bold text-brand-sage text-xs">+3 pts</td>
+                            <td
+                                class="font-mono text-[10px] uppercase font-bold tracking-tight text-brand-ink opacity-70">
+                                Closing Prematurely</td>
+                            <td class="text-right">
+                                <button
+                                    class="font-mono text-[9px] uppercase font-bold text-brand-darkgray tracking-widest border border-brand-ink px-2 py-1 hover:bg-brand-ink hover:text-brand-cream transition-colors">View</button>
+                            </td>
+                        </tr>
+
+                        <!-- Row 3 -->
+                        <tr class="hover-row">
+                            <td>
+                                <div class="flex items-center gap-3 ml-3">
+                                    <span class="font-bold tracking-tight uppercase">Mike Torres</span>
+                                    <span
+                                        class="font-mono text-[8px] border border-brand-ink px-1 rounded-sm tracking-widest uppercase text-brand-darkgray">Lvl
+                                        3</span>
+                                </div>
+                            </td>
+                            <td class="text-center font-black text-xl text-brand-ink/50">81</td>
+                            <td class="text-center font-mono font-bold text-brand-darkgray text-xs">--</td>
+                            <td
+                                class="font-mono text-[10px] uppercase font-bold tracking-tight text-brand-ink opacity-70">
+                                Detail Staller Hand.</td>
+                            <td class="text-right">
+                                <button
+                                    class="font-mono text-[9px] uppercase font-bold text-brand-darkgray tracking-widest border border-brand-ink px-2 py-1 hover:bg-brand-ink hover:text-brand-cream transition-colors">View</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Action Strip -->
+            <div class="bg-brand-gray border-t-ink p-8 flex justify-between items-center">
+                <div>
+                    <p class="font-mono text-[10px] uppercase tracking-widest font-bold text-brand-darkgray mb-2">Recent
+                        Coaching</p>
+                    <p class="font-bold uppercase tracking-tight text-sm">Reviewed 12 calls in last 48 hours</p>
+                </div>
+                <div class="flex gap-4">
+                    <button
+                        class="font-mono font-bold text-[10px] uppercase tracking-widest bg-brand-ink text-brand-cream px-4 py-2 border border-brand-ink hover:bg-brand-gray hover:text-brand-ink transition-colors flex items-center gap-2">
+                        <i data-lucide="play" class="w-3 h-3"></i> Play Best Call
+                    </button>
+                </div>
+            </div>
+
+            <!-- Marquee Footer -->
+            <div class="marquee-container mt-auto">
+                <div class="marquee-content">
+                    <span class="mx-4">&bull;</span> NEW PATTERN DETECTED: VALUE DROP (SARAH J.)
+                    <span class="mx-4">&bull;</span> ALEX J. LEVELED UP TO "THE REFRAMER"
+                    <span class="mx-4">&bull;</span> OVERALL TEAM CLOSE RATE +4% THIS WEEK
+                    <span class="mx-4">&bull;</span> SYSTEM ONLINE: 12 NEW CALLS PROCESSED
+                    <span class="mx-4">&bull;</span> NEW PATTERN DETECTED: VALUE DROP (SARAH J.)
+                    <span class="mx-4">&bull;</span> ALEX J. LEVELED UP TO "THE REFRAMER"
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

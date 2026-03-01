@@ -71,7 +71,10 @@
       color: var(--dark-text);
       margin-bottom: 32px;
       flex-shrink: 0;
+      text-decoration: none;
+      transition: background 0.15s;
     }
+    a.nav-logo:hover { background: #2a2724; }
 
     .nav-links { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 100%; flex: 1; }
 
@@ -118,10 +121,9 @@
     }
 
     .panel-eyebrow {
-      font-family: 'Geist Mono', monospace;
       font-size: 8.5px; font-weight: 600;
-      letter-spacing: 0.15em; text-transform: uppercase;
-      color: rgba(250,245,236,0.30);
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: rgba(250,245,236,0.55);
       padding: 0 20px 14px;
       border-bottom: 1px solid rgba(250,245,236,0.07);
       margin-bottom: 6px;
@@ -156,9 +158,8 @@
     .topic-item.active .topic-name { color: var(--dark-text); }
 
     .topic-count {
-      font-family: 'Geist Mono', monospace;
       font-size: 9px;
-      color: rgba(250,245,236,0.25);
+      color: rgba(250,245,236,0.45);
       margin-left: auto;
     }
 
@@ -181,9 +182,9 @@
       background: rgba(250,245,236,0.06);
       border: 1px solid rgba(250,245,236,0.10);
       color: var(--dark-text);
-      font-family: 'Geist Mono', monospace;
+      font-family: 'Geist', system-ui, sans-serif;
       font-size: 10px;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.01em;
       padding: 8px 12px;
       outline: none;
       transition: border-color 0.15s;
@@ -200,10 +201,9 @@
     }
 
     .pl-eyebrow {
-      font-family: 'Geist Mono', monospace;
       font-size: 8px; font-weight: 600;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      color: rgba(250,245,236,0.28);
+      letter-spacing: 0.07em; text-transform: uppercase;
+      color: rgba(250,245,236,0.50);
       margin-bottom: 5px;
     }
 
@@ -223,9 +223,8 @@
     }
 
     .xp-label {
-      font-family: 'Geist Mono', monospace;
-      font-size: 8px; color: rgba(250,245,236,0.28);
-      letter-spacing: 0.06em; margin-top: 5px;
+      font-size: 8px; color: rgba(250,245,236,0.45);
+      letter-spacing: 0.04em; margin-top: 5px;
     }
 
     /* ═══════════════════════════════════════════
@@ -258,9 +257,8 @@
     }
 
     .main-subtitle {
-      font-family: 'Geist Mono', monospace;
       font-size: 11px; font-weight: 600;
-      letter-spacing: 0.10em; text-transform: uppercase;
+      letter-spacing: 0.06em; text-transform: uppercase;
       color: rgba(19,17,16,0.38);
     }
 
@@ -330,9 +328,8 @@
     }
 
     .tile-footer {
-      font-family: 'Geist Mono', monospace;
       font-size: 8px; font-weight: 600;
-      letter-spacing: 0.08em; text-transform: uppercase;
+      letter-spacing: 0.05em; text-transform: uppercase;
       color: rgba(19,17,16,0.30);
       padding-top: 8px;
       border-top: 1px solid rgba(19,17,16,0.07);
@@ -354,9 +351,8 @@
     }
 
     .chips-label {
-      font-family: 'Geist Mono', monospace;
       font-size: 8.5px; font-weight: 600;
-      letter-spacing: 0.12em; text-transform: uppercase;
+      letter-spacing: 0.06em; text-transform: uppercase;
       color: rgba(19,17,16,0.35);
       margin-right: 4px;
     }
@@ -366,9 +362,8 @@
       background: transparent;
       color: var(--ink);
       padding: 6px 14px;
-      font-family: 'Geist Mono', monospace;
       font-size: 9px; font-weight: 700;
-      letter-spacing: 0.10em; text-transform: uppercase;
+      letter-spacing: 0.06em; text-transform: uppercase;
       cursor: pointer;
       transition: background 0.12s, color 0.12s;
     }
@@ -389,9 +384,8 @@
     }
 
     .sr-eyebrow {
-      font-family: 'Geist Mono', monospace;
       font-size: 9px; font-weight: 600;
-      letter-spacing: 0.12em; text-transform: uppercase;
+      letter-spacing: 0.06em; text-transform: uppercase;
       color: rgba(19,17,16,0.38);
       margin-bottom: 16px;
     }
@@ -435,6 +429,285 @@
       .nav-label { display: none; }
       .tile-grid { grid-template-columns: 1fr; }
     }
+
+    /* ─── INTRO STATE ─── */
+    .main-intro {
+      padding: 0 0 20px;
+    }
+
+    .main-intro-text {
+      font-size: 13px; font-weight: 400;
+      color: rgba(19,17,16,0.45);
+      line-height: 1.7;
+      max-width: 520px;
+      border-left: 3px solid rgba(19,17,16,0.10);
+      padding-left: 16px;
+    }
+
+    /* ─── TILE ACTIVE STATE ─── */
+    .tile.active {
+      border: var(--rule);
+      box-shadow: 3px 3px 0 rgba(19,17,16,0.18);
+    }
+
+    /* ─── DETAIL PANEL OVERLAY ─── */
+    .detail-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(19,17,16,0.20);
+      z-index: 20;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .detail-overlay.open { opacity: 1; pointer-events: all; }
+
+    .detail-panel {
+      position: fixed;
+      right: 0; top: 0;
+      height: 100%;
+      width: 460px;
+      background: var(--cream);
+      border-left: var(--rule);
+      z-index: 21;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .detail-panel.open { transform: translateX(0); }
+
+    .dp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 28px 28px 20px;
+      border-bottom: var(--rule-lt);
+      flex-shrink: 0;
+      gap: 16px;
+    }
+
+    .dp-header-left { flex: 1; }
+
+    .dp-signal {
+      font-family: 'Geist Mono', monospace;
+      font-size: 8px; font-weight: 800;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      padding: 4px 10px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    .dp-signal.green  { background: var(--sage); color: var(--ink); }
+    .dp-signal.red    { background: var(--terracotta); color: #fff; }
+    .dp-signal.yellow { background: var(--mustard); color: var(--tc-text); }
+
+    .dp-title {
+      font-size: 22px; font-weight: 800;
+      color: var(--ink);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+
+    .dp-close {
+      width: 32px; height: 32px;
+      background: transparent;
+      border: var(--rule-lt);
+      cursor: pointer;
+      font-size: 18px; color: rgba(19,17,16,0.45);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.12s;
+      flex-shrink: 0;
+    }
+
+    .dp-close:hover { background: var(--cream-2); color: var(--ink); }
+
+    .dp-body {
+      padding: 24px 28px 40px;
+      flex: 1;
+    }
+
+    .dp-section { margin-bottom: 22px; }
+
+    .dp-section-label {
+      font-size: 8px; font-weight: 700;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      color: rgba(19,17,16,0.35);
+      margin-bottom: 8px;
+    }
+
+    .dp-definition {
+      font-size: 13px; font-weight: 400;
+      color: rgba(19,17,16,0.72);
+      line-height: 1.7;
+    }
+
+    .dp-cues {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .dp-cue {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 12.5px;
+      color: rgba(19,17,16,0.62);
+      line-height: 1.55;
+      padding-left: 14px;
+      position: relative;
+    }
+
+    .dp-cue::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: rgba(19,17,16,0.28);
+    }
+
+    .dp-primary-move {
+      background: var(--cream-2);
+      border-left: 3px solid var(--ink);
+      padding: 16px 20px;
+      font-size: 12.5px;
+      line-height: 1.72;
+    }
+
+    .dp-pm-label {
+      font-size: 7.5px; font-weight: 700;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      color: var(--sage-dark);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .dp-pm-text { color: rgba(19,17,16,0.82); }
+
+    .dp-avoid {
+      font-size: 12.5px;
+      color: rgba(19,17,16,0.65);
+      line-height: 1.65;
+      border-left: 3px solid var(--terracotta);
+      padding-left: 14px;
+    }
+
+    /* Coming soon state */
+    .dp-coming-soon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 28px;
+      text-align: center;
+      gap: 12px;
+    }
+
+    .dcs-label {
+      font-size: 8px; font-weight: 700;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      color: rgba(19,17,16,0.30);
+    }
+
+    .dcs-title {
+      font-size: 22px; font-weight: 800;
+      color: var(--ink); letter-spacing: -0.02em;
+    }
+
+    .dcs-body {
+      font-size: 12px; font-weight: 400;
+      color: rgba(19,17,16,0.45);
+      line-height: 1.65;
+      max-width: 280px;
+    }
+
+    @media (max-width: 768px) {
+      .detail-panel { width: 100%; }
+    }
+
+    /* ─── HELP OVERLAY ─── */
+    .help-btn { width: 28px; height: 28px; border-radius: 50%; background: rgba(19,17,16,0.15); border: 1.5px solid rgba(19,17,16,0.22); color: rgba(19,17,16,0.55); font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.12s, color 0.12s; }
+    .help-btn:hover { background: rgba(19,17,16,0.28); color: var(--ink); }
+    .help-overlay { position: fixed; inset: 0; background: rgba(19,17,16,0.48); z-index: 100; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
+    .help-overlay.open { opacity: 1; pointer-events: all; }
+    .help-modal { background: var(--cream); border: var(--rule); max-width: 480px; width: calc(100% - 40px); max-height: 80vh; overflow-y: auto; padding: 28px 32px 32px; transform: translateY(12px); transition: transform 0.25s cubic-bezier(0.16,1,0.3,1); }
+    .help-overlay.open .help-modal { transform: translateY(0); }
+    .hm-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; gap: 16px; }
+    .hm-title { font-size: 15px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; line-height: 1.2; }
+    .hm-close { width: 28px; height: 28px; background: transparent; border: var(--rule-lt); font-size: 16px; color: rgba(19,17,16,0.45); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.12s; }
+    .hm-close:hover { background: var(--cream-2); color: var(--ink); }
+    .hm-section { margin-bottom: 16px; }
+    .hm-section:last-child { margin-bottom: 0; }
+    .hm-section-title { font-family: 'Geist Mono', monospace; font-size: 8px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(19,17,16,0.38); margin-bottom: 5px; }
+    .hm-section-text { font-size: 12.5px; color: rgba(19,17,16,0.68); line-height: 1.65; }
+
+    /* ─── OVERVIEW LANDING VIEW ─── */
+    .overview-view { display: none; }
+    .overview-view.active { display: block; }
+
+    .ov-intro {
+      border-left: 3px solid rgba(19,17,16,0.12);
+      padding-left: 18px;
+      margin-bottom: 36px;
+    }
+
+    .ov-intro-eyebrow {
+      font-size: 8.5px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+      color: rgba(19,17,16,0.45); margin-bottom: 10px;
+    }
+
+    .ov-intro-text {
+      font-size: 14px; font-weight: 400;
+      color: rgba(19,17,16,0.68); line-height: 1.75;
+      max-width: 600px;
+    }
+
+    .ov-intro-pull {
+      margin-top: 14px;
+      font-family: 'Playfair Display', serif; font-style: italic;
+      font-size: 15px; color: var(--ink); line-height: 1.55;
+    }
+
+    .ov-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    @media (max-width: 900px) { .ov-grid { grid-template-columns: 1fr; } }
+
+    .topic-card {
+      border: var(--rule-lt); background: #fff;
+      padding: 20px 20px 16px;
+      cursor: pointer;
+      transition: border 0.14s, box-shadow 0.14s;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+
+    .topic-card:hover { border: var(--rule); box-shadow: 2px 2px 0 rgba(19,17,16,0.12); }
+
+    .tc-count {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.05em;
+      color: rgba(19,17,16,0.30);
+    }
+
+    .tc-title {
+      font-size: 15px; font-weight: 800;
+      color: var(--ink); letter-spacing: -0.02em; line-height: 1.15;
+    }
+
+    .tc-desc {
+      font-size: 11.5px; color: rgba(19,17,16,0.55); line-height: 1.6;
+    }
+
+    .tc-cta {
+      margin-top: 4px;
+      font-size: 10px; font-weight: 700;
+      color: rgba(19,17,16,0.35); letter-spacing: 0.01em;
+    }
   </style>
 </head>
 
@@ -445,7 +718,7 @@
          COL 1: SAGE ICON NAV
     ────────────────────────────────────────── -->
     <aside class="col-nav">
-      <div class="nav-logo">CS</div>
+      <a class="nav-logo" href="manager-dashboard.html" title="Manager view">CS</a>
       <nav class="nav-links">
         <a class="nav-item" href="agent-dashboard.html">
           <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
@@ -475,6 +748,7 @@
         </a>
       </nav>
       <div class="nav-foot">
+        <button class="help-btn" id="helpBtn" title="How to use this page">?</button>
         <div class="nav-avatar">AJ</div>
       </div>
     </aside>
@@ -486,13 +760,17 @@
       <p class="panel-eyebrow">Browse</p>
 
       <div class="topic-list" id="topicList">
-        <div class="topic-item active" data-topic="calltypes">
-          <span class="topic-name">Call Types</span>
+        <div class="topic-item active" data-topic="overview">
+          <span class="topic-name">Overview</span>
+          <span class="topic-count">—</span>
+        </div>
+        <div class="topic-item" data-topic="calltypes">
+          <span class="topic-name">Caller Types</span>
           <span class="topic-count">9</span>
         </div>
         <div class="topic-item" data-topic="objections">
-          <span class="topic-name">Objections</span>
-          <span class="topic-count">9</span>
+          <span class="topic-name">Objection Handbook</span>
+          <span class="topic-count">13</span>
         </div>
         <div class="topic-item" data-topic="signals">
           <span class="topic-name">Three Signals</span>
@@ -504,15 +782,19 @@
         </div>
         <div class="topic-item" data-topic="math">
           <span class="topic-name">Math Breakdown</span>
-          <span class="topic-count">1</span>
+          <span class="topic-count">3</span>
         </div>
         <div class="topic-item" data-topic="close">
           <span class="topic-name">Close Confirmation</span>
-          <span class="topic-count">1</span>
+          <span class="topic-count">3</span>
         </div>
         <div class="topic-item" data-topic="patterns">
           <span class="topic-name">Nine Patterns</span>
           <span class="topic-count">9</span>
+        </div>
+        <div class="topic-item" data-topic="storybank">
+          <span class="topic-name">Story Bank</span>
+          <span class="topic-count">—</span>
         </div>
       </div>
 
@@ -528,7 +810,7 @@
       <!-- Level + XP -->
       <div class="panel-level">
         <div class="pl-eyebrow">Level Progress</div>
-        <div class="pl-name">Lvl 4 — The Reframer</div>
+        <div class="pl-name">Lvl 4 — The Builder</div>
         <div class="xp-track"><div class="xp-bar" id="xpBar"></div></div>
         <div class="xp-label">2,840 / 4,000 XP — 210 to next</div>
       </div>
@@ -542,10 +824,27 @@
 
       <header class="main-header">
         <span class="main-title">Knowledge Hub</span>
-        <span class="main-subtitle" id="mainSubtitle">Call Types · 9</span>
+        <span class="main-subtitle" id="mainSubtitle">Overview</span>
       </header>
 
       <div class="main-body">
+
+        <!-- Overview landing (shown by default) -->
+        <div class="overview-view active" id="overviewView">
+          <div class="ov-intro">
+            <div class="ov-intro-eyebrow">The Certainty System</div>
+            <p class="ov-intro-text">The Knowledge Hub is your complete reference for everything in the Certainty System — built from call data, not theory. Every caller type you'll encounter. Every objection you'll hear. Every tool, move, and protocol, ready when you need it.</p>
+            <p class="ov-intro-pull">"Every missed enrollment traces back to one of three root causes. Every root cause has a fix. The Hub gives you the fix before the call — not after."</p>
+          </div>
+          <div class="ov-grid" id="overviewGrid">
+            <!-- populated by JS -->
+          </div>
+        </div>
+
+        <!-- Intro state (shown when a topic is selected but no tile is open) -->
+        <div class="main-intro" id="mainIntro" style="display:none;">
+          <p class="main-intro-text">Select a topic from the left to browse coaching materials. Click any card to open the full guide.</p>
+        </div>
 
         <!-- Search results (hidden by default) -->
         <div class="search-results" id="searchResults">
@@ -665,11 +964,130 @@
 
   </div><!-- /shell -->
 
+  <!-- ──────────────────────────────────────
+       DETAIL PANEL OVERLAY + PANEL
+  ────────────────────────────────────────── -->
+  <div class="detail-overlay" id="detailOverlay"></div>
+
+  <div class="detail-panel" id="detailPanel">
+    <div class="dp-header">
+      <div class="dp-header-left">
+        <div class="dp-signal" id="dpSignal">Signal</div>
+        <div class="dp-title" id="dpTitle">Title</div>
+      </div>
+      <button class="dp-close" id="dpClose">×</button>
+    </div>
+    <div class="dp-body" id="dpBody"><!-- populated by JS --></div>
+  </div>
+
   <script>
+    // ─── Call Type Detail Data ────────────────────────────────────────────
+    const CALL_TYPE_DATA = {
+      'Money Caller': {
+        signal: 'green', signalLabel: 'Green Signal',
+        definition: 'They called because of a specific benefit — the grocery card, the OTC allowance, the Part B giveback, or something they saw on TV. They are the most motivated caller you will get. Not resistant. Ready — as long as you do the math completely and connect it to their life.',
+        recognition: [
+          '"I\'m calling about the card I saw on TV."',
+          '"Someone told me I could get money for groceries."',
+          '"I heard I could get money put back on my Social Security."'
+        ],
+        primaryMove: 'Full 3-step Math Breakdown. Step 1: State the comparison — current benefit vs. available benefit, side by side. Step 2: Annualize it — $35/month sounds minor, $420/year lands. Step 3: Humanize it — connect the annual number to something they told you. This is the close.',
+        avoid: 'Stopping at Step 2. The number doesn\'t speak for itself. Step 3 — connecting the annual amount to something real the client told you — is the close. Enrollments are lost here.'
+      },
+      'Scared Switcher': {
+        signal: 'red', signalLabel: 'Red Signal',
+        definition: 'Interested but afraid of losing something. Their doctor, their plan, their carrier, their "insurance lady." Fear is the objection — not the words they say. The words are a cover for fear of change, fear of loss, fear of making a mistake that hurts their health or routine.',
+        recognition: [
+          '"I\'m happy with what I have."',
+          '"I\'ve had this plan for years and it works for me."',
+          '"The devil you know is better than the devil you don\'t."'
+        ],
+        primaryMove: 'Name the fear before presenting anything. Do not lead with logic, math, or product information. The emotion has to be addressed first — or nothing else lands.',
+        avoid: 'Responding with logic when the prospect needs validation. Explaining why the new plan is better before acknowledging what they\'re afraid of losing.'
+      },
+      'Misinformed': {
+        signal: 'red', signalLabel: 'Red Signal',
+        definition: 'Operating on false information from someone they trusted — a doctor\'s receptionist, family member, or TV commercial. The false belief is the wall. No selling works until it comes down — and it has to come down without making them feel stupid for believing it.',
+        recognition: [
+          '"My doctor said I can\'t change my plan."',
+          '"I heard if I switch I lose my doctor."',
+          '"The other agent told me I can\'t do better than what I have."'
+        ],
+        primaryMove: 'Live verification using your system access as the authority. "Let me check that right now while we\'re on the phone." You are not arguing with them — you are showing them. The screen is the authority, not you vs. them.',
+        avoid: 'Directly contradicting the false belief. "No ma\'am, that\'s not true" triggers defensiveness and ends the call. Never build on an unverified foundation.'
+      },
+      'Third Party Controlled': {
+        signal: 'green', signalLabel: 'Green + Gatekeeper',
+        definition: 'The person on the phone is not the one making the decision. A spouse, adult child, caregiver, or POA holds the real authority. The client will say yes — and then check with that person after you hang up. That conversation, without you in it, is where the sale dies.',
+        recognition: [
+          '"I need to talk to my daughter first."',
+          '"My husband handles all of this."',
+          'You hear another voice in the background giving instructions or commentary.'
+        ],
+        primaryMove: 'Identify the real decision maker early. Get them on the call — or sell to both simultaneously right now. Before you hang up, the third party has heard the case directly from you.',
+        avoid: '"OK, I\'ll call you back." That call and that client are gone. Continuing to sell as if the third party doesn\'t exist means you\'re closing someone who can\'t say yes alone.'
+      },
+      'Detail Staller': {
+        signal: 'yellow', signalLabel: 'Yellow Signal',
+        definition: 'Intellectually engaged but emotionally exiting. "I want to think about it," "send me something," and "I want to look it up" sound like requests for information. They are not. They are polite goodbyes. An agent who treats the stall as a real request validates the exit.',
+        recognition: [
+          '"Can you send me something in writing?"',
+          '"I want to look this up online first."',
+          '"I\'m not ready to make a decision today."'
+        ],
+        primaryMove: 'Make inaction expensive in specific dollars. Make enrollment the safe, low-risk move. Do not give them a plan ID, a website, or a reason to leave. The enrollment is the documentation.',
+        avoid: '"No problem, take your time." Providing a plan ID or website to research. These validate the exit and remove you from the equation entirely.'
+      },
+      'Time Bomb': {
+        signal: 'green', signalLabel: 'Green + Countdown',
+        definition: 'Willing and interested — but operating under a constraint that will end the call before enrollment if the agent doesn\'t move with urgency. A ride arriving, exhaustion, physical pain, or another appointment. The window is real and it is closing.',
+        recognition: [
+          '"I don\'t have long — I have an appointment at 2."',
+          '"My ride\'s going to be here soon."',
+          '"Can we make this quick?"'
+        ],
+        primaryMove: 'Identify the constraint early. Name it. Accelerate. Move straight to what matters. Get one doctor name, run the network check, state the benefit, annualize it, close. The entire sequence should take 4 minutes or less.',
+        avoid: 'Spending time building rapport. Rapport happens after the enrollment, not before. If you don\'t have the enrollment by the time their constraint hits, you don\'t have the enrollment.'
+      },
+      'Commercial Myth Caller': {
+        signal: 'red', signalLabel: 'Red Signal',
+        definition: 'Their expectations were set by television advertising promising $6,000, $900, or numbers that don\'t match reality for their zip code. They\'re not resistant — they\'re confused and feel deceived. The wrong response makes the agent part of the betrayal.',
+        recognition: [
+          '"The commercial said I could get $900 a month."',
+          '"I saw on TV that Medicare pays you money."',
+          '"Why is what you\'re offering so much less than the commercial showed?"'
+        ],
+        primaryMove: 'Join their frustration before presenting anything. Become the ally against the misleading commercial — not the defender of the system. Then redirect toward what\'s real and available right now in their area.',
+        avoid: '"I don\'t control the commercial." Defending the system in any way. This makes you part of what betrayed them. Correcting them before joining their frustration ends the call.'
+      },
+      'Veteran': {
+        signal: 'red', signalLabel: 'Red Signal',
+        definition: 'They use VA benefits and see Medicare Advantage as a threat to what they\'ve earned. They believe enrolling means replacing their VA care or losing VA benefits. None of that is true — but they don\'t know it yet. Jumping straight to plan mechanics ends the call.',
+        recognition: [
+          '"I get my care through the VA — I don\'t need this."',
+          '"I\'m a veteran. VA covers everything."',
+          'Client shuts down the moment PCP selection comes up.'
+        ],
+        primaryMove: 'Neutralize the displacement fear before presenting anything. VA and Medicare Advantage are additive, not competing. Establish this as the first thing they hear. Do not move to plan details until this is understood and accepted.',
+        avoid: 'Jumping to PCP selection. The moment a veteran hears "pick a primary care doctor," they hear "replace your VA doctor." Plan mechanics before fear neutralization ends the call immediately.'
+      },
+      'Timing Objector': {
+        signal: 'red', signalLabel: 'Red Signal',
+        definition: 'Willing and interested — but fixated on a timing issue that feels logical and is almost always a stall. Effective date too far away, moving soon, wants to wait for Medicaid, or planning to wait for open enrollment. The stall sounds reasonable. The cost of waiting is real.',
+        recognition: [
+          '"I have a procedure next week — I don\'t want to mess up my coverage."',
+          '"I\'m moving in a few months. Let me wait until I\'m settled."',
+          '"I\'ll do this next year during open enrollment."'
+        ],
+        primaryMove: 'Make the wait feel expensive in specific dollars. Every month of waiting is a number — say it out loud. Then make enrollment the low-risk option so there\'s no legitimate reason to wait.',
+        avoid: '"OK, I\'ll call you back in the fall." This call and this client are gone. Accepting the stall as a legitimate reason to end the conversation.'
+      }
+    };
+
     // ─── Topic data ──────────────────────────────────────────────────────
     const TOPICS = {
       calltypes: {
-        subtitle: 'Call Types · 9',
+        subtitle: 'The Nine Caller Types · 9',
         tiles: [
           { signal: 'green', title: 'Money Caller',          summary: 'Motivated. Called about a specific benefit they want to understand fully.', studied: 'Last studied: 3 days ago' },
           { signal: 'red',   title: 'Scared Switcher',       summary: 'Afraid of losing something they already have. Name the fear first.', studied: 'Not yet studied' },
@@ -683,72 +1101,216 @@
         ]
       },
       objections: {
-        subtitle: 'Objections · 9',
+        subtitle: 'Objection Handbook · 13',
         tiles: [
-          { signal: 'red',   title: 'What happens to my Medicare?', summary: 'Fear of loss, not curiosity. Validate the concern before answering.', studied: 'Not yet studied' },
-          { signal: 'red',   title: 'My doctor won\'t be covered',  summary: 'Specific fear. Name it, verify live, and show the path forward.', studied: 'Last studied: 1 week ago' },
-          { signal: 'yellow',title: 'Sounds too good to be true',  summary: 'Distrust of the offer. Use specific numbers and social proof.', studied: 'Not yet studied' },
-          { signal: 'red',   title: 'I need to talk to my daughter', summary: 'Third party control. Acknowledge the relationship, involve them.', studied: 'Last studied: 4 days ago' },
-          { signal: 'yellow',title: 'I\'m fine with what I have',  summary: 'Status quo bias. Quantify the gap between what they have and could have.', studied: 'Not yet studied' },
-          { signal: 'green', title: 'Can I get this in writing?',  summary: 'Actually engaged. They want to move forward — give them what they need.', studied: 'Last studied: 2 days ago' },
-          { signal: 'red',   title: 'I saw a commercial about this', summary: 'Misinformation in play. Become their ally in finding the truth.', studied: 'Not yet studied' },
-          { signal: 'yellow',title: 'The timing isn\'t right',     summary: 'Stall tactic. Quantify what another month of delay costs them.', studied: 'Last studied: 3 days ago' },
-          { signal: 'red',   title: 'I\'ve been burned before',    summary: 'Past trauma. Build trust through radical transparency.', studied: 'Not yet studied' },
+          { signal: 'red',   title: 'Fear of Change & Switching',       summary: 'The most common objection. Fear of the unknown, inertia, attachment to the status quo. Redirect from "changing" to "verifying."', studied: 'Not yet studied' },
+          { signal: 'red',   title: 'Commercial & Benefit Objections',  summary: 'Expectations set by TV advertising that don\'t match what\'s available. Join their frustration — become the ally.', studied: 'Not yet studied' },
+          { signal: 'yellow',title: 'Stall Objections',                 summary: '"Send me something." "I want to think about it." These are polite exits, not genuine requests. Quantify the cost of waiting.', studied: 'Not yet studied' },
+          { signal: 'red',   title: 'Third-Party Objections',           summary: 'Someone else holds the decision or will question it after you hang up. Get them on the call — or arm the client with exact language.', studied: 'Not yet studied' },
+          { signal: 'red',   title: 'Loyalty Objections',               summary: 'Attachment to a carrier, a plan, or a person. Don\'t argue with loyalty — name it, validate it, and redirect it.', studied: 'Not yet studied' },
+          { signal: 'red',   title: 'Timing Objections',                summary: 'Fixated on why now isn\'t the right time. Every month of waiting is a specific dollar amount unclaimed. Say it.', studied: 'Not yet studied' },
+          { signal: 'yellow',title: 'Benefit & Plan Comparison',        summary: 'Comparing this plan against the wrong baseline. Reset the comparison. Make them compare action against inaction.', studied: 'Not yet studied' },
+          { signal: 'red',   title: 'Trust & Credibility Objections',   summary: 'They\'ve been burned before or don\'t trust agents. Radical transparency is the tool. Don\'t explain — show.', studied: 'Not yet studied' },
+          { signal: 'red',   title: 'Fear of Losing Existing Benefits', summary: 'Afraid of losing VA coverage, Medicaid, their doctor, or their carrier. Name the fear. Show what\'s additive, not replacing.', studied: 'Not yet studied' },
+          { signal: 'yellow',title: 'Financial Objections',             summary: 'Concerns about costs, premiums, what changes. Connect the available benefit to what they\'re currently giving away.', studied: 'Not yet studied' },
+          { signal: 'red',   title: 'Resistance at Close',              summary: 'Last-minute objections when the sale is nearly done. Identify the specific fear. Don\'t stop — one more reframe.', studied: 'Not yet studied' },
+          { signal: 'yellow',title: 'Momentum Killers',                 summary: 'Agent-created dead spots: dead air during navigation, rapport without an off-switch, permission-seeking language.', studied: 'Not yet studied' },
+          { signal: 'green', title: 'Universal Responses',              summary: 'Core language that works across call types and objections. Every agent should have these memorized before any call.', studied: 'Not yet studied' },
         ]
       },
       signals: {
-        subtitle: 'Three Signals · 3',
+        subtitle: 'Three Client Signals · 3',
         tiles: [
-          { signal: 'green', title: 'Green Signal', summary: 'Prospect is engaged and moving toward a decision. Maintain pace and reinforce value.', studied: 'Last studied: 1 day ago' },
-          { signal: 'yellow',title: 'Yellow Signal',summary: 'Prospect is hesitant or uncertain. Slow down, ask open questions, surface the real concern.', studied: 'Last studied: 3 days ago' },
-          { signal: 'red',   title: 'Red Signal',   summary: 'Prospect is emotionally resistant. Stop selling. Validate their fear or concern first.', studied: 'Not yet studied' },
+          { signal: 'green', title: 'GREEN — Open',     summary: 'Client is engaged, asking questions, leaning in. The move is to present, build the math, and advance toward the close. Do not stall here — move.', studied: 'Last studied: 1 day ago' },
+          { signal: 'yellow',title: 'YELLOW — Drifting',summary: 'Client is on a tangent, gone social, or dead air has set in. Validate in one sentence and bridge back with a forward-moving statement — not a question.', studied: 'Last studied: 3 days ago' },
+          { signal: 'red',   title: 'RED — Resistant',  summary: 'Client is pushing back or going quiet. Underneath every RED is an emotion — fear, distrust, past experience. Name the emotion first. Logic does not work here.', studied: 'Not yet studied' },
         ]
       },
       pillars: {
         subtitle: 'Four Pillars · 4',
         tiles: [
-          { signal: 'green', title: 'Trust',     summary: 'Established through consistency, accuracy, and genuine concern for the prospect\'s outcome.', studied: 'Last studied: 2 days ago' },
-          { signal: 'green', title: 'Clarity',   summary: 'The prospect fully understands what they\'re enrolling in and why it benefits them specifically.', studied: 'Last studied: 5 days ago' },
-          { signal: 'yellow',title: 'Urgency',   summary: 'Grounded in real consequence, not manufactured pressure. Use the Math Breakdown to quantify delay.', studied: 'Not yet studied' },
-          { signal: 'green', title: 'Commitment',summary: 'Verbal confirmation and emotional buy-in before paperwork. Secure the close before the close.', studied: 'Last studied: 1 week ago' },
+          { signal: 'green', title: 'Pillar 1 — Persuasion',  summary: 'The macro mindset. Lead with authority and conviction at all times. Never ask permission to advance the sale. Assumptive frame, every call. Present on every call.', studied: 'Last studied: 2 days ago' },
+          { signal: 'red',   title: 'Pillar 2 — Reframing',   summary: 'The tool for RED signals. Name the fear underneath the words, then redirect the meaning without dismissing it. Never logic first. Validate, then reframe.', studied: 'Last studied: 5 days ago' },
+          { signal: 'green', title: 'Pillar 3 — The Shift',   summary: 'The tool for any objection where the client compares against the wrong thing. Deploy the Three-Step Math Breakdown: State, Annualize, Humanize. Step 3 is the close.', studied: 'Not yet studied' },
+          { signal: 'yellow',title: 'Pillar 4 — Refocusing',  summary: 'The tool for YELLOW signals. Validate in one sentence. Bridge back with a forward-moving statement. Narrate system navigation — dead air is yours to prevent.', studied: 'Last studied: 1 week ago' },
         ]
       },
       math: {
-        subtitle: 'Math Breakdown · 1',
+        subtitle: 'Math Breakdown · 3 Steps',
         tiles: [
-          { signal: 'green', title: 'The Math Breakdown',   summary: 'Walk the prospect through the exact dollar difference between their current plan and the proposed plan — monthly and annually.', studied: 'Last studied: 2 days ago' },
-          { signal: 'yellow',title: 'Cost of Delay',        summary: 'Calculate what every month of inaction costs the prospect in missed savings or uncovered benefits.', studied: 'Not yet studied' },
-          { signal: 'green', title: 'Benefit Comparison',   summary: 'Side-by-side comparison of current vs proposed benefits. Let the numbers make the case.', studied: 'Last studied: 4 days ago' },
+          { signal: 'green', title: 'Step 1 — State the Comparison', summary: 'Side by side. Current benefit vs. available benefit. Specific numbers for their zip code, their plan, their situation. No approximations. No ranges.', studied: 'Last studied: 2 days ago' },
+          { signal: 'green', title: 'Step 2 — Annualize It',         summary: 'Monthly numbers feel trivial. Annual numbers land. $35/month is easy to dismiss. $420/year is harder. Always multiply by 12 and say the annual figure out loud.', studied: 'Not yet studied' },
+          { signal: 'green', title: 'Step 3 — Humanize the Cost',    summary: 'Connect the annual number to something real this specific client told you. Their grocery bill. The dental appointment they\'ve been putting off. This step is the close. It is missing in the majority of lost calls.', studied: 'Last studied: 4 days ago' },
         ]
       },
       close: {
-        subtitle: 'Close Confirmation · 1',
+        subtitle: 'Close Confirmation · 3 Components',
         tiles: [
-          { signal: 'green', title: 'The Verbal Yes',        summary: 'Get explicit verbal confirmation of intent before initiating paperwork. The close precedes the paperwork.', studied: 'Last studied: 1 day ago' },
-          { signal: 'yellow',title: 'Soft Commitment Check', summary: 'Ask a commitment question that surfaces hidden objections before they become cancellations.', studied: 'Not yet studied' },
-          { signal: 'green', title: 'Post-Close Validation', summary: 'After enrollment, affirm the decision. Reduce buyer\'s remorse before it starts.', studied: 'Last studied: 3 days ago' },
+          { signal: 'green', title: 'Component 1 — The Anchor Statement',     summary: 'Remind the client of the specific reason they said yes — using their own situation. Not "great choice." The benefit they mentioned. The concern that got resolved. The number that landed.', studied: 'Last studied: 1 day ago' },
+          { signal: 'green', title: 'Component 2 — The Confidence Statement', summary: 'Give the client language they can use when someone questions their decision — because someone will. Tailored to the call type. If they can\'t explain why they switched, the doubter wins.', studied: 'Not yet studied' },
+          { signal: 'green', title: 'Component 3 — The Forward Close',        summary: 'End the call with the client looking forward, not back. Give them something to anticipate. The last thing they hear should be about what\'s coming — not what they just decided.', studied: 'Last studied: 3 days ago' },
         ]
       },
       patterns: {
         subtitle: 'Nine Patterns · 9',
         tiles: [
-          { signal: 'red',   title: 'Pattern 1: Logic to Emotion',    summary: 'Responding with facts when the prospect needs validation. Leads to defense.', studied: 'Not yet studied' },
-          { signal: 'red',   title: 'Pattern 2: Value Drop',          summary: 'Underselling the benefit of the plan change. Prospect doesn\'t see the point.', studied: 'Last studied: 2 days ago' },
-          { signal: 'red',   title: 'Pattern 3: Missed Signal',       summary: 'Client gave a clear buying signal that went unweaponized.', studied: 'Not yet studied' },
-          { signal: 'yellow',title: 'Pattern 4: Premature Close',     summary: 'Attempting to close before trust or clarity is established.', studied: 'Last studied: 1 week ago' },
-          { signal: 'red',   title: 'Pattern 5: Dead Air',            summary: 'Silence after an objection interpreted as rejection, not invitation.', studied: 'Not yet studied' },
-          { signal: 'yellow',title: 'Pattern 6: Over-explaining',     summary: 'Too much information before the prospect\'s concern is addressed.', studied: 'Last studied: 5 days ago' },
-          { signal: 'red',   title: 'Pattern 7: Third Party Ignored', summary: 'Spouse or family member mentioned but not engaged in the process.', studied: 'Not yet studied' },
-          { signal: 'yellow',title: 'Pattern 8: No Urgency Built',    summary: 'Call ends without quantifying the cost of delay or inaction.', studied: 'Last studied: 4 days ago' },
-          { signal: 'red',   title: 'Pattern 9: Assumption Close',    summary: 'Assuming enrollment without confirming verbal buy-in first.', studied: 'Not yet studied' },
+          { signal: 'red',   title: '1 — Client Gold Ignored',          summary: 'Agents walk past emotionally significant things clients say — financial distress, health fears, family pressure. Those moments are the actual close. The script keeps moving. The sale stays behind.', studied: 'Not yet studied' },
+          { signal: 'red',   title: '2 — Incomplete Math Breakdown',    summary: 'Agents present the benefit and stop. They state the monthly number but never annualize it and never connect it to something real. Step 3 is the close. It is missing in the majority of lost calls.', studied: 'Last studied: 2 days ago' },
+          { signal: 'red',   title: '3 — Logic to Emotional Objections',summary: 'When a client pushes back, agents explain. But client resistance is almost never intellectual — it is emotional. You cannot explain someone out of a fear. Address the emotion first.', studied: 'Not yet studied' },
+          { signal: 'red',   title: '4 — Permission-Seeking Language',  summary: '"I\'m not here to strong-arm you." "Would it be okay if..." These phrases signal that the agent lacks conviction. They hand control away at the exact moment they need to hold it.', studied: 'Last studied: 1 week ago' },
+          { signal: 'red',   title: '5 — System Navigation Dead Air',   summary: 'When agents search their systems, they go silent. Thirty to ninety seconds. In that silence, clients talk themselves out of the enrollment. This appears in nearly every agent\'s call data.', studied: 'Not yet studied' },
+          { signal: 'yellow',title: '6 — Rapport Without an Off-Switch',summary: 'Agents build genuine connection and then cannot transition into the close. The client likes them. The call ends warmly. No enrollment. Social mode and sales mode are different gears.', studied: 'Last studied: 5 days ago' },
+          { signal: 'red',   title: '7 — The Third Party Blind Spot',   summary: 'A family member, spouse, or caregiver is present. The agent keeps selling to the primary caller. The real decision maker is never addressed. The decision goes the wrong way after the agent hangs up.', studied: 'Not yet studied' },
+          { signal: 'red',   title: '8 — Accepting Misinformation',     summary: 'Clients come in with false information from doctors, family, or previous agents. Agents accept it and build the sale on it. The false belief becomes the foundation — and it collapses.', studied: 'Last studied: 4 days ago' },
+          { signal: 'red',   title: '9 — The Hollow Yes',               summary: 'The agent gets the enrollment. The client hangs up uncertain. That is not a win — it is a disenrollment in slow motion. Enrollments that are counted but already at risk before the effective date.', studied: 'Not yet studied' },
         ]
+      },
+      storybank: {
+        subtitle: 'Story Bank · Coming Soon',
+        tiles: []
       }
     };
 
-    // ─── Search data (all tiles flattened) ──────────────────────────────
-    const ALL_ITEMS = Object.entries(TOPICS).flatMap(([topic, data]) =>
-      data.tiles.map(t => ({ ...t, topic }))
-    );
+    // ─── Search data (all tiles flattened, excluding storybank) ─────────
+    const ALL_ITEMS = Object.entries(TOPICS)
+      .filter(([topic]) => topic !== 'storybank')
+      .flatMap(([topic, data]) => data.tiles.map(t => ({ ...t, topic })));
+
+    // ─── Overview card config ────────────────────────────────────────────
+    const OVERVIEW_CARDS = [
+      { topic: 'calltypes',  title: 'The Nine Caller Types', count: '9',  desc: 'The framework for understanding who you\'re talking to before the first objection is raised. Every call is one of nine types. Identify it in the first two minutes.' },
+      { topic: 'objections', title: 'Objection Handbook',    count: '13', desc: 'Every objection, organized by what the client said. Look up the words you just heard. Deploy the response. 13 sections covering every resistance pattern.' },
+      { topic: 'signals',    title: 'Three Client Signals',  count: '3',  desc: 'At every moment in a call, the client is in one of three states — Open, Drifting, or Resistant. Read the signal correctly and you always know the right move.' },
+      { topic: 'pillars',    title: 'Four Pillars',          count: '4',  desc: 'The four tools you deploy based on the signal you\'re reading. Every response in the system maps back to one of these: Persuasion, Reframing, The Shift, Refocusing.' },
+      { topic: 'math',       title: 'Math Breakdown',        count: '3 Steps', desc: 'The three-step sequence that transforms a monthly benefit number into a felt, real, personal loss. Step 3 is the close. It is missing in the majority of lost calls.' },
+      { topic: 'close',      title: 'Close Confirmation',    count: '3 Components', desc: 'The final step on every enrolled call. Three components, all required. A client who hangs up uncertain is a disenrollment in slow motion.' },
+      { topic: 'patterns',   title: 'Nine Patterns',         count: '9',  desc: 'The recurring failure modes identified across call data. Not theory — what is actually happening right now, on these calls, with these clients.' },
+      { topic: 'storybank',  title: 'Story Bank',            count: '—',  desc: 'Memorized stories for the most common client types. The structure that makes every pillar survive contact with a real call. Coming soon.' },
+    ];
+
+    // ─── Overview render ─────────────────────────────────────────────────
+    function showOverview() {
+      document.getElementById('overviewView').classList.add('active');
+      document.getElementById('tileGrid').style.display = 'none';
+      document.getElementById('mainIntro').style.display = 'none';
+      document.getElementById('mainSubtitle').textContent = 'Overview';
+
+      const grid = document.getElementById('overviewGrid');
+      grid.innerHTML = '';
+      OVERVIEW_CARDS.forEach((card, i) => {
+        const el = document.createElement('div');
+        el.className = 'topic-card';
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(8px)';
+        el.style.transition = `opacity 0.4s ease ${i * 50}ms, transform 0.4s cubic-bezier(0.16,1,0.3,1) ${i * 50}ms`;
+        el.innerHTML = `<div class="tc-count">${card.count}</div><div class="tc-title">${card.title}</div><div class="tc-desc">${card.desc}</div><div class="tc-cta">Open →</div>`;
+        el.addEventListener('click', () => {
+          document.querySelectorAll('.topic-item').forEach(t => t.classList.toggle('active', t.dataset.topic === card.topic));
+          if (card.topic === 'storybank') {
+            showTopicView(card.topic);
+          } else {
+            showTopicView(card.topic);
+          }
+        });
+        grid.appendChild(el);
+        requestAnimationFrame(() => requestAnimationFrame(() => { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; }));
+      });
+    }
+
+    function hideOverview() {
+      document.getElementById('overviewView').classList.remove('active');
+      document.getElementById('tileGrid').style.display = '';
+    }
+
+    function showTopicView(topicKey) {
+      hideOverview();
+      closeDetailPanel();
+      hideSearch();
+      if (topicKey === 'storybank' || !TOPICS[topicKey] || TOPICS[topicKey].tiles.length === 0) {
+        document.getElementById('tileGrid').style.display = 'none';
+        document.getElementById('mainIntro').style.display = 'block';
+        document.getElementById('mainIntro').querySelector('.main-intro-text').textContent = 'Content for this topic is coming soon. Check back as the system grows.';
+        document.getElementById('mainSubtitle').textContent = TOPICS[topicKey] ? TOPICS[topicKey].subtitle : topicKey;
+      } else {
+        document.getElementById('tileGrid').style.display = '';
+        document.getElementById('mainIntro').style.display = 'none';
+        renderTiles(topicKey);
+      }
+    }
+
+    // ─── Detail panel open/close ──────────────────────────────────────────
+    let activeTile = null;
+    let currentTopicKey = 'overview';
+
+    function openDetailPanel(tileEl, title, topicKey) {
+      // Deactivate previous tile
+      if (activeTile) activeTile.classList.remove('active');
+      activeTile = tileEl;
+      tileEl.classList.add('active');
+
+      // Hide intro when panel opens
+      document.getElementById('mainIntro').style.display = 'none';
+
+      const dpSignal = document.getElementById('dpSignal');
+      const dpTitle = document.getElementById('dpTitle');
+      const dpBody = document.getElementById('dpBody');
+
+      if (topicKey === 'calltypes' && CALL_TYPE_DATA[title]) {
+        const d = CALL_TYPE_DATA[title];
+        dpSignal.className = 'dp-signal ' + d.signal;
+        dpSignal.textContent = d.signalLabel;
+        dpTitle.textContent = title;
+
+        dpBody.innerHTML = `
+          <div class="dp-section">
+            <div class="dp-section-label">What this is</div>
+            <p class="dp-definition">${d.definition}</p>
+          </div>
+          <div class="dp-section">
+            <div class="dp-section-label">How to recognize it</div>
+            <ul class="dp-cues">
+              ${d.recognition.map(r => `<li class="dp-cue">${r}</li>`).join('')}
+            </ul>
+          </div>
+          <div class="dp-section">
+            <div class="dp-section-label">Your primary move</div>
+            <div class="dp-primary-move">
+              <span class="dp-pm-label">The Move</span>
+              <div class="dp-pm-text">${d.primaryMove}</div>
+            </div>
+          </div>
+          <div class="dp-section">
+            <div class="dp-section-label">What to avoid</div>
+            <div class="dp-avoid">${d.avoid}</div>
+          </div>`;
+      } else {
+        // Coming soon for non-call-type topics
+        const tileData = TOPICS[topicKey] && TOPICS[topicKey].tiles.find(t => t.title === title);
+        const signal = tileData ? tileData.signal : 'green';
+        dpSignal.className = 'dp-signal ' + signal;
+        dpSignal.textContent = signal.charAt(0).toUpperCase() + signal.slice(1) + ' Signal';
+        dpTitle.textContent = title;
+
+        dpBody.innerHTML = `
+          <div class="dp-coming-soon">
+            <div class="dcs-label">Full Guide</div>
+            <div class="dcs-title">${title}</div>
+            <div class="dcs-body">Detailed coaching content for this topic is in development. Check back soon.</div>
+          </div>`;
+      }
+
+      document.getElementById('detailOverlay').classList.add('open');
+      document.getElementById('detailPanel').classList.add('open');
+    }
+
+    function closeDetailPanel() {
+      document.getElementById('detailOverlay').classList.remove('open');
+      document.getElementById('detailPanel').classList.remove('open');
+      if (activeTile) { activeTile.classList.remove('active'); activeTile = null; }
+    }
+
+    document.getElementById('dpClose').addEventListener('click', closeDetailPanel);
+    document.getElementById('detailOverlay').addEventListener('click', closeDetailPanel);
 
     // ─── Render tile grid ────────────────────────────────────────────────
     const tileGrid = document.getElementById('tileGrid');
@@ -757,6 +1319,7 @@
       const data = TOPICS[topicKey];
       if (!data) return;
 
+      currentTopicKey = topicKey;
       document.getElementById('mainSubtitle').textContent = data.subtitle;
       tileGrid.innerHTML = '';
 
@@ -771,6 +1334,7 @@
             <div class="tile-summary">${t.summary}</div>
             <div class="tile-footer">${t.studied}</div>
           </div>`;
+        el.addEventListener('click', () => openDetailPanel(el, t.title, topicKey));
         tileGrid.appendChild(el);
         requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('visible')));
       });
@@ -783,7 +1347,12 @@
         item.classList.add('active');
         const topic = item.dataset.topic;
         hideSearch();
-        renderTiles(topic);
+        if (topic === 'overview') {
+          closeDetailPanel();
+          showOverview();
+        } else {
+          showTopicView(topic);
+        }
       });
     });
 
@@ -795,7 +1364,7 @@
           t.classList.toggle('active', t.dataset.topic === topic);
         });
         hideSearch();
-        renderTiles(topic);
+        showTopicView(topic);
       });
     });
 
@@ -808,6 +1377,8 @@
     let searchTimer = null;
 
     function showSearch(query) {
+      hideOverview();
+      tileGrid.style.display = '';
       tileGrid.classList.add('search-mode');
       searchResults.classList.add('active');
 
@@ -839,7 +1410,14 @@
     searchInput.addEventListener('input', () => {
       clearTimeout(searchTimer);
       const q = searchInput.value.trim();
-      if (!q) { hideSearch(); renderTiles('calltypes'); return; }
+      if (!q) {
+        hideSearch();
+        // Return to overview or current topic
+        const activeTopic = document.querySelector('.topic-item.active');
+        const topic = activeTopic ? activeTopic.dataset.topic : 'overview';
+        if (topic === 'overview') { showOverview(); } else { showTopicView(topic); }
+        return;
+      }
       searchTimer = setTimeout(() => showSearch(q), 200);
     });
 
@@ -847,11 +1425,41 @@
     window.addEventListener('load', () => {
       setTimeout(() => {
         document.getElementById('xpBar').style.width = '71%';
-        document.querySelectorAll('.tile').forEach((tile, i) => {
-          setTimeout(() => tile.classList.add('visible'), 60 + i * 45);
-        });
+        // Show overview on initial load
+        document.getElementById('tileGrid').style.display = 'none';
+        showOverview();
       }, 100);
     });
+
+    // ─── Help overlay ─────────────────────────────────────────────────────
+    document.getElementById('helpBtn').addEventListener('click', () => document.getElementById('helpOverlay').classList.add('open'));
+    document.getElementById('helpClose').addEventListener('click', () => document.getElementById('helpOverlay').classList.remove('open'));
+    document.getElementById('helpOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) e.currentTarget.classList.remove('open'); });
   </script>
+
+  <div class="help-overlay" id="helpOverlay">
+    <div class="help-modal">
+      <div class="hm-header">
+        <div class="hm-title">The Knowledge Hub</div>
+        <button class="hm-close" id="helpClose">×</button>
+      </div>
+      <div class="hm-section">
+        <div class="hm-section-title">What this is</div>
+        <div class="hm-section-text">Your complete reference library for the Certainty System — every caller type, every objection, every framework tool, available when you need it. Built from call data, not theory.</div>
+      </div>
+      <div class="hm-section">
+        <div class="hm-section-title">Browse topics</div>
+        <div class="hm-section-text">Use the left panel to navigate: Caller Types, Objection Handbook, Three Signals, Four Pillars, Math Breakdown, Close Confirmation, Nine Patterns, and Story Bank. The Overview shows all topics at a glance.</div>
+      </div>
+      <div class="hm-section">
+        <div class="hm-section-title">Opening a card</div>
+        <div class="hm-section-text">Click any tile to open the full guide — definition, recognition cues, your primary move, and what to avoid. Press × or click outside the panel to close.</div>
+      </div>
+      <div class="hm-section">
+        <div class="hm-section-title">Search</div>
+        <div class="hm-section-text">Use the search box in the left panel to find any caller type, objection, or concept by keyword. Results pull across all topic areas.</div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

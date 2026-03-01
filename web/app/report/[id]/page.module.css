@@ -1,0 +1,738 @@
+/* ═══════════════════════════════════════════
+   CALL REPORT
+   Reference: claude-prototypes/call-report.html
+   260px ink report nav, cream main
+   No marquee — deep focus mode
+═══════════════════════════════════════════ */
+
+/* ─── COL 2: INK REPORT NAV (260px override) ─── */
+
+.colPanel {
+  grid-column: 2;
+  grid-row: 1 / -1;
+  background: var(--ink);
+  display: flex;
+  flex-direction: column;
+  padding: 28px 0 0;
+  position: relative;
+  z-index: 1;
+}
+
+.panelEyebrow {
+  font-size: 8.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(250, 245, 236, 0.55);
+  padding: 0 20px 14px;
+  border-bottom: 1px solid rgba(250, 245, 236, 0.07);
+  margin-bottom: 8px;
+}
+
+.reportNav {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 0;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 20px;
+  text-decoration: none;
+  transition: background 0.12s;
+  border-left: 2.5px solid transparent;
+}
+
+.navLink:hover {
+  background: rgba(250, 245, 236, 0.04);
+}
+
+.navLink.active {
+  background: rgba(250, 245, 236, 0.06);
+  border-left-color: var(--sage);
+}
+
+.navDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.navDot.sage {
+  background: var(--sage);
+}
+
+.navDot.terracotta {
+  background: var(--terracotta);
+}
+
+.navText {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: rgba(250, 245, 236, 0.50);
+  letter-spacing: -0.01em;
+}
+
+.navLink.active .navText {
+  color: var(--dark-text);
+}
+
+/* ═══════════════════════════════════════════
+   COL 3: CREAM MAIN
+═══════════════════════════════════════════ */
+
+.colMain {
+  grid-column: 3;
+  grid-row: 1 / -1;
+  background: var(--cream);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.mainHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 32px 14px;
+  border-bottom: var(--rule);
+  gap: 16px;
+}
+
+.mhTitle {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  display: block;
+}
+
+.mhMeta {
+  font-size: 10px;
+  color: rgba(19, 17, 16, 0.45);
+  letter-spacing: 0.02em;
+  display: block;
+  margin-top: 2px;
+}
+
+.classificationBadge {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--terracotta);
+  color: #fff;
+  padding: 5px 12px;
+  white-space: nowrap;
+}
+
+.mainContent {
+  flex: 1;
+  padding: 0 32px 64px;
+  overflow-y: auto;
+}
+
+/* ─── Sections ─── */
+
+.section {
+  padding: 28px 0;
+  border-bottom: var(--rule-lt);
+}
+
+.section:last-child {
+  border-bottom: none;
+}
+
+.sectionEyebrow {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  padding-bottom: 10px;
+  border-bottom: var(--rule);
+  margin-bottom: 16px;
+}
+
+/* ─── Closer's Edge ─── */
+
+.closersEdge {
+  background: var(--ink);
+  padding: 28px 28px 24px;
+  box-shadow: 6px 6px 0px rgba(19, 17, 16, 0.15);
+}
+
+.ceLabel {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 14px;
+}
+
+.ceDot {
+  width: 7px;
+  height: 7px;
+  background: var(--mustard);
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(233, 184, 64, 0.6);
+}
+
+.ceEyebrow {
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--mustard);
+}
+
+.ceTitle {
+  font-family: var(--font-playfair), "Playfair Display", serif;
+  font-style: italic;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--dark-text);
+  margin-bottom: 16px;
+}
+
+.ceQuote {
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: rgba(250, 245, 236, 0.6);
+  margin-bottom: 20px;
+}
+
+.ceRecovery {
+  background: var(--cream-2);
+  border-left: 3px solid var(--ink);
+  padding: 12px 16px;
+}
+
+.ceRecoveryLabel {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgba(19, 17, 16, 0.45);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.ceRecoveryText {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+/* ─── Call Snapshot ─── */
+
+.snapshotGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+
+.snapshotRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: var(--rule-lt);
+}
+
+.snapshotLabel {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(19, 17, 16, 0.4);
+}
+
+.snapshotValue {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* ─── Executive Summary ─── */
+
+.summaryText {
+  font-size: 13px;
+  line-height: 1.7;
+  color: rgba(19, 17, 16, 0.7);
+}
+
+/* ─── Score Breakdown ─── */
+
+.scoreRows {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.scoreRow {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.scoreRowHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.scoreRowName {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.scoreRowValue {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(19, 17, 16, 0.5);
+  font-family: var(--font-geist-mono), monospace;
+}
+
+.scoreBarTrack {
+  height: 5px;
+  background: var(--cream-2);
+  overflow: hidden;
+}
+
+.scoreBar {
+  height: 100%;
+  background: var(--terracotta);
+  transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ─── Score verdict/feedback ─── */
+
+.scoreVerdict {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-top: 4px;
+}
+
+.scoreFeedback {
+  font-size: 11px;
+  line-height: 1.6;
+  color: rgba(19, 17, 16, 0.55);
+  margin-top: 2px;
+}
+
+/* ─── Classification badge variants ─── */
+
+.badgeEnrolled {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--sage);
+  color: var(--ink);
+  padding: 5px 12px;
+  white-space: nowrap;
+}
+
+/* ─── Strengths / What Agent Did Right ─── */
+
+.strengthsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.strengthBlock {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.strengthNum {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--sage-dark);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.strengthTitle {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  display: block;
+  margin-bottom: 3px;
+}
+
+.strengthText {
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: rgba(19, 17, 16, 0.6);
+}
+
+/* ─── Failure Patterns ─── */
+
+.patternList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.patternBlock {
+  background: var(--ink);
+  padding: 18px 20px;
+}
+
+.pbHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.pbTitle {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--dark-text);
+}
+
+.pbTimestamp {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 9px;
+  color: rgba(250, 245, 236, 0.4);
+}
+
+.pbDesc {
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: rgba(250, 245, 236, 0.6);
+  margin-bottom: 12px;
+}
+
+.exactLang {
+  background: rgba(250, 245, 236, 0.06);
+  padding: 12px 14px;
+  margin-top: 10px;
+}
+
+.elLabel {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mustard);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.elText {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11px;
+  line-height: 1.6;
+  color: rgba(250, 245, 236, 0.75);
+}
+
+/* ─── Math Breakdown ─── */
+
+.mathGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.mathItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mathLabel {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(19, 17, 16, 0.45);
+}
+
+.mathValue {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.mathNotes {
+  font-size: 12px;
+  line-height: 1.7;
+  color: rgba(19, 17, 16, 0.6);
+  margin-top: 8px;
+}
+
+/* ─── Client Gold ─── */
+
+.goldList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.goldItem {
+  padding: 14px 0;
+  border-bottom: var(--rule-lt);
+}
+
+.goldItem:last-child {
+  border-bottom: none;
+}
+
+.goldHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.goldTs {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 9px;
+  color: rgba(19, 17, 16, 0.4);
+}
+
+.goldBadge {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+}
+
+.goldUsed {
+  background: rgba(143, 175, 148, 0.15);
+  color: var(--sage-dark);
+}
+
+.goldMissed {
+  background: rgba(224, 92, 52, 0.1);
+  color: var(--terracotta);
+}
+
+.goldPartial {
+  background: rgba(233, 184, 64, 0.15);
+  color: #b8931f;
+}
+
+.goldQuote {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink);
+  font-style: italic;
+  margin-bottom: 6px;
+}
+
+.goldNote {
+  font-size: 11px;
+  line-height: 1.5;
+  color: rgba(19, 17, 16, 0.55);
+}
+
+.goldShould {
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: var(--cream-2);
+  border-left: 2px solid var(--sage);
+}
+
+.goldShouldLabel {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(19, 17, 16, 0.45);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.goldShould p {
+  font-size: 11px;
+  line-height: 1.6;
+  color: rgba(19, 17, 16, 0.7);
+}
+
+/* ─── Objection Handling ─── */
+
+.objectionList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.objectionBlock {
+  padding: 14px 0;
+  border-bottom: var(--rule-lt);
+}
+
+.objectionBlock:last-child {
+  border-bottom: none;
+}
+
+.obHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.obQuote {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+.obTs {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 9px;
+  color: rgba(19, 17, 16, 0.4);
+  flex-shrink: 0;
+}
+
+.obMeta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.obMetaLabel {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(19, 17, 16, 0.4);
+  display: block;
+  margin-bottom: 3px;
+}
+
+.obMetaText {
+  font-size: 11px;
+  color: rgba(19, 17, 16, 0.65);
+  line-height: 1.5;
+}
+
+.obAssessment {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 10px;
+  margin-bottom: 8px;
+}
+
+.obPass {
+  background: rgba(143, 175, 148, 0.1);
+  color: var(--sage-dark);
+}
+
+.obFail {
+  background: rgba(224, 92, 52, 0.08);
+  color: var(--terracotta);
+}
+
+/* ─── Close Confirmation ─── */
+
+.closeBlock {
+  padding: 14px 0;
+}
+
+.closeHeader {
+  margin-bottom: 8px;
+}
+
+.closeScore {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.closeVerdict {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.closeFeedback {
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: rgba(19, 17, 16, 0.6);
+}
+
+/* ─── Transcript ─── */
+
+.transcriptHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.transcriptToggle {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--sage-dark);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color 0.12s;
+}
+
+.transcriptToggle:hover {
+  color: var(--ink);
+}
+
+.transcriptBody {
+  margin-top: 16px;
+  background: var(--cream-2);
+  padding: 20px;
+  overflow-x: auto;
+}
+
+.transcriptPre {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10.5px;
+  line-height: 1.7;
+  color: rgba(19, 17, 16, 0.7);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* ─── Empty states ─── */
+
+.emptyText {
+  font-size: 12px;
+  color: rgba(19, 17, 16, 0.35);
+  font-style: italic;
+  padding: 16px 0;
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+
+@media (max-width: 1100px) {
+  .colPanel {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .snapshotGrid {
+    grid-template-columns: 1fr;
+  }
+}
