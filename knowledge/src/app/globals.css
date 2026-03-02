@@ -1,0 +1,267 @@
+/* ============================================================
+   The Certainty System — Knowledge Hub
+   Global Stylesheet
+   ============================================================ */
+
+/* --- CSS Custom Properties --- */
+:root {
+  /* Base surfaces */
+  --cream:        #FBF8F3;
+  --cream-2:      #F0EBE1;
+
+  /* Type */
+  --ink:          #131110;
+  --ink-60:       rgba(19, 17, 16, 0.60);
+  --ink-20:       rgba(19, 17, 16, 0.20);
+  --ink-10:       rgba(19, 17, 16, 0.10);
+
+  /* Signal: GREEN */
+  --sage:         #8FAF94;
+  --sage-dark:    #6A8B6E;
+  --sage-tint:    #EEF3EF;
+
+  /* Signal: RED */
+  --terracotta:   #E05C34;
+  --tc-dark:      #B84420;
+  --tc-tint:      #FCEEE9;
+  --tc-text:      #1A0D08;
+
+  /* Signal: YELLOW */
+  --mustard:      #E9B840;
+  --mustard-dark: #C49A20;
+  --mustard-tint: #FDF6E3;
+
+  /* Typography utility */
+  --dark-text:    #FAF5EC;
+
+  /* Shadows — always blurred, never hard */
+  --shadow-sm:  0 4px 12px rgba(19, 17, 16, 0.06);
+  --shadow-md:  0 12px 32px rgba(19, 17, 16, 0.10);
+  --shadow-lg:  0 25px 50px -12px rgba(19, 17, 16, 0.12);
+  --shadow-xl:  0 32px 64px -16px rgba(19, 17, 16, 0.16);
+
+  /* Rules */
+  --rule:         1.5px solid #131110;
+  --rule-lt:      1px solid rgba(19, 17, 16, 0.12);
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --space-10: 128px;
+}
+
+/* --- Reset --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* --- Ambient Gradient on Body --- */
+body {
+  font-family: var(--font-geist), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--ink);
+  background: linear-gradient(-45deg, #E05C34, #E9B840, #FBF8F3, #8FAF94);
+  background-size: 400% 400%;
+  animation: gradientDrift 20s ease infinite;
+  transition: background-position 2.5s ease-in-out;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes gradientDrift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* --- Signal State Shifts --- */
+body[data-signal="red"]     { background-position: 0% 50%; }
+body[data-signal="yellow"]  { background-position: 40% 50%; }
+body[data-signal="green"]   { background-position: 100% 50%; }
+body[data-signal="neutral"] { background-position: 50% 50%; }
+
+/* --- Content Readability Overlay (interior pages) --- */
+.pageOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(251, 248, 243, 0.83);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* --- Layout --- */
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-7);
+  position: relative;
+  z-index: 1;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 1024px) {
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .page { padding: 0 var(--space-5); }
+  .grid-3, .grid-2 { grid-template-columns: 1fr; }
+}
+
+/* --- Glassmorphism Utility Classes --- */
+.glass {
+  background: rgba(251, 248, 243, 0.78);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.10),
+              inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.glassDark {
+  background: rgba(19, 17, 16, 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  color: #FAF5EC;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.20);
+}
+
+.glassSubtle {
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+}
+
+/* --- Card Glow Accents --- */
+.cardGlow {
+  position: relative;
+  overflow: hidden;
+}
+
+.cardGlow::before {
+  content: '';
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.10;
+  pointer-events: none;
+  transition: opacity 0.8s ease;
+}
+
+.cardGlow:hover::before {
+  opacity: 0.20;
+}
+
+.cardGlowRed::before {
+  background: #E05C34;
+  top: -40px;
+  right: -40px;
+}
+
+.cardGlowYellow::before {
+  background: #E9B840;
+  bottom: -40px;
+  left: -40px;
+}
+
+.cardGlowGreen::before {
+  background: #8FAF94;
+  top: -40px;
+  left: -40px;
+}
+
+/* --- Type Scale --- */
+.display-xl {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.display-lg {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  line-height: 1.2;
+}
+
+.heading-md {
+  font-family: var(--font-geist), sans-serif;
+  font-weight: 700;
+  font-size: 1.125rem;
+  line-height: 1.4;
+}
+
+.body-lg {
+  font-family: var(--font-geist), sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+}
+
+.body-md {
+  font-family: var(--font-geist), sans-serif;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+}
+
+.label {
+  font-family: var(--font-geist), sans-serif;
+  font-weight: 700;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-60);
+}
+
+.mono-block {
+  font-family: var(--font-geist), sans-serif;
+  font-size: 0.9375rem;
+  background: var(--cream-2);
+  padding: 0.2em 0.5em;
+  border-radius: 4px;
+}
+
+/* --- Links --- */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* --- Reduced Motion --- */
+@media (prefers-reduced-motion: reduce) {
+  body {
+    animation: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

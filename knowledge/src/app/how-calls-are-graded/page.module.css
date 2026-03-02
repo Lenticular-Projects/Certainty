@@ -1,0 +1,118 @@
+.intro {
+  color: var(--ink-60);
+  max-width: 720px;
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-7);
+}
+
+.section {
+  margin-top: var(--space-9);
+  max-width: 800px;
+}
+
+.section h2 {
+  margin-bottom: var(--space-4);
+}
+
+.classGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+  margin-top: var(--space-6);
+}
+
+.classCard {
+  background: rgba(240, 235, 225, 0.70);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  padding: var(--space-5);
+}
+
+.classCard h3 {
+  margin-bottom: var(--space-2);
+}
+
+@media (max-width: 768px) {
+  .classGrid { grid-template-columns: 1fr; }
+}
+
+.scoreTable {
+  width: 100%;
+  max-width: 400px;
+  border-collapse: collapse;
+  margin: var(--space-5) 0;
+}
+
+.scoreTable th {
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-60);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: var(--rule);
+}
+
+.scoreTable td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: var(--rule-lt);
+  font-size: 0.9375rem;
+}
+
+.totalRow td {
+  border-top: var(--rule);
+  border-bottom: none;
+}
+
+.earnsBlock, .costsBlock {
+  margin-top: var(--space-5);
+  padding: var(--space-4) var(--space-5);
+  border-radius: 8px;
+}
+
+.earnsBlock {
+  background: var(--sage-tint);
+  border-left: 3px solid var(--sage-dark);
+}
+
+.costsBlock {
+  background: var(--tc-tint);
+  border-left: 3px solid var(--tc-dark);
+}
+
+.list {
+  margin: var(--space-3) 0 0 var(--space-5);
+  line-height: 1.8;
+  font-size: 0.9375rem;
+}
+
+.guide {
+  margin-top: var(--space-4);
+  color: var(--ink-60);
+  font-style: italic;
+}
+
+.seeLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: var(--space-4);
+}
+
+.seeLink {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ink-60);
+  padding: 4px 10px;
+  border: 1px solid var(--ink-20);
+  border-radius: 999px;
+  transition: color 150ms ease, border-color 150ms ease;
+}
+
+.seeLink:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}

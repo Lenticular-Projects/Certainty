@@ -1,0 +1,349 @@
+/* Individual call type page */
+
+.hero {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: var(--space-9) var(--space-7) var(--space-6);
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+
+.breadcrumbLink {
+  font-family: var(--font-geist), sans-serif;
+  font-weight: 700;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-60);
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+
+.breadcrumbLink:hover {
+  color: var(--ink);
+}
+
+.breadcrumbSep {
+  color: var(--ink-20);
+  font-size: 0.75rem;
+}
+
+.breadcrumbCurrent {
+  font-family: var(--font-geist), sans-serif;
+  font-weight: 700;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.metaTag {
+  font-family: var(--font-geist), sans-serif;
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: var(--ink-60);
+  background: var(--cream-2);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.headline {
+  color: var(--ink);
+  opacity: 0.92;
+  margin-bottom: var(--space-4);
+}
+
+.description {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--ink-60);
+  max-width: 640px;
+}
+
+/* Content sections */
+.content {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 var(--space-7) var(--space-9);
+}
+
+.section {
+  margin-bottom: var(--space-7);
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}
+
+.sectionTitle {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 2.5vw, 1.75rem);
+  line-height: 1.2;
+  color: var(--ink);
+  margin-bottom: var(--space-4);
+}
+
+.subsectionTitle {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-weight: 700;
+  font-size: 1.125rem;
+  line-height: 1.3;
+  color: var(--ink);
+  margin-bottom: var(--space-3);
+  margin-top: var(--space-5);
+}
+
+.body {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--ink);
+  margin-bottom: var(--space-4);
+}
+
+.body:last-child {
+  margin-bottom: 0;
+}
+
+.bodyLead {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--ink);
+  margin-bottom: var(--space-4);
+}
+
+.body strong {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* Identification phrases — mono block */
+.phraseList {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-4) 0;
+}
+
+.phraseItem {
+  position: relative;
+  padding: var(--space-3) var(--space-4) var(--space-3) var(--space-5);
+  margin-bottom: var(--space-2);
+  font-family: var(--font-geist), monospace;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  font-style: italic;
+  color: var(--ink-60);
+  background: rgba(240, 235, 225, 0.4);
+  border-radius: 8px;
+  border-left: 2px solid var(--ink-20);
+}
+
+.phraseItem:last-child {
+  margin-bottom: 0;
+}
+
+/* Blockquote styling */
+.blockquote {
+  border-left: 3px solid var(--ink-20);
+  padding: var(--space-3) var(--space-5);
+  margin: var(--space-4) 0;
+  font-style: italic;
+  color: var(--ink-60);
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  background: rgba(240, 235, 225, 0.5);
+  border-radius: 0 8px 8px 0;
+}
+
+/* Objection blocks */
+.objectionBlock {
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-6);
+  border-bottom: var(--rule-lt);
+}
+
+.objectionBlock:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.objectionTitle {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-weight: 700;
+  font-size: 1.0625rem;
+  line-height: 1.3;
+  color: var(--ink);
+  margin-bottom: var(--space-2);
+}
+
+.objectionSignal {
+  margin-bottom: var(--space-3);
+}
+
+.objectionUnderneath {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--ink-60);
+  margin-bottom: var(--space-3);
+}
+
+/* Do / Don't labels */
+.doNotLabel {
+  font-family: var(--font-geist), sans-serif;
+  font-weight: 700;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--terracotta);
+  margin-bottom: var(--space-2);
+  display: block;
+}
+
+.doLabel {
+  font-family: var(--font-geist), sans-serif;
+  font-weight: 700;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sage-dark);
+  margin-bottom: var(--space-2);
+  margin-top: var(--space-4);
+  display: block;
+}
+
+.doNotList {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--space-3);
+}
+
+.doNotItem {
+  position: relative;
+  padding: var(--space-2) 0 var(--space-2) var(--space-4);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--ink-60);
+}
+
+.doNotItem::before {
+  content: '\2715';
+  position: absolute;
+  left: 0;
+  color: var(--terracotta);
+  font-size: 0.75rem;
+  top: 0.65em;
+}
+
+/* Sub-types section */
+.subTypeBlock {
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-5);
+  border-bottom: var(--rule-lt);
+}
+
+.subTypeBlock:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.subTypeTitle {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-weight: 700;
+  font-size: 1.0625rem;
+  line-height: 1.3;
+  color: var(--ink);
+  margin-bottom: var(--space-3);
+}
+
+/* From the calls callout */
+.fromCalls {
+  background: rgba(240, 235, 225, 0.5);
+  border-radius: 12px;
+  padding: var(--space-5);
+  margin-top: var(--space-4);
+}
+
+.fromCallsLabel {
+  font-family: var(--font-geist), sans-serif;
+  font-weight: 700;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-60);
+  margin-bottom: var(--space-3);
+}
+
+.fromCallsText {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--ink);
+}
+
+.fromCallsText strong {
+  font-weight: 700;
+}
+
+/* Watch-for note */
+.watchFor {
+  background: rgba(224, 92, 52, 0.06);
+  border-left: 3px solid var(--terracotta);
+  border-radius: 0 8px 8px 0;
+  padding: var(--space-4) var(--space-5);
+  margin: var(--space-4) 0;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--ink);
+}
+
+/* Unordered list */
+.list {
+  padding-left: var(--space-5);
+  margin: var(--space-3) 0 var(--space-4);
+}
+
+.list li {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--ink-60);
+  margin-bottom: var(--space-2);
+}
+
+.list li:last-child {
+  margin-bottom: 0;
+}
+
+/* Cross links wrapper */
+.crossSection {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 var(--space-7) var(--space-9);
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: var(--space-7) var(--space-5) var(--space-5);
+  }
+
+  .content {
+    padding: 0 var(--space-5) var(--space-7);
+  }
+
+  .crossSection {
+    padding: 0 var(--space-5) var(--space-7);
+  }
+}

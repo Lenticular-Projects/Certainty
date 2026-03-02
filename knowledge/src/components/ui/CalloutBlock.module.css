@@ -1,0 +1,28 @@
+.callout {
+  border-radius: 0 12px 12px 0;
+  border-left: 3px solid;
+  padding: 16px 20px;
+  margin: 24px 0;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+}
+
+.neutral {
+  background: rgba(240, 235, 225, 0.70);
+  border-left-color: var(--ink);
+}
+
+.green {
+  background: var(--sage-tint);
+  border-left-color: var(--sage-dark);
+}
+
+.red {
+  background: var(--tc-tint);
+  border-left-color: var(--tc-dark);
+}
+
+.yellow {
+  background: var(--mustard-tint);
+  border-left-color: var(--mustard-dark);
+}

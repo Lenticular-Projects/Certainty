@@ -1,0 +1,43 @@
+.wrapper {
+  margin-top: var(--space-9);
+  padding-top: var(--space-6);
+  border-top: var(--rule-lt);
+}
+
+.label {
+  display: block;
+  font-family: var(--font-geist), sans-serif;
+  font-weight: 700;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-60);
+  margin-bottom: var(--space-4);
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  border: 1px solid rgba(19, 17, 16, 0.15);
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: background 150ms ease, box-shadow 150ms ease;
+  cursor: pointer;
+}
+
+.link:hover {
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: var(--shadow-sm);
+}

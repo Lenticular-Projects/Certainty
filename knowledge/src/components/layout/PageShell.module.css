@@ -1,0 +1,22 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(251, 248, 243, 0.83);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.main {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-9) var(--space-7) var(--space-10);
+  min-height: 60vh;
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding: var(--space-7) var(--space-5) var(--space-9);
+  }
+}

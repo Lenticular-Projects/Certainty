@@ -1,0 +1,221 @@
+/* Patterns Overview */
+
+.hero {
+  text-align: center;
+  padding: var(--space-9) var(--space-7) var(--space-7);
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.headline {
+  color: var(--ink);
+  opacity: 0.92;
+  margin-bottom: var(--space-4);
+}
+
+.subtitle {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--ink-60);
+  max-width: 640px;
+  margin: 0 auto var(--space-5);
+}
+
+.intro {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--ink-60);
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.introStrong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* Pattern wheel image */
+.wheelSection {
+  max-width: 720px;
+  margin: var(--space-7) auto var(--space-8);
+  padding: 0 var(--space-7);
+}
+
+.wheelWrapper {
+  border-radius: 16px;
+  overflow: hidden;
+  padding: var(--space-5);
+}
+
+.wheelImage {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+
+/* Root cause groups */
+.groupsSection {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-7) var(--space-9);
+}
+
+.group {
+  margin-bottom: var(--space-8);
+}
+
+.group:last-child {
+  margin-bottom: 0;
+}
+
+.groupHeader {
+  margin-bottom: var(--space-5);
+}
+
+.groupLabel {
+  font-family: var(--font-geist), sans-serif;
+  font-weight: 700;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-60);
+  margin-bottom: var(--space-2);
+}
+
+.groupTitle {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 2.5vw, 1.75rem);
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.groupDesc {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--ink-60);
+  margin-top: var(--space-2);
+  max-width: 640px;
+}
+
+.groupGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 1024px) {
+  .groupGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .groupGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Pattern cards */
+.cardLink {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  height: 100%;
+}
+
+.card {
+  border-radius: 16px;
+  padding: var(--space-6);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: box-shadow 200ms ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.cardNumber {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--ink-60);
+}
+
+.cardTitle {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 1.25rem;
+  line-height: 1.3;
+  margin-bottom: var(--space-3);
+  color: var(--ink);
+}
+
+.cardDesc {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--ink-60);
+  flex: 1;
+}
+
+.cardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--space-4);
+}
+
+.cardPillar {
+  font-family: var(--font-geist), sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ink-60);
+}
+
+.cardArrow {
+  color: var(--ink-60);
+  transition: transform 200ms ease;
+}
+
+.card:hover .cardArrow {
+  transform: translateX(4px);
+}
+
+/* Cross links section */
+.crossSection {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-7) var(--space-7) var(--space-9);
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: var(--space-7) var(--space-5) var(--space-5);
+  }
+
+  .wheelSection {
+    padding: 0 var(--space-5);
+  }
+
+  .groupsSection {
+    padding: 0 var(--space-5) var(--space-7);
+  }
+
+  .crossSection {
+    padding: var(--space-5) var(--space-5) var(--space-7);
+  }
+}

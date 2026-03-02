@@ -1,0 +1,236 @@
+/* Hero — full viewport, no overlay */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding-top: calc(64px + var(--space-4));
+  padding-bottom: calc(64px + var(--space-4));
+}
+
+
+.heroVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.heroWatermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-playfair), Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(8rem, 20vw, 18rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  opacity: 0.07;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.heroShield {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(251, 248, 243, 0) 30%,
+    rgba(251, 248, 243, 0.25) 100%
+  );
+  pointer-events: none;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 2;
+  max-width: 700px;
+  text-align: center;
+  padding: 0 var(--space-7);
+}
+
+.heroLabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  font-family: var(--font-geist), sans-serif;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-60);
+  margin-bottom: var(--space-4);
+}
+
+.heroLabel::before,
+.heroLabel::after {
+  content: '';
+  flex-shrink: 0;
+  width: 40px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.45;
+}
+
+.heroHeadline {
+  color: var(--ink);
+  margin-bottom: var(--space-5);
+}
+
+.heroSub {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--ink-60);
+  margin-bottom: var(--space-7);
+}
+
+.heroCtas {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+}
+
+.ctaPrimary {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 4px 16px rgba(19, 17, 16, 0.08);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 16px 36px;
+  font-family: var(--font-geist), sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: background 200ms ease, box-shadow 200ms ease;
+}
+
+.ctaPrimary:hover {
+  background: rgba(255, 255, 255, 0.38);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 8px 24px rgba(19, 17, 16, 0.10);
+}
+
+.ctaSecondary {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--ink-60);
+  transition: color 150ms ease;
+}
+
+.ctaSecondary:hover {
+  color: var(--ink);
+}
+
+/* System map section */
+.mapSection {
+  position: relative;
+  z-index: 1;
+  max-width: 960px;
+  margin: calc(-1 * var(--space-8)) auto var(--space-9);
+  padding: 0 var(--space-7);
+}
+
+.mapWrapper {
+  border-radius: 16px;
+  overflow: hidden;
+  padding: var(--space-5);
+}
+
+.mapImage {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+
+/* Section cards */
+.cardsSection {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-7) var(--space-10);
+}
+
+.cardsGrid {
+  /* grid-3 from globals */
+}
+
+.cardLink {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.card {
+  border-radius: 16px;
+  padding: var(--space-6);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: box-shadow 200ms ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.cardTitle {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin-bottom: var(--space-3);
+}
+
+.cardDesc {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--ink-60);
+  flex: 1;
+}
+
+.cardArrow {
+  color: var(--ink-60);
+  margin-top: var(--space-4);
+  transition: transform 200ms ease;
+}
+
+.card:hover .cardArrow {
+  transform: translateX(4px);
+}
+
+@media (max-width: 768px) {
+  .heroVideo {
+    display: none;
+  }
+
+  .heroContent {
+    padding: 0 var(--space-5) var(--space-7);
+  }
+
+  .mapSection {
+    padding: 0 var(--space-5);
+  }
+
+  .cardsSection {
+    padding: 0 var(--space-5) var(--space-9);
+  }
+}

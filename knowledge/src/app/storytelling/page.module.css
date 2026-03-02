@@ -1,0 +1,112 @@
+.heroQuote {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-style: italic;
+  font-size: 1.375rem;
+  line-height: 1.5;
+  color: var(--ink);
+  max-width: 720px;
+  margin-top: var(--space-5);
+  padding-left: var(--space-5);
+  border-left: 3px solid var(--ink-20);
+}
+
+.intro {
+  color: var(--ink-60);
+  max-width: 720px;
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-7);
+}
+
+.section {
+  margin-top: var(--space-9);
+  max-width: 800px;
+}
+
+.section h2 {
+  margin-bottom: var(--space-4);
+}
+
+.twoCol {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+  margin-top: var(--space-5);
+}
+
+@media (max-width: 768px) {
+  .twoCol { grid-template-columns: 1fr; }
+
+  .storyCard {
+    padding: var(--space-4) var(--space-5);
+  }
+}
+
+.list {
+  margin: var(--space-3) 0 0 var(--space-5);
+  line-height: 1.8;
+}
+
+.parts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  margin: var(--space-6) 0;
+}
+
+.part {
+  display: flex;
+  gap: var(--space-5);
+  align-items: flex-start;
+}
+
+.partNum {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--dark-text);
+  font-weight: 700;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.stories {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  margin-top: var(--space-6);
+}
+
+.storyCard {
+  background: rgba(240, 235, 225, 0.70);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  padding: var(--space-5) var(--space-6);
+  transition: box-shadow 200ms ease;
+}
+
+.storyCard:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.storyHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.storyText {
+  margin-top: var(--space-3);
+  font-style: italic;
+}
+
+.storyWhy {
+  margin-top: var(--space-4);
+  font-size: 0.875rem;
+  color: var(--ink-60);
+}
